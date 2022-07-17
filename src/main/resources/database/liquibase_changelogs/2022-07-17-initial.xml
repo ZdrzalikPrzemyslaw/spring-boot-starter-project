@@ -1,0 +1,169 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="PrzemyslawZdrzalik" id="2022-07-17-01" runOnChange="true">
+        <sql>
+            CREATE TABLE table_metadata
+            (
+                id                     BIGINT PRIMARY KEY,
+                modified_by            BIGINT,
+                modification_date_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                modified_by_ip         VARCHAR(256),
+                created_by             BIGINT,
+                created_date_time      TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                created_by_ip          VARCHAR(256),
+                version                BIGINT      DEFAULT 0
+                    CONSTRAINT table_metadata_version_gr0 CHECK (version >= 0)
+            );
+
+            CREATE SEQUENCE table_metadata_sequence
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE CACHE 1;
+
+            CREATE TABLE account_info
+            (
+                id                                     BIGINT PRIMARY KEY,
+                table_metadata_id                      BIGINT
+                    CONSTRAINT account_info_table_metadata_id_unique UNIQUE,
+                    CONSTRAINT account_info_table_metadata_id_foreign_key
+                        FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id),
+                email                                  VARCHAR(64)
+                    CONSTRAINT account_info_email_not_null NOT NULL
+                    CONSTRAINT account_info_email_unique UNIQUE,
+                password                               CHAR(128)
+                    CONSTRAINT account_info_password_not_null NOT NULL,
+                enabled                                BOOL DEFAULT TRUE
+                    CONSTRAINT account_info_enabled_not_null NOT NULL,
+                confirmed                              BOOL DEFAULT FALSE
+                    CONSTRAINT account_info_confirmed_not_null NOT NULL,
+                confirmation_token                     VARCHAR(128),
+                last_login                             TIMESTAMPTZ,
+                last_login_ip                          VARCHAR(256),
+                last_fail_login                        TIMESTAMPTZ,
+                last_fail_login_ip                     VARCHAR(256),
+                login_failures_since_last_login        INT  DEFAULT 0,
+                last_password_change_ip                VARCHAR(256),
+                last_password_change                   TIMESTAMPTZ,
+                password_verification_token            VARCHAR(128),
+                password_verification_token_expiration TIMESTAMPTZ
+            );
+
+            CREATE
+                INDEX account_info_id_index ON account_info (id);
+            CREATE
+                INDEX account_info_table_metadata_id_index ON account_info (table_metadata_id);
+            CREATE
+                INDEX account_info_email_index ON account_info (email);
+
+
+            CREATE SEQUENCE account_info_sequence
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE CACHE 1;
+
+            CREATE TABLE oauth_account_info
+            (
+                id                BIGINT PRIMARY KEY,
+                provider          VARCHAR(32),
+                provider_user_id  VARCHAR(256),
+                    CONSTRAINT oauth_account_info_account_info_provider_unique_pair UNIQUE (provider, provider_user_id),
+                account_info_id   BIGINT
+                    CONSTRAINT oauth_account_info_account_info_id_not_null NOT NULL,
+                    CONSTRAINT oauth_account_info_account_info_id_foreign_key
+                        FOREIGN KEY (account_info_id) REFERENCES account_info (id),
+                table_metadata_id BIGINT
+                    CONSTRAINT oauth_account_info_table_metadata_id_not_null NOT NULL
+                    CONSTRAINT oauth_account_info_table_metadata_id_unique UNIQUE,
+                    CONSTRAINT oauth_account_info_table_metadata_id_foreign_key
+                        FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id)
+            );
+
+            CREATE
+                INDEX oauth_account_info_id_index ON oauth_account_info (id);
+            CREATE
+                INDEX oauth_account_info_account_info_id_index ON oauth_account_info (account_info_id);
+            CREATE
+                INDEX oauth_account_info_table_metadata_id_index ON oauth_account_info (table_metadata_id);
+
+            CREATE SEQUENCE oauth_account_info_sequence
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE CACHE 1;
+
+            CREATE TABLE user_info
+            (
+                id                BIGINT PRIMARY KEY,
+                table_metadata_id BIGINT
+                    CONSTRAINT user_info_table_metadata_id_not_null NOT NULL
+                    CONSTRAINT user_info_table_metadata_id_unique UNIQUE,
+                    CONSTRAINT user_info_table_metadata_id_foreign_key
+                        FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id),
+                account_info_id   BIGINT
+                    CONSTRAINT user_info_account_info_id_not_null NOT NULL,
+                    CONSTRAINT user_info_account_info_id_foreign_key
+                        FOREIGN KEY (account_info_id) REFERENCES account_info (id),
+                first_name        VARCHAR(64),
+                last_name         VARCHAR(64)
+--     PHONE             VARCHAR(20),
+--     BIRTHDATE         TIMESTAMPTZ
+            );
+
+            CREATE
+                INDEX user_info_id_index ON user_info (id);
+            CREATE
+                INDEX user_info_table_metadata_id_index ON user_info (table_metadata_id);
+            CREATE
+                INDEX user_info_account_info_id_index ON user_info (account_info_id);
+
+
+            CREATE SEQUENCE user_info_sequence
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE CACHE 1;
+
+            CREATE TABLE access_levels
+            (
+                id                BIGINT PRIMARY KEY,
+                table_metadata_id BIGINT
+                    CONSTRAINT access_levels_table_metadata_id_not_null NOT NULL
+                    CONSTRAINT access_levels_info_table_metadata_id_unique UNIQUE,
+                    CONSTRAINT access_levels_table_metadata_id_foreign_key
+                        FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id),
+                account_info_id   BIGINT
+                    CONSTRAINT access_levels_account_info_id_not_null NOT NULL,
+                    CONSTRAINT access_levels_account_info_id_foreign_key
+                        FOREIGN KEY (account_info_id) REFERENCES account_info (id),
+                level             VARCHAR(32)
+                    CONSTRAINT access_levels_level_not_null NOT NULL
+                    CONSTRAINT access_levels_level_in CHECK
+                        (level IN ('user', 'admin')),
+                enabled           BOOL DEFAULT TRUE
+                    CONSTRAINT access_levels_enabled_not_null NOT NULL
+            );
+
+            CREATE
+                INDEX access_levels_id_index ON access_levels (id);
+            CREATE
+                INDEX access_levels_table_metadata_id_index ON access_levels (table_metadata_id);
+            CREATE
+                INDEX access_levels_account_info_id_index ON access_levels (account_info_id);
+            CREATE
+                INDEX access_levels_level_index ON access_levels (level);
+
+            CREATE SEQUENCE access_levels_sequence
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE CACHE 1;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
