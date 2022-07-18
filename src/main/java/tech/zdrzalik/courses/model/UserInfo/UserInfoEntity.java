@@ -1,4 +1,8 @@
-package tech.zdrzalik.courses.model;
+package tech.zdrzalik.courses.model.UserInfo;
+
+import tech.zdrzalik.courses.model.AbstractEntity;
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
+import tech.zdrzalik.courses.model.TableMetadata.TableMetadataEntity;
 
 import javax.persistence.*;
 

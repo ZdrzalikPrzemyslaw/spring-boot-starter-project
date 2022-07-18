@@ -1,5 +1,7 @@
 package tech.zdrzalik.courses.model;
 
+import tech.zdrzalik.courses.model.TableMetadata.TableMetadataEntity;
+
 import javax.persistence.*;
 
 @MappedSuperclass()
