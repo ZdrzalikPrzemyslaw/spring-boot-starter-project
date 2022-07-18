@@ -21,48 +21,48 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>2.7.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-oauth2-client</artifactId>-->
+<!--            <version>2.7.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--            <version>2.7.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
@@ -75,27 +75,27 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.7.0</version>
+            <version>2.7.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <version>5.7.2</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-test</artifactId>-->
+<!--            <version>5.7.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.7.0</version>
+                <version>2.7.1</version>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
@@ -126,12 +126,25 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>dev_local</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <spring.profiles.active>dev_local</spring.profiles.active>
+                <liquibase.driver>org.postgresql.Driver</liquibase.driver>
+                <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
+                <liquibase.username>courses_app_dev</liquibase.username>
+                <liquibase.password>courses_app_dev</liquibase.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev_docker</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev_docker</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
                 <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
                 <liquibase.username>courses_app_dev</liquibase.username>

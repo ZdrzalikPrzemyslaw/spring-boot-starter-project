@@ -1,9 +1,13 @@
-package tech.zdrzalik.courses.model;
+package tech.zdrzalik.courses.model.AccountInfo;
+
+import tech.zdrzalik.courses.model.AbstractEntity;
+import tech.zdrzalik.courses.model.AccessLevel.AccessLevelsEntity;
+import tech.zdrzalik.courses.model.OauthAccountInfo.OauthAccountInfoEntity;
+import tech.zdrzalik.courses.model.UserInfo.UserInfoEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,7 +21,7 @@ import java.util.List;
         @NamedQuery(name = "AccountInfoEntity.findByEnabled", query = "SELECT a FROM AccountInfoEntity a WHERE a.enabled = :enabled"),
         @NamedQuery(name = "AccountInfoEntity.findByEmail", query = "SELECT a FROM AccountInfoEntity a WHERE a.email = :email")})
 
-public class AccountInfoEntity extends AbstractEntity{
+public class AccountInfoEntity extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_info_sequence")
     @SequenceGenerator(name = "account_info_sequence", sequenceName = "account_info_sequence", allocationSize = 1)
     @Id

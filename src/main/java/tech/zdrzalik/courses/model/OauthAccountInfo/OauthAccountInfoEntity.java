@@ -1,4 +1,7 @@
-package tech.zdrzalik.courses.model;
+package tech.zdrzalik.courses.model.OauthAccountInfo;
+
+import tech.zdrzalik.courses.model.AbstractEntity;
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.persistence.*;
 
@@ -6,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "oauth_account_info", schema = "public", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"provider_user_id"}),
 })
-public class OauthAccountInfoEntity  extends AbstractEntity{
+public class OauthAccountInfoEntity  extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "oauth_account_info_sequence")
     @SequenceGenerator(name = "oauth_account_info_sequence", sequenceName = "oauth_account_info_sequence", allocationSize = 1)
     @Id
