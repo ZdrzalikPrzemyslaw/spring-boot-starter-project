@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-mvn clean resources:resources liquibase:update -P dev
+mvn clean resources:resources liquibase:update -P dev_local
