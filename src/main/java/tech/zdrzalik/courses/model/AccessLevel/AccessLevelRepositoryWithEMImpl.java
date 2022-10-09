@@ -5,7 +5,7 @@ import tech.zdrzalik.courses.model.AbstractRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-public class AccessLevelRepositoryWithEMImpl extends AbstractRepository implements AccessLevelRepositoryWithEM {
+public class AccessLevelRepositoryWithEMImpl extends AbstractRepository<AccessLevelsEntity> implements AccessLevelRepositoryWithEM {
 
     @PersistenceContext
     private EntityManager em;
