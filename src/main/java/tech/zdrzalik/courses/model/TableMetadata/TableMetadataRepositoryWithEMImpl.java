@@ -1,7 +1,6 @@
 package tech.zdrzalik.courses.model.TableMetadata;
 
 import tech.zdrzalik.courses.model.AbstractRepository;
-import tech.zdrzalik.courses.model.AccessLevel.AccessLevelsEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
