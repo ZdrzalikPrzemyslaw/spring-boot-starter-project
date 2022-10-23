@@ -148,7 +148,7 @@
             <properties>
                 <spring.profiles.active>dev_docker</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
-                <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
+                <liquibase.url>jdbc:postgresql://database:5432/courses_db_dev</liquibase.url>
                 <liquibase.username>courses_app_dev</liquibase.username>
                 <liquibase.password>courses_app_dev</liquibase.password>
             </properties>

@@ -20,16 +20,12 @@ ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSi
 WORKDIR /usr/local/tomcat/webapps/
 COPY --from=maven /usr/src/app/target/courses_app.war /usr/local/tomcat/webapps/api.war
 
-#CMD ['SH', '-c', "cp -r /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager"]
 RUN cp -R /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager
 RUN cp -R /usr/local/tomcat/webapps.dist/docs /usr/local/tomcat/webapps/docs
 
 COPY ${TOMCAT_FILE_PATH}/* ${CATALINA_HOME}/conf/
 
-#CMD ['SH', '-c', "cp -r ${CATALINA_HOME}/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml"]
 RUN cp ${CATALINA_HOME}/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
-#CMD ['SH', '-c', "rm -r -f ${CATALINA_HOME}/conf/context.xml"]
-
 
 WORKDIR $APP_DATA_FOLDER
 
