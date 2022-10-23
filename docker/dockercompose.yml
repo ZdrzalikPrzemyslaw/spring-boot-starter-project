@@ -2,8 +2,9 @@ version: '2.2'
 services:
   backend:
     build:
-        context: ./
-        dockerfile: Dockerfile
+        context: ..
+        dockerfile: docker/Dockerfile
     ports:
       - "8081:8080"
+      - "8005:8005"
     container_name: courses_auth_backend

@@ -4,23 +4,32 @@ LABEL MAINTAINER="224406@edu.p.lodz.pl, 224441@edu.p.lodz.pl, 224466@edu.p.lodz.
 LABEL APPLICATION="Courses App"
 
 WORKDIR /usr/src/app
-COPY .. /usr/src/app
-RUN mvn -Dmaven.test.skip=true clean package
+COPY . /usr/src/app
+RUN mvn -Dmaven.test.skip=true clean package -P dev_docker
 
 FROM tomcat:10.0.27-jdk17-corretto-al2
-ARG TOMCAT_FILE_PATH=/docker
+ARG TOMCAT_FILE_PATH=/docker/tomcat
 
 #Data & Config - Persistent Mount Point
 ENV APP_DATA_FOLDER=/var/lib/SampleApp
-#ENV SAMPLE_APP_CONFIG=${APP_DATA_FOLDER}/config/
+ENV SAMPLE_APP_CONFIG=${APP_DATA_FOLDER}/config/
 
-ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -	XX:MaxMetaspaceSize=512m -Xss512k"
+ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m -Xss512k"
 
 #Move over the War file from previous build step
 WORKDIR /usr/local/tomcat/webapps/
 COPY --from=maven /usr/src/app/target/courses_app.war /usr/local/tomcat/webapps/api.war
 
+#CMD ['SH', '-c', "cp -r /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager"]
+RUN cp -R /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager
+RUN cp -R /usr/local/tomcat/webapps.dist/docs /usr/local/tomcat/webapps/docs
+
 COPY ${TOMCAT_FILE_PATH}/* ${CATALINA_HOME}/conf/
+
+#CMD ['SH', '-c', "cp -r ${CATALINA_HOME}/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml"]
+RUN cp ${CATALINA_HOME}/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
+#CMD ['SH', '-c', "rm -r -f ${CATALINA_HOME}/conf/context.xml"]
+
 
 WORKDIR $APP_DATA_FOLDER
 
