@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN mvn -Dmaven.test.skip=true clean package -P dev_docker
 
-FROM tomcat:10.0.27-jdk17-corretto-al2
+FROM tomcat:9.0.68-jdk17-corretto-al2
 ARG TOMCAT_FILE_PATH=/docker/tomcat
 
 #Data & Config - Persistent Mount Point
