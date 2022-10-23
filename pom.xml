@@ -75,6 +75,12 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
             <artifactId>spring-boot-configuration-processor</artifactId>
             <version>${springboot.version}</version>
             <optional>true</optional>
@@ -100,6 +106,7 @@
     </dependencies>
 
     <build>
+        <finalName>courses_app</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -147,7 +154,7 @@
             <properties>
                 <spring.profiles.active>dev_docker</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
-                <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
+                <liquibase.url>jdbc:postgresql://database:5432/courses_db_dev</liquibase.url>
                 <liquibase.username>courses_app_dev</liquibase.username>
                 <liquibase.password>courses_app_dev</liquibase.password>
             </properties>
