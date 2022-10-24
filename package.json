@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "backend",
   "version": "1.0.0",
   "description": "This README would normally document whatever steps are necessary to get your application up and running.",
@@ -19,12 +18,9 @@
   },
   "homepage": "https://bitbucket.org/app-courses-workspace/backend#readme",
   "devDependencies": {
-=======
-  "devDependencies": {
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.18",
     "postcss-cli": "^10.0.0",
->>>>>>> 7b239077edc9465679560b084f2e35e0fe8d156b
     "tailwindcss": "^3.2.1"
   }
 }
