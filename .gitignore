@@ -14,8 +14,8 @@
 
 /src/main/resources/static/css/main.css
 
-#/node_modules
-#/node
+/node_modules
+/node
 
 # AWS User-specific
 .idea/**/aws.xml
