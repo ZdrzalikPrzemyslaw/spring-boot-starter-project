@@ -6,9 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
+<!--Do usuniecia pokazywalem jak to dziala -->
 
-
-<!--Do usuniecia - pokazywalem jak to dziala -->
 <div class="md:block">
     <div th:text="'hello ' + ${hello}" ></div>
     <div th:text="'liczba użytników ' + ${@accountInfoRepository.count()}"></div>
