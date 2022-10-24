@@ -12,6 +12,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+/src/main/resources/static/css/main.css
+
+/node_modules
+
 # AWS User-specific
 .idea/**/aws.xml
 
@@ -135,3 +139,4 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,maven,java
+/node_modules/

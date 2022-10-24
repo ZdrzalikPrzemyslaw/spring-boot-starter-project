@@ -17,6 +17,9 @@
     <properties>
         <java.version>17</java.version>
         <springboot.version>2.7.5</springboot.version>
+        <node.version>v16.18.0</node.version>
+        <npm.version>8.19.2</npm.version>
+        <liquibase.version>4.9.1</liquibase.version>
     </properties>
     <dependencies>
         <dependency>
@@ -145,12 +148,35 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v14.5.0</nodeVersion>
-                            <npmVersion>6.14.5</npmVersion>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-tailwind</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build-tailwind</arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/java/com/acme/Network/service/generated</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+
+            </plugin>
+
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
