@@ -16,7 +16,7 @@
     <description>Backend</description>
     <properties>
         <java.version>17</java.version>
-        <springboot.version>2.7.4</springboot.version>
+        <springboot.version>2.7.5</springboot.version>
     </properties>
     <dependencies>
         <dependency>
@@ -32,6 +32,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>${springboot.version}</version>
         </dependency>
         <dependency>
