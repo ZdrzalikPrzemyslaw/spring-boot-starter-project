@@ -1,8 +1,9 @@
-package tech.zdrzalik.courses.model;
+package tech.zdrzalik.courses.model.TableMetadata;
+
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Entity
 @Table(name = "table_metadata", schema = "public")

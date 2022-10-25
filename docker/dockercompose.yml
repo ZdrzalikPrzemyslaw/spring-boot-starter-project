@@ -1,0 +1,19 @@
+version: '2.2'
+services:
+  backend:
+    build:
+        context: ..
+        dockerfile: docker/Dockerfile
+    networks:
+      - backend
+    ports:
+      - "8081:8080"
+    container_name: courses_auth_backend
+
+networks:
+  backend:
+    name: backend_network
+    external: true
+  default:
+    name: backend_network_default
+    driver: bridge
