@@ -19,6 +19,11 @@ public abstract class AbstractEntity {
     @JoinColumn(name = "table_metadata_id", referencedColumnName = "id", updatable = false, nullable = false, unique = true)
     private TableMetadataEntity tableMetadata;
 
+    @Basic
+    @Version
+    @Column(name = "version", nullable = true)
+    private Long version;
+
     /**
      * Tworzy nową instancję klasy AbstractEntity.
      */
@@ -50,4 +55,12 @@ public abstract class AbstractEntity {
         return (this.getId() != null || other.getId() == null) && (this.getId() == null || this.getId().equals(other.getId()));
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public AbstractEntity setVersion(Long version) {
+        this.version = version;
+        return this;
+    }
 }

@@ -1,0 +1,34 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="WitoldPietrzak" id="2022-10-24-01" runOnChange="true">
+        <sql>
+
+            ALTER TABLE account_info
+            ADD
+                version                BIGINT      DEFAULT 0
+                    CONSTRAINT table_account_info_version_gr0 CHECK (version >= 0);
+
+            ALTER TABLE oauth_account_info
+                ADD
+                    version                BIGINT      DEFAULT 0
+                        CONSTRAINT table_oauth_account_info_version_gr0 CHECK (version >= 0);
+
+
+            ALTER TABLE user_info
+                ADD
+                    version                BIGINT      DEFAULT 0
+                        CONSTRAINT table_user_info_version_gr0 CHECK (version >= 0);
+
+            ALTER TABLE access_levels
+                ADD
+                    version                BIGINT      DEFAULT 0
+                        CONSTRAINT table_access_levels_version_gr0 CHECK (version >= 0);
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
