@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="http://localhost:35729/livereload.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<!--Do usuniecia pokazywalem jak to dziala -->
 
 <div class="md:block">
-    <div th:text="'hello ' + ${hello}" ></div>
-    <div th:text="'liczba użytników ' + ${@accountInfoRepository.count()}"></div>
+    <h1 class="mx-7 mt-8 mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+        Panel administratora</h1>
+    <div class="flex flex-row">
+        <button type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mx-7 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            Lista użytkowników
+        </button>
+        <button type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mx-5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            Dodaj użytkownika
+        </button>
+    </div>
 </div>
- 
 
 
 </body>

@@ -4,7 +4,8 @@
   "description": "This README would normally document whatever steps are necessary to get your application up and running.",
   "main": "index.js",
   "scripts": {
-    "build-tailwind": "npx tailwindcss -i ./src/main/resources/static/css/style.tailwind.css -o ./src/main/resources/static/css/main.css"
+    "build-tailwind": "npx tailwindcss -i ./src/main/resources/static/css/style.tailwind.css -o ./src/main/resources/static/css/main.css",
+    "build-tailwind-hotreload": "npx tailwindcss -i ./src/main/resources/static/css/style.tailwind.css -o ./src/main/resources/static/css/main.css"
   },
   "repository": {
     "type": "git",

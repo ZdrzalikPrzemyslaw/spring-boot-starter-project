@@ -1,5 +1,6 @@
-package tech.zdrzalik.courses.controllers;
+package tech.zdrzalik.courses.controllers.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,18 @@ public class AdminController {
     public ModelAndView getAdminPanel() {
         ModelAndView modelAndView = new ModelAndView("admin-panel");
         modelAndView.addObject("hello", "world");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getUsersList() {
+        ModelAndView modelAndView = new ModelAndView("users-list");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "add-user", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getAddUser() {
+        ModelAndView modelAndView = new ModelAndView("add-user");
         return modelAndView;
     }
 
