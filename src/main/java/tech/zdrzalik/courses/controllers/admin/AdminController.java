@@ -33,4 +33,10 @@ public class AdminController {
         return modelAndView;
     }
 
+    @GetMapping(value = "user-info", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getUser() {
+        ModelAndView modelAndView = new ModelAndView("user-info");
+        return modelAndView;
+    }
+
 }
