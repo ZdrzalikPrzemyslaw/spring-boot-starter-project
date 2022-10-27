@@ -28,8 +28,8 @@ public class TableMetadataEntity {
         return this;
     }
 
-    @ManyToOne(optional = false, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = false, nullable = false)
+    @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = true, nullable = true)
     private AccountInfoEntity modifiedBy;
     @Basic
     @Column(name = "modification_date_time", nullable = true)
@@ -39,7 +39,7 @@ public class TableMetadataEntity {
     private String modifiedByIp;
 
     @Basic
-    @Column(name = "created_by_ip", nullable = true, length = 256)
+    @Column(name = "created_by_ip", nullable = true, updatable = true, length = 256)
     private String createdByIp;
 
     public TableMetadataEntity() {
