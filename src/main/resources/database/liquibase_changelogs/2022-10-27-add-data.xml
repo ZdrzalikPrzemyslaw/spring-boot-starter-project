@@ -9,6 +9,8 @@
 --             INSERT INTO table_name (column1, column2, column3, ...)
 --             VALUES (value1, value2, value3, ...);
 
+--              Nwm czy moze byc tak nazwa funkcji : (
+                create function create_tablemetadata(table_name varchar(64))  {
                 do '
                     DECLARE row_num int; DECLARE account_id BIGINT; DECLARE table_metadata_id BIGINT;
                 BEGIN
@@ -24,7 +26,7 @@
 
                         END;
                 '
-
+                }
         </sql>
     </changeSet>
 </databaseChangeLog>
