@@ -6,27 +6,23 @@
 
     <changeSet author="JuliaSzymanska" id="2022-10-27-01" runOnChange="true" context="dev_local">
         <sql>
---             INSERT INTO table_name (column1, column2, column3, ...)
---             VALUES (value1, value2, value3, ...);
-
---              Nwm czy moze byc tak nazwa funkcji : ( https://stackoverflow.com/questions/35559093/how-to-use-variable-as-table-name-in-plpgsql/35642628#35642628
-                create function create_tablemetadata(table_name varchar(64))  {
-                do '
+--                 do '
+                    Create function create_tablemetadata(table_name varchar(64))
+                    RETURNS void
                     DECLARE row_num int; DECLARE account_id BIGINT; DECLARE table_metadata_id BIGINT;
-                BEGIN
-                SELECT (select max(id) from account_i]nfo) into account_id;
-                SELECT (select Count(*) from account_info) into row_num;
-                WHILE row_num > 0 LOOP
-                SELECT nextval(&apos;&apos;table_metadata_sequence&apos;&apos;) INTO table_metadata_id;
-                INSERT INTO table_metadata (id, version) VALUES (table_metadata_id, 0);
-                UPDATE account_info SET table_metadata_id = table_metadata_id WHERE id = account_id;
-                SELECT (select id from account_info where (id  &lt; account_id) order by id desc LIMIT 1) into account_id;
-                        SELECT row_num - 1 into row_num;
+                    BEGIN
+                        EXECUTE format(&apos;&apos;SELECT (select max(id) from %I) into account_id&apos;&apos;, table_name);
+                        EXECUTE format(&apos;&apos;SELECT (select Count(*) from %I) into row_num&apos;&apos;, table_name);
+                        WHILE row_num > 0 LOOP
+                            SELECT nextval(&apos;&apos;table_metadata_sequence&apos;&apos;) INTO table_metadata_id;
+                            INSERT INTO table_metadata (id, version) VALUES (table_metadata_id, 0);
+                            EXECUTE format(&apos;&apos;UPDATE %I SET table_metadata_id = table_metadata_id WHERE id = account_id;&apos;&apos;, table_name);
+                            EXECUTE format(&apos;&apos;SELECT (select id from %I where (id  &lt; account_id) order by id desc LIMIT 1) into account_idEXECUTE format(&apos;&apos;, table_name);
+                            SELECT row_num - 1 into row_num;
                         END LOOP;
-
-                        END;
-                '
-                }
+                        RETURN;
+                    END;
+--                 '
         </sql>
     </changeSet>
 </databaseChangeLog>
