@@ -6,19 +6,26 @@
 
     <changeSet author="JuliaSzymanska" id="2022-10-27-01" runOnChange="true" context="dev_local">
         <sql>
-                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64))
+--                     ALTER TABLE oauth_account_info DROP CONSTRAINT IF EXISTS oauth_account_info_table_metadata_id_not_null;
+                    ALTER TABLE oauth_account_info ALTER COLUMN table_metadata_id DROP NOT NULL;
+--                     ALTER TABLE user_info DROP CONSTRAINT IF EXISTS user_info_table_metadata_id_not_null;
+                    ALTER TABLE user_info ALTER COLUMN table_metadata_id DROP NOT NULL;
+--                     ALTER TABLE access_levels DROP CONSTRAINT IF EXISTS access_levels_table_metadata_id_not_null;
+                    ALTER TABLE access_levels ALTER COLUMN table_metadata_id DROP NOT NULL;
+
+                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64), table_sequence_name varchar(64))
                     RETURNS void
                     AS '
                     DECLARE row_num integer; '
                         'account_id BIGINT; '
-                        'table_metadata_id BIGINT;
+                        'table_id BIGINT;
                     BEGIN
                         EXECUTE format(&apos;&apos;SELECT (select max(id) from %I) into account_id&apos;&apos;, table_name);
                         EXECUTE format(&apos;&apos;SELECT (select Count(*) from %I) into row_num&apos;&apos;, table_name);
                         WHILE row_num > 0 LOOP
-                            SELECT nextval(&apos;&apos;table_metadata_sequence&apos;&apos;) INTO table_metadata_id;
-                            INSERT INTO table_metadata (id, version) VALUES (table_metadata_id, 0);
-                            EXECUTE format(&apos;&apos;UPDATE %I SET table_metadata_id = table_metadata_id WHERE id = account_id;&apos;&apos;, table_name);
+                            SELECT nextval(&apos;&apos;table_sequence_name&apos;&apos;) INTO table_id;
+                            EXECUTE format(&apos;&apos;INSERT INTO %I (id, version) VALUES (table_id, 0);&apos;&apos;, table_name);
+                            EXECUTE format(&apos;&apos;UPDATE %I SET table_id = table_id WHERE id = account_id;&apos;&apos;, table_name);
                             EXECUTE format(&apos;&apos;SELECT (select id from %I where (id  &lt; account_id) order by id desc LIMIT 1) into account_idEXECUTE format(&apos;&apos;, table_name);
                             SELECT row_num - 1 into row_num;
                         END LOOP;
@@ -26,6 +33,66 @@
                     END;
                  '
                  LANGUAGE plpgsql;
+
+                do '
+                -- ADMIN
+                DECLARE account_info_sequence_value BIGINT;
+                DECLARE user_info_sequence_value BIGINT;
+                DECLARE access_levels_sequence_value BIGINT;
+                BEGIN
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@adminowy.com&apos;&apos;, &apos;&apos;AdminAdminowy123&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;Admin&apos;&apos;, &apos;&apos;Adminowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;admin&apos;&apos;, true);
+
+                    -- USER
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;user@userowy.com&apos;&apos;, &apos;&apos;UserUserowy123&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;User&apos;&apos;, &apos;&apos;Userowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;user&apos;&apos;, true);
+
+                    -- ADMIN I USER
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@userowy.com&apos;&apos;, &apos;&apos;AdminUserowy123&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;Admin&apos;&apos;, &apos;&apos;Userowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;admin&apos;&apos;, true);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;user&apos;&apos;, true);
+                END
+                '
         </sql>
     </changeSet>
 </databaseChangeLog>

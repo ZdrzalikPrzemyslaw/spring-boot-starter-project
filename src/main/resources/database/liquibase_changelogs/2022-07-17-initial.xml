@@ -78,6 +78,7 @@
                     CONSTRAINT oauth_account_info_account_info_id_foreign_key
                         FOREIGN KEY (account_info_id) REFERENCES account_info (id),
                 table_metadata_id BIGINT
+                    CONSTRAINT oauth_account_info_table_metadata_id_not_null NOT NULL
                     CONSTRAINT oauth_account_info_table_metadata_id_unique UNIQUE,
                     CONSTRAINT oauth_account_info_table_metadata_id_foreign_key
                         FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id)
@@ -100,6 +101,7 @@
             (
                 id                BIGINT PRIMARY KEY,
                 table_metadata_id BIGINT
+                    CONSTRAINT user_info_table_metadata_id_not_null NOT NULL
                     CONSTRAINT user_info_table_metadata_id_unique UNIQUE,
                     CONSTRAINT user_info_table_metadata_id_foreign_key
                         FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id),
@@ -131,6 +133,7 @@
             (
                 id                BIGINT PRIMARY KEY,
                 table_metadata_id BIGINT
+                    CONSTRAINT access_levels_table_metadata_id_not_null NOT NULL
                     CONSTRAINT access_levels_info_table_metadata_id_unique UNIQUE,
                     CONSTRAINT access_levels_table_metadata_id_foreign_key
                         FOREIGN KEY (table_metadata_id) REFERENCES table_metadata (id),
