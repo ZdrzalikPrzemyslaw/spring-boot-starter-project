@@ -13,20 +13,20 @@
 --                     ALTER TABLE access_levels DROP CONSTRAINT IF EXISTS access_levels_table_metadata_id_not_null;
                     ALTER TABLE access_levels ALTER COLUMN table_metadata_id DROP NOT NULL;
 
-                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64), table_sequence_name varchar(64))
+                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64))
                     RETURNS void
                     AS '
                     DECLARE row_num integer; '
                         'account_id BIGINT; '
                         'table_id BIGINT;
                     BEGIN
-                        EXECUTE format(&apos;&apos;SELECT (select max(id) from %I) into account_id&apos;&apos;, table_name);
-                        EXECUTE format(&apos;&apos;SELECT (select Count(*) from %I) into row_num&apos;&apos;, table_name);
+                        EXECUTE format(&apos;&apos;(select max(id) from %I)&apos;&apos;, table_name) into account_id;
+                        EXECUTE format(&apos;&apos;(select Count(*) from %I)&apos;&apos;, table_name) into row_num;
                         WHILE row_num > 0 LOOP
-                            SELECT nextval(&apos;&apos;table_sequence_name&apos;&apos;) INTO table_id;
-                            EXECUTE format(&apos;&apos;INSERT INTO %I (id, version) VALUES (table_id, 0);&apos;&apos;, table_name);
-                            EXECUTE format(&apos;&apos;UPDATE %I SET table_id = table_id WHERE id = account_id;&apos;&apos;, table_name);
-                            EXECUTE format(&apos;&apos;SELECT (select id from %I where (id  &lt; account_id) order by id desc LIMIT 1) into account_idEXECUTE format(&apos;&apos;, table_name);
+                            SELECT nextval(&apos;&apos;table_metadata_sequence&apos;&apos;) INTO table_id;
+                            INSERT INTO table_metadata (id, version) VALUES (table_id, 0);
+                            EXECUTE format(&apos;&apos;UPDATE %I SET table_metadata_id = $1 WHERE id = $2;&apos;&apos;, table_name) USING table_id, account_id;
+                            EXECUTE format(&apos;&apos;SELECT id from %I where (id  &lt; $1) order by id desc LIMIT 1&apos;&apos;, table_name) into account_id USING account_id;
                             SELECT row_num - 1 into row_num;
                         END LOOP;
                         RETURN;
@@ -93,6 +93,11 @@
                     VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;user&apos;&apos;, true);
                 END
                 '
+        </sql>
+        <sql>
+            SELECT create_tablemetadata('account_info');
+            SELECT create_tablemetadata('user_info');
+            SELECT create_tablemetadata('access_levels');
         </sql>
     </changeSet>
 </databaseChangeLog>
