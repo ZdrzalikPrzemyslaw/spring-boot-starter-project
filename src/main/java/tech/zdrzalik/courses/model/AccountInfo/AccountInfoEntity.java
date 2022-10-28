@@ -3,6 +3,7 @@ package tech.zdrzalik.courses.model.AccountInfo;
 import tech.zdrzalik.courses.model.AbstractEntity;
 import tech.zdrzalik.courses.model.AccessLevel.AccessLevelsEntity;
 import tech.zdrzalik.courses.model.OauthAccountInfo.OauthAccountInfoEntity;
+import tech.zdrzalik.courses.model.TableMetadata.TableMetadataEntity;
 import tech.zdrzalik.courses.model.UserInfo.UserInfoEntity;
 
 import javax.persistence.*;
@@ -35,10 +36,10 @@ public class AccountInfoEntity extends AbstractEntity {
     private String password;
     @Basic
     @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+    private boolean enabled = true;
     @Basic
     @Column(name = "confirmed", nullable = false)
-    private boolean confirmed;
+    private boolean confirmed = false;
     @Basic
     @Column(name = "confirmation_token", nullable = true, length = 128)
     private String confirmationToken;
@@ -56,7 +57,7 @@ public class AccountInfoEntity extends AbstractEntity {
     private String lastFailLoginIp;
     @Basic
     @Column(name = "login_failures_since_last_login", nullable = true)
-    private Integer loginFailuresSinceLastLogin;
+    private Integer loginFailuresSinceLastLogin = 0;
     @Basic
     @Column(name = "last_password_change_ip", nullable = true, length = 256)
     private String lastPasswordChangeIp;
@@ -89,6 +90,12 @@ public class AccountInfoEntity extends AbstractEntity {
     }
 
     public AccountInfoEntity() {
+    }
+
+    public AccountInfoEntity(String email, String password, UserInfoEntity userInfoEntity) {
+        this.email = email;
+        this.password = password;
+        this.userInfoEntity = userInfoEntity;
     }
 
     public String getEmail() {
@@ -227,6 +234,18 @@ public class AccountInfoEntity extends AbstractEntity {
 
     public AccountInfoEntity setUserInfoEntity(UserInfoEntity userInfoEntity) {
         this.userInfoEntity = userInfoEntity;
+        return this;
+    }
+
+    @Override
+    public AccountInfoEntity setTableMetadata(TableMetadataEntity tableMetadata) {
+        super.setTableMetadata(tableMetadata);
+        return this;
+    }
+
+    @Override
+    public AccountInfoEntity setVersion(Long version) {
+        super.setVersion(version);
         return this;
     }
 

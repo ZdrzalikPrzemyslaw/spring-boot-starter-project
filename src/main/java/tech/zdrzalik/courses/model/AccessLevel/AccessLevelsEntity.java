@@ -36,7 +36,7 @@ public class AccessLevelsEntity extends AbstractEntity {
     private AccessLevel level;
     @Basic
     @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+    private boolean enabled = true;
 
     public AccessLevelsEntity() {
     }
