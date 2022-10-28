@@ -6,10 +6,12 @@
 
     <changeSet author="JuliaSzymanska" id="2022-10-27-01" runOnChange="true" context="dev_local">
         <sql>
---                 do '
-                    Create function create_tablemetadata(table_name varchar(64))
+                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64))
                     RETURNS void
-                    DECLARE row_num int; DECLARE account_id BIGINT; DECLARE table_metadata_id BIGINT;
+                    AS '
+                    DECLARE row_num integer; '
+                        'account_id BIGINT; '
+                        'table_metadata_id BIGINT;
                     BEGIN
                         EXECUTE format(&apos;&apos;SELECT (select max(id) from %I) into account_id&apos;&apos;, table_name);
                         EXECUTE format(&apos;&apos;SELECT (select Count(*) from %I) into row_num&apos;&apos;, table_name);
@@ -22,7 +24,8 @@
                         END LOOP;
                         RETURN;
                     END;
---                 '
+                 '
+                 LANGUAGE plpgsql;
         </sql>
     </changeSet>
 </databaseChangeLog>
