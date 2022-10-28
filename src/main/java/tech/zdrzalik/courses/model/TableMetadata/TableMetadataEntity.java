@@ -56,7 +56,7 @@ public class TableMetadataEntity {
     @Basic
     @Version
     @Column(name = "version", nullable = true)
-    private Long version;
+    private Long version = 0L;
 
     @PrePersist
     protected void onCreate() {
