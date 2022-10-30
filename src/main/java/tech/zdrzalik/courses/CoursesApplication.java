@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class CoursesApplication extends SpringBootServletInitializer {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(CoursesApplication.class, args);
 	}
@@ -21,7 +22,7 @@ public class CoursesApplication extends SpringBootServletInitializer {
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
 
