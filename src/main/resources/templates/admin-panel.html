@@ -10,14 +10,21 @@
 <div class="md:block">
     <h1 class="header">
         Panel administratora</h1>
+    <div th:text="${@localeContextHolderWrapper.getLocaleContext().getLocale()}"></div>
     <div class="flex flex-row">
-        <button th:onclick="|window.location.href='/admin/users-list'|" type="button"
-                class="btn-primary">
-            Lista użytkowników
+        <button type="button" class="btn-primary">
+            <a th:text="#{add_user}"
+               th:href="'/'
+            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+            + '/admin/users-list'"
+            ></a>
         </button>
-        <button th:onclick="|window.location.href='/admin/add-user'|" type="button"
-                class="btn-primary">
-            Dodaj użytkownika
+        <button type="button" class="btn-primary">
+            <a th:text="#{user_list}"
+               th:href="'/'
+                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+                + '/admin/add-user'"
+            ></a>
         </button>
     </div>
 </div>

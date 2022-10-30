@@ -2,6 +2,9 @@ package tech.zdrzalik.courses.filters;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tech.zdrzalik.courses.common.I18nCodes;
@@ -12,11 +15,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Component
 public class PathVariableLocaleFilter extends OncePerRequestFilter {
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String url = defaultString(request.getRequestURI().substring(request.getContextPath().length()));
@@ -33,6 +38,7 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
     }
 
     private boolean isLocale(String locale) {
+        if (Objects.equals(locale, "css")) return false;
         //validate the string here against an accepted list of locales or whatever
         try {
             LocaleUtils.toLocale(locale);
