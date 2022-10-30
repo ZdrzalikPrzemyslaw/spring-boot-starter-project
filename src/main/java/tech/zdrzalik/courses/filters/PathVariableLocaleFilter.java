@@ -4,7 +4,7 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tech.zdrzalik.courses.common.Codes;
+import tech.zdrzalik.courses.common.I18nCodes;
 
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
@@ -23,7 +23,7 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
         String[] variables = url.split("/");
 
         if (variables.length > 1 && isLocale(variables[1])) {
-            request.setAttribute(Codes.LOCALE_ATTRIBUTE_NAME, variables[1]);
+            request.setAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME, variables[1]);
             String newUrl = StringUtils.removeStart(url, '/' + variables[1]);
             RequestDispatcher dispatcher = request.getRequestDispatcher(newUrl);
             dispatcher.forward(request, response);
