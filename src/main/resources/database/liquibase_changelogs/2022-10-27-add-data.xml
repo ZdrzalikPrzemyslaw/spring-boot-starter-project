@@ -43,7 +43,7 @@
                     SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
 
                     INSERT INTO account_info(id, email, password, enabled, confirmed)
-                    VALUES (account_info_sequence_value, &apos;&apos;admin@adminowy.com&apos;&apos;, &apos;&apos;AdminAdminowy123&apos;&apos;, true, true);
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@adminowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
 
                     SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
 
@@ -59,7 +59,7 @@
                     SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
 
                     INSERT INTO account_info(id, email, password, enabled, confirmed)
-                    VALUES (account_info_sequence_value, &apos;&apos;user@userowy.com&apos;&apos;, &apos;&apos;UserUserowy123&apos;&apos;, true, true);
+                    VALUES (account_info_sequence_value, &apos;&apos;user@userowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
 
                     SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
 
@@ -75,7 +75,7 @@
                     SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
 
                     INSERT INTO account_info(id, email, password, enabled, confirmed)
-                    VALUES (account_info_sequence_value, &apos;&apos;admin@userowy.com&apos;&apos;, &apos;&apos;AdminUserowy123&apos;&apos;, true, true);
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@userowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
 
                     SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
 
