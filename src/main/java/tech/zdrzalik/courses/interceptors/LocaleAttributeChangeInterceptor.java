@@ -6,7 +6,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import tech.zdrzalik.courses.common.Codes;
+import tech.zdrzalik.courses.common.I18nCodes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LocaleAttributeChangeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object newLocale = request.getAttribute(Codes.LOCALE_ATTRIBUTE_NAME);
+        Object newLocale = request.getAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME);
         if (newLocale != null) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
             if (localeResolver == null) {
