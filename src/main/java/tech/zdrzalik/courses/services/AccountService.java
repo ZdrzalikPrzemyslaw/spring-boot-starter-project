@@ -31,7 +31,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerAccount(String email, String password, String firstName, String lastname) throws AccountInfoException {
+    public void registerAccount(String email, String password, String firstName, String lastname){
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAll().stream().filter(account -> Objects.equals(account.getEmail(), email)).toList();
         if (!accounts.isEmpty()) {
@@ -49,11 +49,10 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accessLevels.setAccountInfoId(accountInfo);
         userInfo.setAccountInfoId(accountInfo);
         accountInfoRepository.save(accountInfo);
-
     }
+
     public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
-
     }
 
     @Override

@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import tech.zdrzalik.courses.common.I18nCodes;
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.services.AccountService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Controller()
 @RequestMapping("/admin")
@@ -45,8 +48,10 @@ public class AdminController {
     }
 
     @GetMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getUser(@NotNull(message = ) @Valid @Min(value = 0) @PathVariable String id) {
+    public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id) {
+        AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
+        modelAndView.addObject("user", accountInfoEntity);
         return modelAndView;
     }
 

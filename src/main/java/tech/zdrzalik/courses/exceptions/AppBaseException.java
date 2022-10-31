@@ -1,6 +1,6 @@
 package tech.zdrzalik.courses.exceptions;
 
-public class AppBaseException extends Exception {
+public class AppBaseException extends RuntimeException {
     protected AppBaseException(String message) {
         super(message);
     }
