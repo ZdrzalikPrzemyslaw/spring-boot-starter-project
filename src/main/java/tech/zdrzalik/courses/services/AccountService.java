@@ -33,7 +33,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     public void registerAccount(String email, String password, String firstName, String lastname) throws AccountInfoException {
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
-        List<AccountInfoEntity> accounts = accountInfoRepository.findAll().stream().filter(account -> Objects.equals(account.getEmail(), email)).toList();
+        List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);
         if (!accounts.isEmpty()) {
             throw AccountInfoException.emailAlreadyExists();
         }

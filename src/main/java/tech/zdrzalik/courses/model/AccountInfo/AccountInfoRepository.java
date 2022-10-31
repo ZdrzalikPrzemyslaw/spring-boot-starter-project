@@ -15,5 +15,6 @@ import java.util.List;
 @Repository()
 @Transactional(propagation = Propagation.MANDATORY)
 public interface AccountInfoRepository extends AbstractJpaRepository<AccountInfoEntity>, AccountInfoRepositoryWithEM {
+    List<AccountInfoEntity> findAccountInfoEntitiesByEmail(String email);
 
 }
