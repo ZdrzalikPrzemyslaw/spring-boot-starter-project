@@ -48,6 +48,7 @@ public abstract class AbstractEntity {
 
     @Override
     public boolean equals(Object object) {
+        if (object == null) return false;
         if (object.getClass() != this.getClass()) {
             return false;
         }
