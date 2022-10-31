@@ -32,7 +32,9 @@ public class AccountInfoEntity extends AbstractEntity {
     @Column(name = "email", nullable = false, length = 64)
     private String email;
     @Basic
-    @Column(name = "password", nullable = false, columnDefinition = "bpchar", length = 128)
+    @Column(name = "password", nullable = false,
+//            columnDefinition = "bpchar",
+            length = 128)
     private String password;
     @Basic
     @Column(name = "enabled", nullable = false)
