@@ -22,7 +22,8 @@ pipelines:
   branches:
     master:
       - step:
-          name: deploy to docker registry
+          name: deploy to docker registry2
+          image: atlassian/default-image:3
           script:
             - export IMAGE_NAME=premidel/automatyzacja-repo:$BITBUCKET_COMMIT
             - docker build -t $IMAGE_NAME -f ./docker/Dockerfile .
