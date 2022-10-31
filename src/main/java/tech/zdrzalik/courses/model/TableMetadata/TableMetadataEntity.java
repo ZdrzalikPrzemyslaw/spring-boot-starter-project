@@ -28,8 +28,8 @@ public class TableMetadataEntity {
         return this;
     }
 
-    @ManyToOne(optional = false, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = false, nullable = false)
+    @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = false, nullable = true)
     private AccountInfoEntity modifiedBy;
     @Basic
     @Column(name = "modification_date_time", nullable = true)
@@ -39,14 +39,14 @@ public class TableMetadataEntity {
     private String modifiedByIp;
 
     @Basic
-    @Column(name = "created_by_ip", nullable = true, length = 256)
+    @Column(name = "created_by_ip", nullable = true, updatable = false, length = 256)
     private String createdByIp;
 
     public TableMetadataEntity() {
     }
 
-    @ManyToOne(optional = false, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false, nullable = false)
+    @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false, nullable = true)
     private AccountInfoEntity createdBy;
     @Basic
     @Column(name = "created_date_time", nullable = true)
@@ -56,7 +56,7 @@ public class TableMetadataEntity {
     @Basic
     @Version
     @Column(name = "version", nullable = true)
-    private Long version;
+    private Long version = 0L;
 
     @PrePersist
     protected void onCreate() {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+<div class="md:block">
+    <h1 class="header">
+        Panel administratora</h1>
+    <div class="flex flex-row">
+        <button type="button" class="btn-primary">
+            <a th:text="#{add_user}"
+               th:href="'/'
+            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+            + '/admin/users-list'"
+            ></a>
+        </button>
+        <button type="button" class="btn-primary">
+            <a th:text="#{user_list}"
+               th:href="'/'
+                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+                + '/admin/add-user'"
+            ></a>
+        </button>
+    </div>
+</div>
+
+
+</body>
+</html>
