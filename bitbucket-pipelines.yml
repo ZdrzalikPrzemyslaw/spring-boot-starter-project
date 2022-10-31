@@ -29,6 +29,10 @@ pipelines:
             - docker build -t $IMAGE_NAME -f ./docker/Dockerfile .
             - docker login --username $docker_login --password $docker_password
             - docker push $IMAGE_NAME
+          services:
+            - docker
+          caches:
+            - docker
 
 
 
