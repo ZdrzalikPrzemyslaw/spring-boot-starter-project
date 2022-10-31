@@ -13,16 +13,16 @@
     <div class="flex flex-row">
         <button type="button" class="btn-primary">
             <a th:text="#{add_user}"
-               th:href="'/'
-            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-            + '/admin/users-list'"
+               th:href="@{{context_path}/{locale}/admin/users-list(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
             ></a>
         </button>
         <button type="button" class="btn-primary">
             <a th:text="#{user_list}"
-               th:href="'/'
-                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-                + '/admin/add-user'"
+                th:href="@{{context_path}/{locale}/admin/add-user(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
             ></a>
         </button>
     </div>

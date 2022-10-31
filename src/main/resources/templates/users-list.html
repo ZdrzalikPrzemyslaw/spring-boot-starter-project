@@ -18,9 +18,9 @@
     <div class="flex flex-row">
         <button type="button" class="btn-primary">
             <a th:text="#{return}"
-               th:href="'/'
-            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-            + '/admin'"
+               th:href="@{{context_path}/{locale}/admin(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
             ></a>
         </button>
     </div>
