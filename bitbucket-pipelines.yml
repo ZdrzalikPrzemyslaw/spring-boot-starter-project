@@ -6,7 +6,7 @@ pipelines:
         - step:
             name: Build and Test
             script:
-              - ./mvnw verify --file pom.xml
+              - mvn verify --file pom.xml
             caches:
               - maven
             after-script:
