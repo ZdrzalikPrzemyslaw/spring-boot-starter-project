@@ -1,14 +1,16 @@
 package tech.zdrzalik.courses.controllers.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Controller()
 @RequestMapping("/admin")
@@ -33,8 +35,8 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping(value = "user-info", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getUser() {
+    @GetMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getUser(@NotNull(message = ) @Valid @Min(value = 0) @PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("user-info");
         return modelAndView;
     }
