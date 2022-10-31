@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.PermitAll;
+
 @Controller()
 @RequestMapping("/test")
+@PermitAll
 public class TestController {
 
     @GetMapping(value = "", produces = MediaType.TEXT_PLAIN_VALUE)
