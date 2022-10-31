@@ -8,15 +8,16 @@
 <body>
 
 <div class="md:block">
-    <h1 class="header">Dodaj użytkownika</h1>
+    <h1 class="header" th:text="#{create_user}"></h1>
     <div class="flex flex-row">
-        <button type="button" class="btn-primary">
-            <a th:text="#{return}"
-               th:href="@{{context_path}/{locale}/admin(
+        <a
+           th:href="@{{context_path}/{locale}/admin(
                 locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                 context_path=${#httpServletRequest.getContextPath()})}"
-            ></a>
-        </button>
+        >
+            <button type="button" class="btn-primary" th:text="#{return}"/>
+
+        </a>
     </div>
 </div>
 
