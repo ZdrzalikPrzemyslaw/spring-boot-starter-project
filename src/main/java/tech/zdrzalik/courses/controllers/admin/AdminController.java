@@ -51,7 +51,7 @@ public class AdminController {
     public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id) {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
-        modelAndView.addObject("user", accountInfoEntity);
+        modelAndView.addObject("accountInfoEntity", accountInfoEntity);
         return modelAndView;
     }
 
