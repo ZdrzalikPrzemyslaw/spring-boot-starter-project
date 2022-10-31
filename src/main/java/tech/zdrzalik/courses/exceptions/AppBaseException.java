@@ -8,4 +8,8 @@ public class AppBaseException extends RuntimeException {
     protected AppBaseException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public AppBaseException() {
+
+    }
 }

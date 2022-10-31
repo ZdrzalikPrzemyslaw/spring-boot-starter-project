@@ -14,6 +14,10 @@ public class EntityNotFoundException extends AppBaseException {
         super(message, cause);
     }
 
+    public EntityNotFoundException() {
+        super();
+    }
+
     public String getClassName() {
         return className;
     }
