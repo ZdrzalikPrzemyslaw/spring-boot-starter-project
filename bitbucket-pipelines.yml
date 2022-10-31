@@ -1,0 +1,37 @@
+clone:
+  depth: full    # SonarCloud scanner needs the full history to assign issues properly
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          image: maven:3.8.6-amazoncorretto-17
+          name: Build and Test
+          script:
+            - mvn verify --file pom.xml
+          caches:
+            - maven
+  branches:
+    master:
+      - step:
+          name: deploy to docker registry2
+          image: atlassian/default-image:3
+          script:
+            - export IMAGE_NAME=premidel/automatyzacja-repo:$BITBUCKET_COMMIT
+            - docker build -t $IMAGE_NAME -f ./docker/Dockerfile .
+            - docker login --username $docker_login --password $docker_password
+            - docker push $IMAGE_NAME
+          services:
+            - docker
+          caches:
+            - docker
+      - step:
+            name: sonarqube
+            image: maven:3.8.6-amazoncorretto-17
+            script:
+              - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file pom.xml
+            caches:
+              - maven
+
+
+
+

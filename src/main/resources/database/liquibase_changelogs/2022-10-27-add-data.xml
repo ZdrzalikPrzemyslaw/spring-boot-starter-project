@@ -1,0 +1,103 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="JuliaSzymanska" id="2022-10-27-01" runOnChange="true" context="dev_local">
+        <sql>
+--                     ALTER TABLE oauth_account_info DROP CONSTRAINT IF EXISTS oauth_account_info_table_metadata_id_not_null;
+                    ALTER TABLE oauth_account_info ALTER COLUMN table_metadata_id DROP NOT NULL;
+--                     ALTER TABLE user_info DROP CONSTRAINT IF EXISTS user_info_table_metadata_id_not_null;
+                    ALTER TABLE user_info ALTER COLUMN table_metadata_id DROP NOT NULL;
+--                     ALTER TABLE access_levels DROP CONSTRAINT IF EXISTS access_levels_table_metadata_id_not_null;
+                    ALTER TABLE access_levels ALTER COLUMN table_metadata_id DROP NOT NULL;
+
+                    CREATE OR REPLACE FUNCTION create_tablemetadata(table_name varchar(64))
+                    RETURNS void
+                    AS '
+                    DECLARE row_num integer; '
+                        'account_id BIGINT; '
+                        'table_id BIGINT;
+                    BEGIN
+                        EXECUTE format(&apos;&apos;(select max(id) from %I)&apos;&apos;, table_name) into account_id;
+                        EXECUTE format(&apos;&apos;(select Count(*) from %I)&apos;&apos;, table_name) into row_num;
+                        WHILE row_num > 0 LOOP
+                            SELECT nextval(&apos;&apos;table_metadata_sequence&apos;&apos;) INTO table_id;
+                            INSERT INTO table_metadata (id, version) VALUES (table_id, 0);
+                            EXECUTE format(&apos;&apos;UPDATE %I SET table_metadata_id = $1 WHERE id = $2;&apos;&apos;, table_name) USING table_id, account_id;
+                            EXECUTE format(&apos;&apos;SELECT id from %I where (id  &lt; $1) order by id desc LIMIT 1&apos;&apos;, table_name) into account_id USING account_id;
+                            SELECT row_num - 1 into row_num;
+                        END LOOP;
+                        RETURN;
+                    END;
+                 '
+                 LANGUAGE plpgsql;
+
+                do '
+                -- ADMIN
+                DECLARE account_info_sequence_value BIGINT;
+                DECLARE user_info_sequence_value BIGINT;
+                DECLARE access_levels_sequence_value BIGINT;
+                BEGIN
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@adminowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;Admin&apos;&apos;, &apos;&apos;Adminowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;admin&apos;&apos;, true);
+
+                    -- USER
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;user@userowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;User&apos;&apos;, &apos;&apos;Userowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;user&apos;&apos;, true);
+
+                    -- ADMIN I USER
+                    SELECT nextval(&apos;&apos;account_info_sequence&apos;&apos;) INTO account_info_sequence_value;
+
+                    INSERT INTO account_info(id, email, password, enabled, confirmed)
+                    VALUES (account_info_sequence_value, &apos;&apos;admin@userowy.com&apos;&apos;, &apos;&apos;$2a$10$SEESepEvPHlr0NoY7/.baOC.vvnXcJ3Pe6eY86PlzEVrqi3.CvYQC&apos;&apos;, true, true);
+
+                    SELECT nextval(&apos;&apos;user_info_sequence&apos;&apos;) INTO user_info_sequence_value;
+
+                    INSERT INTO user_info(id, account_info_id, first_name, last_name)
+                    VALUES (user_info_sequence_value, account_info_sequence_value, &apos;&apos;Admin&apos;&apos;, &apos;&apos;Userowy&apos;&apos;);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;admin&apos;&apos;, true);
+
+                    SELECT nextval(&apos;&apos;access_levels_sequence&apos;&apos;) INTO access_levels_sequence_value;
+
+                    INSERT INTO access_levels(id, account_info_id, level, enabled)
+                    VALUES (access_levels_sequence_value, account_info_sequence_value, &apos;&apos;user&apos;&apos;, true);
+                END
+                '
+        </sql>
+        <sql>
+            SELECT create_tablemetadata('account_info');
+            SELECT create_tablemetadata('user_info');
+            SELECT create_tablemetadata('access_levels');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
