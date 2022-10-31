@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body class="background">
 
 <div class="md:block">
     <h1 class="header">Lista użytkowników</h1>
+    <table>
+        <thead>
+        <tr>
+        </tr>
+        </thead>
+    </table>
     <div class="flex flex-row">
-        <button th:onclick="|window.location.href='/admin'|" type="button"
-                class="btn-primary">
-            Powrót
+        <button type="button" class="btn-primary">
+            <a th:text="#{return}"
+               th:href="'/'
+            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+            + '/admin'"
+            ></a>
         </button>
     </div>
 </div>

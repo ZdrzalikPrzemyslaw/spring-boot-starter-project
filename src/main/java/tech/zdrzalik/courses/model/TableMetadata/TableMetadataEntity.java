@@ -39,7 +39,7 @@ public class TableMetadataEntity {
     private String modifiedByIp;
 
     @Basic
-    @Column(name = "created_by_ip", nullable = true, length = 256)
+    @Column(name = "created_by_ip", nullable = true, updatable = false, length = 256)
     private String createdByIp;
 
     public TableMetadataEntity() {

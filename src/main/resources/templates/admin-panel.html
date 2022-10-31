@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="http://localhost:35729/livereload.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
@@ -12,13 +11,19 @@
     <h1 class="header">
         Panel administratora</h1>
     <div class="flex flex-row">
-        <button th:onclick="|window.location.href='/admin/users-list'|" type="button"
-                class="btn-primary">
-            Lista użytkowników
+        <button type="button" class="btn-primary">
+            <a th:text="#{add_user}"
+               th:href="'/'
+            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+            + '/admin/users-list'"
+            ></a>
         </button>
-        <button th:onclick="|window.location.href='/admin/add-user'|" type="button"
-                class="btn-primary">
-            Dodaj użytkownika
+        <button type="button" class="btn-primary">
+            <a th:text="#{user_list}"
+               th:href="'/'
+                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+                + '/admin/add-user'"
+            ></a>
         </button>
     </div>
 </div>

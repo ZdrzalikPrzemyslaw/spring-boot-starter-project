@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,9 +10,12 @@
 <div class="md:block">
     <h1 class="header">Dodaj użytkownika</h1>
     <div class="flex flex-row">
-        <button th:onclick="|window.location.href='/admin'|" type="button"
-                class="btn-primary">
-            Powrót
+        <button type="button" class="btn-primary">
+            <a th:text="#{return}"
+               th:href="'/'
+            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
+            + '/admin'"
+            ></a>
         </button>
     </div>
 </div>

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.DTO.Response.MessageResponseDTO;
-import tech.zdrzalik.courses.common.Codes;
+import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.services.AccountService;
 
@@ -29,6 +29,6 @@ public class AccountController {
     @PermitAll
     public ResponseEntity<?> RegisterAccount(@RequestBody RegisterAccountDTO dto) throws AccountInfoException {
         accountService.registerAccount(dto);
-        return ResponseEntity.ok().body(new MessageResponseDTO().setMessage(Codes.ACCOUNT_CREATED_SUCCESSFULLY));
+        return ResponseEntity.ok().body(new MessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));
     }
 }
