@@ -1,12 +1,13 @@
 pipelines:
-  default:
-    - step:
-        image: maven:3.8.6-amazoncorretto-17
-        name: Build and Test
-        script:
-          - mvn verify --file pom.xml
-        caches:
-          - maven
+  pull-requests:
+    '**':
+      - step:
+          image: maven:3.8.6-amazoncorretto-17
+          name: Build and Test
+          script:
+            - mvn verify --file pom.xml
+          caches:
+            - maven
   branches:
     master:
       - step:
