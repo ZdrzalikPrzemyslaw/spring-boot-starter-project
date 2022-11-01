@@ -8,23 +8,20 @@
 <body>
 
 <div class="md:block">
-    <h1 class="header">
-        Panel administratora</h1>
+    <h1 class="header" th:text="#{admin_panel}"></h1>
     <div class="flex flex-row">
-        <button type="button" class="btn-primary">
-            <a th:text="#{add_user}"
-               th:href="'/'
-            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-            + '/admin/users-list'"
-            ></a>
-        </button>
-        <button type="button" class="btn-primary">
-            <a th:text="#{user_list}"
-               th:href="'/'
-                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-                + '/admin/add-user'"
-            ></a>
-        </button>
+        <a th:href="@{{context_path}/{locale}/admin/add-user(
+        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+        context_path=${#httpServletRequest.getContextPath()})}"
+        >
+            <button type="button" class="btn-primary" th:text="#{create_user}"/>
+        </a>
+        <a th:href="@{{context_path}/{locale}/admin/users-list(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
+        >
+            <button type="button" class="btn-primary" th:text="#{user_list}"/>
+        </a>
     </div>
 </div>
 

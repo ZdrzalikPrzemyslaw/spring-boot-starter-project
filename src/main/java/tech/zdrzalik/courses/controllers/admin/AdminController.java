@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import tech.zdrzalik.courses.services.AccountService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +22,6 @@ import java.util.Optional;
 public class AdminController {
 
     private final AccountService accountService;
-
     public AdminController(AccountService accountService) {
         this.accountService = accountService;
     }

@@ -8,7 +8,7 @@
 <body class="background">
 
 <div class="md:block">
-    <h1 class="header">Lista użytkowników</h1>
+    <h1 class="header" th:text="#{user_list}"></h1>
     <table>
         <thead>
         <tr>
@@ -16,13 +16,12 @@
         </thead>
     </table>
     <div class="flex flex-row">
-        <button type="button" class="btn-primary">
-            <a th:text="#{return}"
-               th:href="'/'
-            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-            + '/admin'"
-            ></a>
-        </button>
+        <a th:href="@{{context_path}/{locale}/admin(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
+        >
+            <button type="button" class="btn-primary" th:text="#{return}"/>
+        </a>
     </div>
 </div>
 
