@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+<div class="md:block">
+    <div>
+        <div th:text="'The resource you are trying to access is unavaiable at the current date.'">
+        </div>
+
+        <div th:if="${#httpServletRequest.getHeader('Referer')}">
+            <a th:href="${#httpServletRequest.getHeader('Referer')}">
+                <button type="button" class="btn-primary" th:text="#{'Go back to the previous site'}"/>
+            </a>
+        </div>
+
+        <div class="flex flex-row">
+            <a th:href="@{{context_path}/{locale}/admin(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
+            >
+                <button type="button" class="btn-primary" th:text="#{'Go back to the home admin page'}"/>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
