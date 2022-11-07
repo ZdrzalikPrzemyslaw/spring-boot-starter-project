@@ -59,6 +59,7 @@ public class I18nCodes {
     public static final String FIRST_NAME_INVALID_SIZE = "first_name_invalid_size";
 
     public static final String LAST_NAME_NULL = "last_name_null";
+    public static final String ENABLED_NULL = "enabled_null";
     public static final String LAST_NAME_INVALID_SIZE = "last_name_invalid_size";
 
     public static final String PHONE_NUMBER_INVALID_SIZE = "phone_number_invalid_size";

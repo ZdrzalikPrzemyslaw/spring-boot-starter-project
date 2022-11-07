@@ -1,12 +1,10 @@
 package tech.zdrzalik.courses.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
@@ -53,6 +51,20 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
+    }
+
+    public void editAccount(Long id, String email, Boolean enabled, String firstName, String lastname){
+        AccountInfoEntity accountInfoEntity = this.findById(id);
+        if (!Objects.equals(email, accountInfoEntity.getEmail())
+                && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
+            throw AccountInfoException.emailAlreadyExists();
+        }
+        accountInfoEntity.setEmail(email).setEnabled(enabled).getUserInfoEntity().setFirstName(firstName).setLastName(lastname);
+        accountInfoRepository.save(accountInfoEntity);
+    }
+
+    public void editAccount(Long id, EditUserInfoDTO dto) throws AccountInfoException {
+        editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
     @Override
