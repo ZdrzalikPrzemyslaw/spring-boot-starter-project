@@ -24,13 +24,6 @@ pipelines:
             - docker
           caches:
             - docker
-      - step:
-            name: sonarqube
-            image: maven:3.8.6-amazoncorretto-17
-            script:
-              - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file pom.xml
-            caches:
-              - maven
 
 
 
