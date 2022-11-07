@@ -1,5 +1,6 @@
 package tech.zdrzalik.courses.DTO.Request;
 
+import org.hibernate.validator.constraints.Length;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
@@ -8,18 +9,16 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class EditUserInfoDTO {
-    @Min(value = 0, message = I18nCodes.EMAIL_INVALID_SIZE)
-    @Max(value = 64, message = I18nCodes.EMAIL_INVALID_SIZE)
+    @Length(min = 0, max = 64, message = I18nCodes.EMAIL_INVALID_SIZE)
     @NotNull(message = I18nCodes.EMAIL_NULL)
     private String email;
     @NotNull(message = I18nCodes.ENABLED_NULL)
     private Boolean enabled;
-    @Min(value = 0, message = I18nCodes.FIRST_NAME_INVALID_SIZE)
-    @Max(value = 64, message = I18nCodes.FIRST_NAME_INVALID_SIZE)
+
+    @Length(min = 0, max = 64, message = I18nCodes.FIRST_NAME_INVALID_SIZE)
     @NotNull(message = I18nCodes.FIRST_NAME_INVALID_SIZE)
     private String firstName;
-    @Min(value = 0, message = I18nCodes.LAST_NAME_INVALID_SIZE)
-    @Max(value = 64, message = I18nCodes.LAST_NAME_INVALID_SIZE)
+    @Length(min = 0, max = 64, message = I18nCodes.LAST_NAME_INVALID_SIZE)
     @NotNull(message = I18nCodes.LAST_NAME_NULL)
     private String lastName;
 

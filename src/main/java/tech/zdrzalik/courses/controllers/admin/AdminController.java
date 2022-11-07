@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.context.IExpressionContext;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
@@ -64,10 +66,11 @@ public class AdminController {
 
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView editUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id,
-                                 @Valid @NotNull EditUserInfoDTO dto,
-                                 BindingResult result,
-                                 Model model) {
+                                 @ModelAttribute("DTO") @Valid @NotNull EditUserInfoDTO dto,
+                                 BindingResult result) {
         ModelAndView modelAndView = this.getUser(id);
+        modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
+        // TODO: 08/11/2022 Wykorzystac result
         if (result.hasErrors()) {
 //            modelAndView.addAllObjects(result.getAllErrors().);
             return modelAndView;
