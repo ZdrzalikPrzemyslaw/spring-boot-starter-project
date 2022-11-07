@@ -1,6 +1,7 @@
 package tech.zdrzalik.courses.DTO.Request;
 
 import tech.zdrzalik.courses.common.I18nCodes;
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,6 +26,13 @@ public class EditUserInfoDTO {
     public EditUserInfoDTO() {
     }
 
+    public EditUserInfoDTO(AccountInfoEntity accountInfoEntity) {
+        lastName = accountInfoEntity.getUserInfoEntity().getLastName();
+        firstName = accountInfoEntity.getUserInfoEntity().getFirstName();
+        enabled = accountInfoEntity.isEnabled();
+        email = accountInfoEntity.getEmail();
+    }
+
     public String getEmail() {
         return email;
     }
@@ -34,13 +42,13 @@ public class EditUserInfoDTO {
         return this;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
     public EditUserInfoDTO setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
     }
 
     public String getFirstName() {

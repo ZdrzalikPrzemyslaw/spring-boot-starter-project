@@ -57,6 +57,7 @@ public class AdminController {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
+        modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity));
         return modelAndView;
     }
 
@@ -65,17 +66,21 @@ public class AdminController {
                                  @Valid @NotNull EditUserInfoDTO dto,
                                  BindingResult result,
                                  Model model) {
-        var modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("user-info");
+//        if (result.hasErrors()) {
+////            return  "errors/addUser";
+//            modelAndView.
+//        }
         try {
             accountService.editAccount(id, dto);
         } catch (AccountInfoException e) {
 //            modelAndView.addObject();
         }
+        AccountInfoEntity accountInfoEntity = accountService.findById(id);
+        modelAndView.addObject("accountInfoEntity", accountInfoEntity);
+        modelAndView.addObject("DTO", dto);
+        modelAndView.addObject("showSuccess", true);
         return modelAndView;
-
-        //        ModelAndView modelAndView = new ModelAndView("user-info");
-//        modelAndView.addObject("accountInfoEntity", accountInfoEntity);
-//        return modelAndView;
     }
 
 }

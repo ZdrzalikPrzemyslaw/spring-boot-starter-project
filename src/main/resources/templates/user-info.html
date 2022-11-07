@@ -6,10 +6,10 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $("#edit-button").click(function(){
-                $("input.editable-input").prop( "disabled", false );
-                $("select.editable-input").prop( "disabled", false );
+        $(document).ready(function () {
+            $("#edit-button").click(function () {
+                $("input.editable-input").prop("disabled", false);
+                $("select.editable-input").prop("disabled", false);
             });
         });
     </script>
@@ -20,57 +20,52 @@
     <div class="mt-8 mb-12 grid place-items-center">
         <h2 class="mt-8 mb-12 text-3xl font-extrabold tracking-tight leading-none text-gray-900 text-3xl dark:text-white uppercase"
             th:text="#{user_info}"></h2>
-        <form class="w-full max-w-3xl" action="#">
+        <form action="#" class="w-full max-w-3xl"
+              method="post" th:action="@{/admin/user-info/{id}(id = ${accountInfoEntity.getId()})}"
+              th:object="${DTO}">
             <div class="flex flex-wrap -mx-3 mb-4">
                 <div class="w-full w-1/2 px-3 mb-0">
                     <label class="inputLabel"
                            for="grid-first-name" th:text="#{first_name}"/>
-                    <input class="input editable-input"
-                           id="grid-first-name" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getUserInfoEntity().getFirstName()}">
-<!--                    <p  th:if="${!#fields.hasErrors('firstName')}" th:errorclass="error">-->
-<!--                        Invalid Age</p>-->
+                    <input class="input editable-input" disabled="disabled"
+                           id="grid-first-name" th:field="*{firstName}" type="text">
                 </div>
                 <div class="w-full w-1/2 px-3">
                     <label class="inputLabel"
                            for="grid-last-name" th:text="#{last_name}"/>
-                    <input class="input editable-input"
-                           id="grid-last-name" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getUserInfoEntity().getLastName()}">
+                    <input class="input editable-input" disabled="disabled"
+                           id="grid-last-name" th:field="*{lastName}" type="text">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-4 px-3">
-                    <label class="inputLabel"
-                           for="grid-password" th:text="#{email}"/>
-                    <input class="input editable-input"
-                           id="grid-password" type="email" disabled="disabled"
-                           th:value="${accountInfoEntity.getEmail()}">
-                    <!--<p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>-->
+                <label class="inputLabel"
+                       for="grid-password" th:text="#{email}"/>
+                <input class="input editable-input" disabled="disabled"
+                       id="grid-password" th:field="*{email}" type="email">
             </div>
             <div class="flex flex-wrap -mx-3 mb-4">
                 <div class="w-full w-1/2 px-3 mb-0">
                     <label class="inputLabel" for="grid-first-name" th:text="#{enabled}"/>
                     <div class="relative">
-                        <select disabled="disabled" class="editable-input block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                            <option th:selected="${accountInfoEntity.isEnabled()}" th:text="#{true}"/>
-                            <option th:selected="${accountInfoEntity.isEnabled()}" th:text="#{false}"/>
+                        <select class="editable-input block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                disabled="disabled"
+                                id="grid-enabled"
+                                th:field="*{enabled}">
+                            <option th:selected="${accountInfoEntity.isEnabled()}" th:text="#{true}" th:value="true"/>
+                            <option th:selected="${accountInfoEntity.isEnabled()}" th:text="#{false}" th:value="false"/>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            <svg class="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
                 <div class="w-full w-1/2 px-3 mb-0">
                     <label class="inputLabel" for="grid-first-name" th:text="#{confirmed}"/>
-                    <div class="relative">
-                        <select disabled="disabled" class="editable-input block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                            <option th:selected="${accountInfoEntity.isConfirmed()}" th:text="#{true}"/>
-                            <option th:selected="${!accountInfoEntity.isConfirmed()}" th:text="#{false}"/>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                        </div>
-                    </div>
+                    <input class="input"
+                           disabled="disabled" id="grid-confirmed" th:value="#{${accountInfoEntity.isConfirmed()}}"
+                           type="text">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-4">
@@ -78,16 +73,16 @@
                     <label class="inputLabel"
                            for="grid-first-name" th:text="#{last_login}"/>
                     <input class="input"
-                           id="grid-last_login" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastLogin()}">
+                           disabled="disabled" id="grid-last_login" th:value="${accountInfoEntity.getLastLogin()}"
+                           type="text">
                     <!--<p class="text-red-500 text-xs italic">Please fill out this field.</p>-->
                 </div>
                 <div class="w-full w-1/2 px-3">
                     <label class="inputLabel"
                            for="grid-last-name" th:text="#{last_login_ip}"/>
                     <input class="input"
-                           id="grid-last_login_ip" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastLoginIp()}">
+                           disabled="disabled" id="grid-last_login_ip" th:value="${accountInfoEntity.getLastLoginIp()}"
+                           type="text">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-4">
@@ -95,16 +90,17 @@
                     <label class="inputLabel"
                            for="grid-first-name" th:text="#{last_fail_login}"/>
                     <input class="input"
-                           id="grid-last_fail_login" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastFailLogin()}">
-                    <!--<p class="text-red-500 text-xs italic">Please fill out this field.</p>-->
+                           disabled="disabled" id="grid-last_fail_login"
+                           th:value="${accountInfoEntity.getLastFailLogin()}"
+                           type="text">
                 </div>
                 <div class="w-full w-1/2 px-3">
                     <label class="inputLabel"
                            for="grid-last-name" th:text="#{last_fail_login_ip}"/>
                     <input class="input"
-                           id="grid-last_fail_login_ip" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastFailLoginIp()}">
+                           disabled="disabled" id="grid-last_fail_login_ip"
+                           th:value="${accountInfoEntity.getLastFailLoginIp()}"
+                           type="text">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-4">
@@ -112,24 +108,29 @@
                     <label class="inputLabel"
                            for="grid-first-name" th:text="#{last_password_change}"/>
                     <input class="input"
-                           id="grid-last_password_change" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastPasswordChange()}">
-                    <!--<p class="text-red-500 text-xs italic">Please fill out this field.</p>-->
+                           disabled="disabled" id="grid-last_password_change"
+                           th:value="${accountInfoEntity.getLastPasswordChange()}"
+                           type="text">
                 </div>
                 <div class="w-full w-1/2 px-3">
                     <label class="inputLabel"
                            for="grid-last-name" th:text="#{last_password_change_ip}"/>
                     <input class="input"
-                           id="grid-last_password_change_ip" type="text" disabled="disabled"
-                           th:value="${accountInfoEntity.getLastPasswordChangeIp()}">
+                           disabled="disabled" id="grid-last_password_change_ip"
+                           th:value="${accountInfoEntity.getLastPasswordChangeIp()}"
+                           type="text">
                 </div>
             </div>
+            <div class="flex flex-row mb-5">
+                <p class="text-base text-green-700 dark:text-white" th:if="${showSuccess != null}"
+                   th:text="#{successfully_edited_user_info}"/>
+            </div>
             <div class="flex flex-row">
-                <button type="submit" id="submit" class="btn-primary" th:text="#{save}"/>
+                <input class="btn-primary editable-input" disabled="disabled" id="submit" type="submit"/>
             </div>
         </form>
         <div class="flex flex-row mb-10">
-            <button type="button" id="edit-button" class="btn-primary" th:text="#{edit}"/>
+            <button class="btn-primary" id="edit-button" th:text="#{edit}" type="button"/>
         </div>
     </div>
 </div>
