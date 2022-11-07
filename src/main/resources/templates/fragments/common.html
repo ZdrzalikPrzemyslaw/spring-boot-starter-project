@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+<div th:fragment="header" class="flex flex-row">
+    <a
+            th:replace="fragments/link.html::admin-link(~{::button})"
+    >
+        <button type="button" class="btn-primary" th:text="#{return}"/>
+
+    </a>
+</div>
+
+<div th:fragment="footer" class="mt-auto w-full h-16 grid place-items-center">
+    <p th:text="#{copyright}" class="inline-block dark:text-white"></p>
+</div>
+
+
+</body>
+</html>
