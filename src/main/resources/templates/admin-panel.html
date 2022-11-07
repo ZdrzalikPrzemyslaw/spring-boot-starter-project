@@ -5,24 +5,32 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body class="background">
 
-<div class="md:block">
-    <h1 class="header" th:text="#{admin_panel}"></h1>
-    <div class="flex flex-row">
-        <a th:href="@{{context_path}/{locale}/admin/add-user(
+<div th:replace="fragments/common.html::header"></div>
+
+<div class="grid place-items-center">
+    <div class="md:block">
+        <h1 class="header" th:text="#{admin_panel}"></h1>
+        <div class="flex flex-row">
+            <a th:href="@{{context_path}/{locale}/admin/add-user(
         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
         context_path=${#httpServletRequest.getContextPath()})}"
-        >
-            <button type="button" class="btn-primary" th:text="#{create_user}"/>
-        </a>
-        <a th:href="@{{context_path}/{locale}/admin/users-list(
+            >
+                <button type="button" class="btn-primary" th:text="#{create_user}"/>
+            </a>
+            <a th:href="@{{context_path}/{locale}/admin/users-list(
                 locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                 context_path=${#httpServletRequest.getContextPath()})}"
-        >
-            <button type="button" class="btn-primary" th:text="#{user_list}"/>
-        </a>
+            >
+                <button type="button" class="btn-primary" th:text="#{user_list}"/>
+            </a>
+        </div>
     </div>
+</div>
+
+<div th:replace="fragments/common.html::footer">
+
 </div>
 
 
