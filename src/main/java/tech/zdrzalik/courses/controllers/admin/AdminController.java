@@ -68,10 +68,11 @@ public class AdminController {
     public ModelAndView editUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id,
                                  @ModelAttribute("DTO") @Valid @NotNull EditUserInfoDTO dto,
                                  BindingResult result) {
-        ModelAndView modelAndView = this.getUser(id);
-        modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-        // TODO: 08/11/2022 Wykorzystac result
+        ModelAndView modelAndView;
         if (result.hasErrors()) {
+            modelAndView = this.getUser(id);
+            modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
+            // TODO: 08/11/2022 Wykorzystac result
 //            modelAndView.addAllObjects(result.getAllErrors().);
             return modelAndView;
         }
@@ -80,9 +81,7 @@ public class AdminController {
         } catch (AccountInfoException e) {
 //            modelAndView.addObject();
         }
-        AccountInfoEntity accountInfoEntity = accountService.findById(id);
-        modelAndView.addObject("accountInfoEntity", accountInfoEntity);
-        modelAndView.addObject("DTO", dto);
+        modelAndView = this.getUser(id);
         modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
