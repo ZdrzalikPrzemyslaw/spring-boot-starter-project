@@ -128,6 +128,12 @@
             <div class="flex flex-row">
                 <input class="btn-primary editable-input" disabled="disabled" id="submit" type="submit"/>
             </div>
+            <div th:if="${#fields.hasAnyErrors()}">
+                <ul>
+                    <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                </ul>
+                <p>weowiepowi</p>
+            </div>
         </form>
         <div class="flex flex-row mb-10">
             <button class="btn-primary" id="edit-button" th:text="#{edit}" type="button"/>

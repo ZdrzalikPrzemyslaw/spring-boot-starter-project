@@ -5,6 +5,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,11 +67,11 @@ public class AdminController {
                                  @Valid @NotNull EditUserInfoDTO dto,
                                  BindingResult result,
                                  Model model) {
-        ModelAndView modelAndView = new ModelAndView("user-info");
-//        if (result.hasErrors()) {
-////            return  "errors/addUser";
-//            modelAndView.
-//        }
+        ModelAndView modelAndView = this.getUser(id);
+        if (result.hasErrors()) {
+//            modelAndView.addAllObjects(result.getAllErrors().);
+            return modelAndView;
+        }
         try {
             accountService.editAccount(id, dto);
         } catch (AccountInfoException e) {
