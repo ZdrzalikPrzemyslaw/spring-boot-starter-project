@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository()
 @Transactional(propagation = Propagation.MANDATORY)
 public interface AccountInfoRepository extends AbstractJpaRepository<AccountInfoEntity>, AccountInfoRepositoryWithEM {
     List<AccountInfoEntity> findAccountInfoEntitiesByEmail(String email);
+    AccountInfoEntity findAccountInfoEntityByEmail(String email);
 
 }

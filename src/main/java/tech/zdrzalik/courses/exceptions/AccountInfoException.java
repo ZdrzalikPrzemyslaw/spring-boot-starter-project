@@ -12,4 +12,6 @@ public class AccountInfoException extends AppBaseException{
     }
 
     public static AccountInfoException emailAlreadyExists(){return new AccountInfoException(I18nCodes.EMAIL_EXIST); }
+
+    public static AccountInfoException accountNotFound(){return new AccountInfoException(I18nCodes.ACCOUNT_NOT_FOUND);}
 }

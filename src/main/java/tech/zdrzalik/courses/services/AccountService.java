@@ -1,12 +1,16 @@
 package tech.zdrzalik.courses.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
@@ -25,6 +29,8 @@ import java.util.Objects;
 public class AccountService extends AbstractService<AccountInfoEntity> {
     private final AccountInfoRepository accountInfoRepository;
     private final PasswordEncoder passwordEncoder;
+
+//    private final AuthenticationManager authenticationManager;
 
     public AccountService(AccountInfoRepository accountInfoRepository, PasswordEncoder passwordEncoder) {
         this.accountInfoRepository = accountInfoRepository;
@@ -53,6 +59,13 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     }
     public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
+
+    }
+
+    public void login(LoginRequestDTO dto){
+        String email = dto.getEmail();
+        String password = dto.getPassword();
+//        Authentication authentication = authenticationManag
 
     }
 

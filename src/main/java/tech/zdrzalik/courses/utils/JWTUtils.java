@@ -25,7 +25,7 @@ public class JWTUtils {
     }
 
     public Boolean validateAuthenticationToken(String token){
-
+        return false;
     }
 
 }
