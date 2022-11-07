@@ -5,21 +5,20 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body class="background">
+
+<div th:replace="fragments/common.html::header"></div>
 
 <div class="md:block">
     <h1 class="header" th:text="#{create_user}"></h1>
     <div class="flex flex-row">
-        <a
-           th:href="@{{context_path}/{locale}/admin(
-                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                context_path=${#httpServletRequest.getContextPath()})}"
-        >
+        <a th:replace="fragments/link.html::admin-link(~{::button})">
             <button type="button" class="btn-primary" th:text="#{return}"/>
-
         </a>
     </div>
 </div>
+
+<div th:replace="fragments/common.html::footer"> </div>
 
 </body>
 </html>
