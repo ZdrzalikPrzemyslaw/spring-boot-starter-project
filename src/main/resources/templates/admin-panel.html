@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<div th:replace="fragments/common.html::header"></div>
+
 <div class="md:block">
     <h1 class="header" th:text="#{admin_panel}"></h1>
     <div class="flex flex-row">
@@ -23,6 +25,10 @@
             <button type="button" class="btn-primary" th:text="#{user_list}"/>
         </a>
     </div>
+</div>
+
+<div th:replace="fragments/common.html::footer">
+
 </div>
 
 
