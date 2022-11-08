@@ -7,17 +7,18 @@
 </head>
 <body>
 
-<div th:fragment="header" class="flex flex-row">
-    <a
-            th:replace="fragments/link.html::admin-link(~{::button})"
-    >
-        <button type="button" class="btn-primary" th:text="#{return}"/>
-
+<div class="flex flex-row" th:fragment="header">
+    <div class="w-full m-1">
+    <a th:replace="fragments/link.html::admin-link(~{::button})">
+        <button class="btn-primary" th:text="#{return}" type="button"/>
     </a>
+    </div>
 </div>
-
-<div th:fragment="footer" class="mt-auto w-full h-16 grid place-items-center">
-    <p th:text="#{copyright}" class="inline-block dark:text-white"></p>
+s
+<div class="mt-auto w-full h-16 grid place-items-center" th:fragment="footer">
+    <div class="w-11/12 border-t grid place-items-center">
+        <p class="inline-block dark:text-white mt-5 mb-5" th:text="#{copyright}"></p>
+    </div>
 </div>
 
 

@@ -4,19 +4,35 @@
 
 @layer components {
     .btn-primary {
-        @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mx-7 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800;
+        @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800;
     }
+
     .header {
-        @apply mx-7 mt-8 mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white;
+        @apply mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 text-5xl dark:text-gray-200;
     }
 
     .background {
         @apply min-h-screen w-full bg-gray-50 dark:bg-gray-800;
     }
 
+    .input {
+        @apply appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white dark:bg-gray-300 dark:focus:bg-gray-200 focus:border-gray-500 disabled:opacity-60;
+    }
+
+    .inputLabel {
+        @apply block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2;
+    }
+
     body {
         @apply min-h-screen flex flex-col;
     }
 
-}
+    .form-error {
+        @apply text-red-700 dark:text-orange-500 text-sm;
+    }
 
+    .form-success {
+        @apply text-base text-green-700 dark:text-green-400;
+    }
+
+}
