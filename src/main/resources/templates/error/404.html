@@ -5,29 +5,20 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body class="background">
 
-<div class="md:block">
-    <div>
-        <div th:text="'The resource you are trying to access is unavaiable at the current date.'">
-        </div>
+<div th:replace="fragments/common.html::header"></div>
 
-        <div th:if="${#httpServletRequest.getHeader('Referer')}">
-            <a th:href="${#httpServletRequest.getHeader('Referer')}">
-                <button type="button" class="btn-primary" th:text="#{'Go back to the previous site'}"/>
-            </a>
-        </div>
 
-        <div class="flex flex-row">
-            <a th:href="@{{context_path}/{locale}/admin(
-                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                context_path=${#httpServletRequest.getContextPath()})}"
-            >
-                <button type="button" class="btn-primary" th:text="#{'Go back to the home admin page'}"/>
-            </a>
-        </div>
-    </div>
+<div th:replace="fragments/error.html::error-page(~{::#error_message})">
+    <p id="error_message"
+       class="mb-3 basis-full text-center
+                text-gray-700 dark:text-gray-200 break-normal font-bold leading-none text-2xl"
+       th:text="#{error_404_text}">
+    </p>
 </div>
+
+<div th:replace="fragments/common.html::footer"> </div>
 
 </body>
 </html>
