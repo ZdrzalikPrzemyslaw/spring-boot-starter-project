@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "account_info", schema = "public", uniqueConstraints = {
@@ -228,6 +229,10 @@ public class AccountInfoEntity extends AbstractEntity {
 
     public List<AccessLevelsEntity> getAccessLevels() {
         return accessLevels;
+    }
+
+    public String getAccessLevelsAsString(){
+        return accessLevels.stream().map(AccessLevelsEntity::getLevel).toList().toString();
     }
 
     public UserInfoEntity getUserInfoEntity() {

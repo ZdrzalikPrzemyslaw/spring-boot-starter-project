@@ -10,23 +10,65 @@
 
 <div th:replace="fragments/common.html::header"></div>
 
+<div class="grid-center">
+    <div>
+        <table th:if="${not#lists.isEmpty(users)}">
+            <thead>
+            <tr>
+                <th>
+                    <p th:text="'ID'"></p>
+                </th>
+                <th>
+                    <p th:text="'Email'"></p>
+                </th>
+                <th>
+                    <p th:text="'Name'"></p>
+                </th>
+                <th>
+                    <p th:text="'Access Level'"></p>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td class="table-col" th:text="${user.id}"></td>
+                <td class="table-col" th:text="${user.email}"></td>
+                <td class="table-col" th:text="${user.userInfoEntity.firstName} + ' ' + ${user.userInfoEntity.lastName}"></td>
+                <td class="table-col" th:text="${user.getAccessLevelsAsString()}"></td>
 
-<div class="md:block">
-    <h1 class="header" th:text="#{user_list}"></h1>
-    <table>
-        <thead>
-        <tr>
-        </tr>
-        </thead>
-    </table>
-    <div class="flex flex-row">
-       <a th:replace="fragments/link.html::admin-link(~{::button})">
-            <button type="button" class="btn-primary" th:text="#{return}"/>
-        </a>
+                <td class="table-col">
+                    <a th:href="@{{context_path}/{locale}/admin/user-info/{id}(
+                                    locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                    context_path=${#httpServletRequest.getContextPath()},
+                                    id=${user.id})}">
+                        <button type="button" class="btn-primary" th:text="#{details}"/>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+
+            <a th:if="${users.hasPrevious()}"
+               th:href="@{{context_path}/{locale}/admin/users-list(
+                                        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                        context_path=${#httpServletRequest.getContextPath()},
+                                        page=${users.previousPageable().getPageNumber()})}">
+                <button type="button" class="btn-primary float-left min-w-[100px] max-w-[45%]" th:text="'previous'"/>
+            </a>
+
+            <a th:if="${users.hasNext()}"
+               th:href="@{{context_path}/{locale}/admin/users-list(
+                                        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                        context_path=${#httpServletRequest.getContextPath()},
+                                        page=${users.nextPageable().getPageNumber()})}">
+                <button type="button" class="btn-primary float-right min-w-[100px] max-w-[45%]" th:text="'next'"/>
+            </a>
+        </div>
     </div>
 </div>
 
-<div th:replace="fragments/common.html::footer"> </div>
+<div th:replace="fragments/common.html::footer"></div>
 
 </body>
 </html>

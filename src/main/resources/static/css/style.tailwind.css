@@ -51,4 +51,8 @@
         @apply mb-3 basis-full text-center text-gray-700 dark:text-gray-200 break-normal font-bold leading-none text-2xl;
     }
 
+    .table-col {
+        @apply max-w-[200px] break-all;
+    }
+
 }

@@ -65,6 +65,8 @@ public class AccessLevelsEntity extends AbstractEntity {
         return this;
     }
 
+
+
     public boolean isEnabled() {
         return enabled;
     }

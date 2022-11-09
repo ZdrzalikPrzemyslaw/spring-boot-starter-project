@@ -45,7 +45,7 @@ public class AdminController {
     public ModelAndView getUsersList(@PageableDefault(sort = "id") Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("users-list");
         var page = accountService.findAll(pageable);
-        modelAndView.addObject("page", page);
+        modelAndView.addObject("users", page);
         return modelAndView;
     }
 
