@@ -3,6 +3,7 @@ package tech.zdrzalik.courses.common;
 public class I18nCodes {
     public static final String EMAIL_EXIST = "email_exist";
     public static final String LOCALE_ATTRIBUTE_NAME = "locale_internal";
+    public static final String AUTHENTICATION_SUCCESS = "authentication_successful";
 
     //Skopiowane z SSBD hehe
     public static final String USER = "user";

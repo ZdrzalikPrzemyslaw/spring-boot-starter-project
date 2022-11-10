@@ -21,9 +21,6 @@ public class CoursesApplication extends SpringBootServletInitializer {
 		return application.sources(CoursesApplication.class);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+
 
 }

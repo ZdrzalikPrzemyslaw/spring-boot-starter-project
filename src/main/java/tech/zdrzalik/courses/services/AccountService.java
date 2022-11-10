@@ -1,10 +1,10 @@
 package tech.zdrzalik.courses.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,11 @@ import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
 import tech.zdrzalik.courses.model.TableMetadata.TableMetadataEntity;
 import tech.zdrzalik.courses.model.UserInfo.UserInfoEntity;
+import tech.zdrzalik.courses.security.UserDetailsImpl;
+import tech.zdrzalik.courses.security.UserDetailsServiceImpl;
+import tech.zdrzalik.courses.utils.JWTUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -30,7 +32,26 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     private final AccountInfoRepository accountInfoRepository;
     private final PasswordEncoder passwordEncoder;
 
-//    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+
+    private JWTUtils jwtTokenUtil;
+
+    private UserDetailsServiceImpl userDetailsService;
+
+        @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    @Autowired
+    public void setJwtTokenUtil(JWTUtils jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
+    @Autowired
+    public void setUserDetailsService(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     public AccountService(AccountInfoRepository accountInfoRepository, PasswordEncoder passwordEncoder) {
         this.accountInfoRepository = accountInfoRepository;
@@ -57,15 +78,26 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfoRepository.save(accountInfo);
 
     }
+
     public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
 
     }
 
-    public void login(LoginRequestDTO dto){
+    public String authenticate(LoginRequestDTO dto) throws Exception {
         String email = dto.getEmail();
         String password = dto.getPassword();
-//        Authentication authentication = authenticationManag
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
+        String token = jwtTokenUtil.generateToken(userDetails);
+        return token;
 
     }
 

@@ -32,11 +32,4 @@ public class AccountController {
         accountService.registerAccount(dto);
         return ResponseEntity.ok().body(new MessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));
     }
-
-    @PostMapping("/login")
-    @ResponseBody()
-    @PermitAll
-    public ResponseEntity<?> Login(@RequestBody LoginRequestDTO dto) {
-        return ResponseEntity.ok().build();
-    }
 }
