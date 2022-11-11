@@ -51,6 +51,7 @@ public class AdminController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAdminPanel() {
+        // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             ModelAndView modelAndView = new ModelAndView("login");
@@ -89,6 +90,7 @@ public class AdminController {
             return modelAndView;
         }
         try {
+            // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
              String authenticate = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authenticate, JWT_TOKEN_VALIDITY));
@@ -96,9 +98,7 @@ public class AdminController {
         } catch (Throwable t) {
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
         }
-        ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("DTO", new LoginRequestDTO());
-        return modelAndView;
+        return new ModelAndView("redirect:/admin");
     }
 
     @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
