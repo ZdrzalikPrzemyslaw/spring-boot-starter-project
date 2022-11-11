@@ -1,3 +1,5 @@
+clone:
+  depth: full    # SonarCloud scanner needs the full history to assign issues properly
 pipelines:
   pull-requests:
     '**':
@@ -22,12 +24,6 @@ pipelines:
             - docker
           caches:
             - docker
-      - step:
-            name: sonarqube
-            image: maven:3.8.6-amazoncorretto-17
-            script:
-              - mvn verify sonar:sonar --file pom.xml
-
 
 
 

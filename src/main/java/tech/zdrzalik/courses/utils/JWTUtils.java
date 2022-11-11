@@ -17,7 +17,8 @@ public class JWTUtils {
     @Value("${jwt.secret}")
     private String secret;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    @Value("${jwt.validity}")
+    public long JWT_TOKEN_VALIDITY;
 
     public String getSubjectFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();

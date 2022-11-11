@@ -1,6 +1,7 @@
 package tech.zdrzalik.courses.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -42,6 +43,7 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(subject);
         if(!jwtUtils.validateToken(token))
         {

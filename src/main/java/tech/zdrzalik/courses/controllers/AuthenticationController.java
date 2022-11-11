@@ -2,6 +2,7 @@ package tech.zdrzalik.courses.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
@@ -13,6 +14,7 @@ import tech.zdrzalik.courses.services.AccountService;
 import javax.annotation.security.PermitAll;
 
 @Controller()
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final AccountService accountService;
@@ -21,9 +23,11 @@ public class AuthenticationController {
         this.accountService = accountService;
     }
 
-    @PostMapping(value = "/auth")
-    @ResponseBody()
+    @PostMapping()
     @PermitAll
+    @ResponseBody()
+//    @PreAuthorize("hasRole('admin')")
+//    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto) throws Exception {
         String token = accountService.authenticate(dto);
         return ResponseEntity.ok().body(

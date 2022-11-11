@@ -5,27 +5,39 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body class="background">
 
-<div class="md:block">
-    <h1 class="header">
-        Panel administratora</h1>
-    <div class="flex flex-row">
-        <button type="button" class="btn-primary">
-            <a th:text="#{add_user}"
-               th:href="'/'
-            + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-            + '/admin/users-list'"
-            ></a>
-        </button>
-        <button type="button" class="btn-primary">
-            <a th:text="#{user_list}"
-               th:href="'/'
-                + ${@localeContextHolderWrapper.getLocaleContext().getLocale()}
-                + '/admin/add-user'"
-            ></a>
-        </button>
+<div th:replace="fragments/common.html::header"></div>
+
+<div class="grid-center">
+    <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
+        <h1 class="header basis-full text-center break-normal" th:text="#{admin_panel}"></h1>
+        <div class="btn-group">
+            <a th:href="@{{context_path}/{locale}/admin/add-user(
+        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+        context_path=${#httpServletRequest.getContextPath()})}"
+               class="w-1/3">
+                <button type="button" class="btn-primary min-w-fit w-full" th:text="#{create_user}"/>
+            </a>
+            <a th:href="@{{context_path}/{locale}/admin/users-list(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
+               class="w-1/3">
+                <button type="button" class="btn-primary min-w-fit w-full" th:text="#{user_list}"/>
+            </a>
+
+            <a th:href="@{{context_path}/{locale}/admin/users-list-zepsute(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                context_path=${#httpServletRequest.getContextPath()})}"
+               class="w-1/3">
+                <button type="button" class="btn-primary min-w-fit w-full" th:text="zepsute"/>
+            </a>
+        </div>
     </div>
+</div>
+
+<div th:replace="fragments/common.html::footer">
+
 </div>
 
 
