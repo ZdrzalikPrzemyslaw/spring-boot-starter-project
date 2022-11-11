@@ -3,6 +3,7 @@ package tech.zdrzalik.courses.common;
 public class I18nCodes {
     public static final String EMAIL_EXIST = "email_exist";
     public static final String LOCALE_ATTRIBUTE_NAME = "locale_internal";
+    public static final String AUTHENTICATION_SUCCESS = "authentication_successful";
 
     //Skopiowane z SSBD hehe
     public static final String USER = "user";
@@ -238,4 +239,7 @@ public class I18nCodes {
     public static final String PRESCRIPTION_REMOVAL_UNAUTHORIZED = "prescription_removal_unauthorized";
     public static final String PRESCRIPTION_REMOVED_SUCCESSFULLY = "prescription_removed_successfully";
 
+    public static final String UNAUTHORIZED = "unauthorized";
+    public static final String ACCOUNT_DISABLED = "account_disabled";
+    public static final String INVALID_CREDENTIALS = "invalid_credentials";
 }

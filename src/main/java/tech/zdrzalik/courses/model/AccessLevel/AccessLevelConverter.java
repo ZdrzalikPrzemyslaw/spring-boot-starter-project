@@ -12,7 +12,7 @@ public class AccessLevelConverter implements AttributeConverter<AccessLevel, Str
         if (accessLevel == null) {
             return null;
         }
-        return accessLevel.getLevel();
+        return accessLevel.toString();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class AccessLevelConverter implements AttributeConverter<AccessLevel, Str
             return  null;
         }
         return Stream.of(AccessLevel.values())
-                .filter(a -> a.getLevel().equals(s))
+                .filter(a -> a.toString().equals(s))
                 .findFirst()
                 .orElseThrow(IllegalAccessError::new);
     }

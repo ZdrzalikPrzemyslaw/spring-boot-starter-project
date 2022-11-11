@@ -3,7 +3,6 @@ package tech.zdrzalik.courses.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import tech.zdrzalik.courses.exceptions.EntityNotFoundException;
-import tech.zdrzalik.courses.exceptions.EntityNotFoundExceptionFactory;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
 
 import java.util.Optional;
@@ -17,7 +16,7 @@ public abstract class AbstractService<T> {
     public T findById(Long id) {
         Optional<T> optional = getRepository().findById(id);
          return optional.orElseThrow(() -> {
-            return EntityNotFoundExceptionFactory.getException(getRepository().getClass(), id);
+             throw EntityNotFoundException.entityNotFound(id);
         });
     }
 }
