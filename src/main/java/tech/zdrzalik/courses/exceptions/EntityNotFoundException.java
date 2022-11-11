@@ -4,7 +4,6 @@ import tech.zdrzalik.courses.common.I18nCodes;
 
 public class EntityNotFoundException extends AppBaseException {
 
-    private String className;
     private Long id;
     protected EntityNotFoundException(String message) {
         super(message);
@@ -14,21 +13,9 @@ public class EntityNotFoundException extends AppBaseException {
         super(message, cause);
     }
 
-    public EntityNotFoundException() {
-        super();
-    }
-
-    public String getClassName() {
-        return className;
-    }
 
     public Long getId() {
         return id;
-    }
-
-    public EntityNotFoundException setClassName(String className) {
-        this.className = className;
-        return this;
     }
 
     public EntityNotFoundException setId(Long id) {
@@ -36,7 +23,7 @@ public class EntityNotFoundException extends AppBaseException {
         return this;
     }
 
-    public static <T> EntityNotFoundException entityNotFound(Class<T> t, Long id) {
-        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND).setClassName(t.getName()).setId(id);
+    public static <T> EntityNotFoundException entityNotFound(Long id) {
+        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND);
     }
 }

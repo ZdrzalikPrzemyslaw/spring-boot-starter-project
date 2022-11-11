@@ -32,9 +32,22 @@
                class="w-1/3">
                 <button type="button" class="btn-primary min-w-fit w-full" th:text="zepsute"/>
             </a>
+
+            <a href="javascript: document.logoutForm.submit()"
+               class="w-1/3">
+                <button type="button" class="btn-primary min-w-fit w-full" th:text="#{logout}"/>
+            </a>
+
+
+
+
         </div>
     </div>
 </div>
+
+<form name="logoutForm" th:action="@{/admin/logout}" method="post" th:hidden="true">
+    <input th:hidden="true" type="submit">
+</form>
 
 <div th:replace="fragments/common.html::footer">
 
