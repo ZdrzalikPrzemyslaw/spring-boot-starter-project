@@ -100,7 +100,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
-    public String authenticate(LoginRequestDTO dto) throws Exception {
+    public String authenticate(LoginRequestDTO dto) {
         String email = dto.getEmail();
         String password = dto.getPassword();
         Authentication authentication;

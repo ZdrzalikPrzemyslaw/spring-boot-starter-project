@@ -5,7 +5,6 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-
 <body class="background">
 
 <div th:replace="fragments/common.html::header"></div>
@@ -15,10 +14,12 @@
     <p id="error_message"
        class="mb-3 basis-full text-center
                 text-gray-700 dark:text-gray-200 break-normal font-bold leading-none text-2xl"
-       th:text="#{error_generic_text}">
+       th:text="#{error_403_text}">
     </p>
 </div>
 
 <div th:replace="fragments/common.html::footer"> </div>
+
+
 </body>
 </html>

@@ -7,13 +7,15 @@
 </head>
 
 <body class="background">
-<div th:fragment="error-page(#error_message)">
+<div th:fragment="error-page(error_message)">
 
 <div class="grid place-items-center">
     <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
-        <p id="error_message"
+        <p
+                th:replace="${error_message}"
+                id="error_message"
                 class="error-message"
-                th:text="#{error_404_text}">
+                th:text="#{error_generic_text}">
         </p>
         <div class="btn-group">
             <div th:if="${#httpServletRequest.getHeader('Referer')}">

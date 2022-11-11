@@ -8,10 +8,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 import tech.zdrzalik.courses.utils.JWTUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,13 +30,21 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = null;
 
-        String token = request.getHeader("authorization");
-        if (!(StringUtils.hasText(token) && token.startsWith("Bearer "))) {
-            filterChain.doFilter(request, response);
-            return;
+        Cookie cookie = WebUtils.getCookie(request, "bearer-token");
+        if (cookie != null) {
+            token = cookie.getValue();
         }
-        token = token.substring(7);
+        if (!StringUtils.hasText(token)) {
+            token = request.getHeader("authorization");
+            if (!(StringUtils.hasText(token) && token.startsWith("Bearer "))) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            token = token.substring(7);
+        }
+
 
         String subject = jwtUtils.getSubjectFromToken(token);
         //TODO wyjątki

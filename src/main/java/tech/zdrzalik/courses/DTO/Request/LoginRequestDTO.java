@@ -1,7 +1,13 @@
 package tech.zdrzalik.courses.DTO.Request;
 
+import tech.zdrzalik.courses.common.I18nCodes;
+
+import javax.validation.constraints.NotNull;
+
 public class LoginRequestDTO {
+    @NotNull(message = I18nCodes.EMAIL_NULL)
     private String email;
+    @NotNull(message = I18nCodes.PASSWORD_NULL)
     private String password;
 
     public LoginRequestDTO() {
