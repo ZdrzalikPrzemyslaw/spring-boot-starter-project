@@ -10,7 +10,7 @@ public class PageableConfig {
     @Bean
     PageableHandlerMethodArgumentResolverCustomizer pageableResolverCustomizer() {
         return pageableResolver -> {
-            pageableResolver.setMaxPageSize(1);
+            pageableResolver.setMaxPageSize(80);
             pageableResolver.setPageParameterName("page");
         };
     }
