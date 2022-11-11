@@ -242,4 +242,5 @@ public class I18nCodes {
     public static final String UNAUTHORIZED = "unauthorized";
     public static final String ACCOUNT_DISABLED = "account_disabled";
     public static final String INVALID_CREDENTIALS = "invalid_credentials";
+    public static final String REQUEST_NULL = "request_null";
 }

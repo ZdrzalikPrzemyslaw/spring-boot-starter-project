@@ -12,6 +12,8 @@ import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.services.AccountService;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Controller()
 @RequestMapping("/auth")
@@ -23,10 +25,11 @@ public class AuthenticationController {
         this.accountService = accountService;
     }
 
+    // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
     @PostMapping()
     @PermitAll
     @ResponseBody()
-    public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto) throws Exception {
+    public ResponseEntity<?> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) LoginRequestDTO dto) throws Exception {
         String token = accountService.authenticate(dto);
         return ResponseEntity.ok().body(
                 new LoginResponseDTO()
