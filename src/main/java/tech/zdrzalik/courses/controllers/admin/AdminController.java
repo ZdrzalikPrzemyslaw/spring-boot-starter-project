@@ -35,7 +35,6 @@ public class AdminController {
         this.accountService = accountService;
     }
 
-//    @PreAuthorize("hasAuthority('admin')")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAdminPanel() {
         ModelAndView modelAndView = new ModelAndView("admin-panel");
@@ -66,7 +65,6 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasRole('admin')")
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView editUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id,
                                  @ModelAttribute("DTO") @Valid @NotNull EditUserInfoDTO dto,

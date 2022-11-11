@@ -26,8 +26,6 @@ public class AuthenticationController {
     @PostMapping()
     @PermitAll
     @ResponseBody()
-//    @PreAuthorize("hasRole('admin')")
-//    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto) throws Exception {
         String token = accountService.authenticate(dto);
         return ResponseEntity.ok().body(
