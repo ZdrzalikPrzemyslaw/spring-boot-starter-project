@@ -240,4 +240,6 @@ public class I18nCodes {
     public static final String PRESCRIPTION_REMOVED_SUCCESSFULLY = "prescription_removed_successfully";
 
     public static final String UNAUTHORIZED = "unauthorized";
+    public static final String ACCOUNT_DISABLED = "account_disabled";
+    public static final String INVALID_CREDENTIALS = "invalid_credentials";
 }
