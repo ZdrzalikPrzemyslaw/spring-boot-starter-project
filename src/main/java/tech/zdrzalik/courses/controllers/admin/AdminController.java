@@ -120,9 +120,8 @@ public class AdminController {
 
     @PostMapping(value = "/create-account", produces = MediaType.TEXT_HTML_VALUE)
     public Object createAccount(@ModelAttribute("DTO") @Valid @NotNull RegisterAccountDTO dto, BindingResult result) {
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = this.getCreateAccount();
         if (result.hasErrors()) {
-            modelAndView = this.getCreateAccount();
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
             return modelAndView;
         }
@@ -133,12 +132,10 @@ public class AdminController {
 //            RedirectView redirectView = new RedirectView("/admin/create-account");
 //            redirectView.setStatusCode(HttpStatus.BAD_REQUEST);
 //            return redirectView;
-            modelAndView = this.getCreateAccount();
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo stworzyć konta
         }
-        modelAndView = new ModelAndView("create-account");
         modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
