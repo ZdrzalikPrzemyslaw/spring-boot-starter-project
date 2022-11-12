@@ -3,6 +3,7 @@ package tech.zdrzalik.courses.controllers.admin;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.context.IExpressionContext;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
+import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
@@ -39,14 +42,13 @@ import javax.validation.constraints.NotNull;
 public class AdminController {
 
     private final AccountService accountService;
+    @Value("${jwt.validity}")
+    private int JWT_TOKEN_VALIDITY;
+
 
     public AdminController(AccountService accountService) {
         this.accountService = accountService;
     }
-
-
-    @Value("${jwt.validity}")
-    private int JWT_TOKEN_VALIDITY;
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
@@ -91,7 +93,7 @@ public class AdminController {
         }
         try {
             // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
-             String authenticate = accountService.authenticate(dto);
+            String authenticate = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authenticate, JWT_TOKEN_VALIDITY));
             return new ModelAndView("redirect:/admin");
@@ -109,9 +111,36 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping(value = "add-user", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getAddUser() {
-        ModelAndView modelAndView = new ModelAndView("add-user");
+    @GetMapping(value = "/create-account", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getCreateAccount() {
+        ModelAndView modelAndView = new ModelAndView("create-account");
+        modelAndView.addObject("DTO", new RegisterAccountDTO());
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/create-account", produces = MediaType.TEXT_HTML_VALUE)
+    public Object createAccount(@ModelAttribute("DTO") @Valid @NotNull RegisterAccountDTO dto, BindingResult result) {
+        ModelAndView modelAndView;
+        if (result.hasErrors()) {
+            modelAndView = this.getCreateAccount();
+            modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
+            return modelAndView;
+        }
+        try {
+            accountService.registerAccount(dto);
+        } catch (AccountInfoException e) {
+            // TODO: 12/11/2022 Dowiedziec sie, dlaczego gdy tutaj robie redirect to nie dziala 
+//            RedirectView redirectView = new RedirectView("/admin/create-account");
+//            redirectView.setStatusCode(HttpStatus.BAD_REQUEST);
+//            return redirectView;
+            modelAndView = new ModelAndView("create-account");
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+            modelAndView.addObject("DTO", new RegisterAccountDTO());
+            return modelAndView;
+            // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo stworzyć konta
+        }
+        modelAndView = new ModelAndView("create-account");
+        modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
 
@@ -130,8 +159,6 @@ public class AdminController {
         if (result.hasErrors()) {
             modelAndView = this.getUser(id);
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-            // TODO: 08/11/2022 Wykorzystac result
-//            modelAndView.addAllObjects(result.getAllErrors().);
             return modelAndView;
         }
         try {

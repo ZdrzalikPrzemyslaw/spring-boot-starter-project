@@ -1,6 +1,7 @@
 package tech.zdrzalik.courses.DTO.Request;
 
 public class RegisterAccountDTO {
+    // TODO: 12/11/2022 Nałożyć wymagania na hasło, i ogólnie bean validation 
     private String email;
     private String password;
     private String firstName;

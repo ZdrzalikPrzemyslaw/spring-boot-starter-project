@@ -10,7 +10,7 @@
 <div class="grid-center">
     <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
         <form action="#" class="w-full max-w-3xl"
-              method="post" th:action="@{/admin/login}"
+              method="post" th:action="@{/admin/create-account}"
               th:object="${DTO}">
             <div class="div-with-two-columns">
                 <label class="inputLabel"
@@ -28,7 +28,25 @@
                     <li class="form-error" th:each="err : ${#fields.errors('password')}" th:text="#{${err}}"/>
                 </ul>
             </div>
+            <div class="div-with-two-columns">
+                <label class="inputLabel"
+                       for="form-firstName" th:text="#{first_name}"/>
+                <input class="input" id="form-firstName" th:field="*{firstName}" type="text"/>
+                <ul th:if="${#fields.hasErrors('firstName')}">
+                    <li class="form-error" th:each="err : ${#fields.errors('firstName')}" th:text="#{${err}}"/>
+                </ul>
+            </div>
+            <div class="div-with-two-columns">
+                <label class="inputLabel"
+                       for="form-lastName" th:text="#{last_name}"/>
+                <input class="input" id="form-lastName" th:field="*{lastName}" type="text"/>
+                <ul th:if="${#fields.hasErrors('lastName')}">
+                    <li class="form-error" th:each="err : ${#fields.errors('lastName')}" th:text="#{${err}}"/>
+                </ul>
+            </div>
             <div class="w-full grid-center">
+                <p class="form-success mb-5" th:if="${showSuccess != null}"
+                   th:text="#{successfully_created_account}"/>
                 <input class="btn-primary w-64 w-full" id="submit-button" type="submit"/>
             </div>
         </form>
