@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import tech.zdrzalik.courses.controllers.AccountController;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
 
@@ -18,14 +19,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ContextConfiguration
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
 class RegistrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private AccountController accountController;
 
     @Autowired
     private AccountInfoRepository accountInfoRepository;
