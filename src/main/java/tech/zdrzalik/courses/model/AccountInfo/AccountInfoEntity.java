@@ -40,9 +40,10 @@ public class AccountInfoEntity extends AbstractEntity {
     @Basic
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
+    // TODO: 12/11/2022 Zmienic confirmed domyslne na false po dodaniu maili
     @Basic
     @Column(name = "confirmed", nullable = false)
-    private boolean confirmed = false;
+    private boolean confirmed = true;
     @Basic
     @Column(name = "confirmation_token", nullable = true, length = 128)
     private String confirmationToken;

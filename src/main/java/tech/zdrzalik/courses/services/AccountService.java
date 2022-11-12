@@ -1,11 +1,13 @@
 package tech.zdrzalik.courses.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -60,6 +62,35 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     public AccountService(AccountInfoRepository accountInfoRepository, PasswordEncoder passwordEncoder) {
         this.accountInfoRepository = accountInfoRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountAdminRole(Long id, boolean isAdmin) {
+        var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
+        for (AccessLevelsEntity accessLevel : accountInfo.getAccessLevels()) {
+            if (accessLevel.getLevel().toString().equals("admin")) {
+                accessLevel.setEnabled(true);
+                return;
+            }
+        }
+
+        // TODO: 12/11/2022 Ustawić pola created by, ip etc.
+        AccessLevelsEntity accessLevelsEntity = new AccessLevelsEntity()
+                .setLevel(AccessLevel.ADMIN)
+                .setEnabled(true)
+                .setAccountInfoId(accountInfo)
+                .setTableMetadata(new TableMetadataEntity());
+        accountInfo.getAccessLevels().add(accessLevelsEntity);
+        accountInfoRepository.save(accountInfo);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountAdminRole(String email, boolean isAdmin) {
+        this.setAccountAdminRole(
+                accountInfoRepository.findAccountInfoEntityByEmail(email)
+                        .orElseThrow(() -> {throw AccountInfoException.accountNotFound();})
+                        .getId(),
+                isAdmin);
     }
 
     public void registerAccount(String email, String password, String firstName, String lastname){

@@ -19,7 +19,7 @@ import tech.zdrzalik.courses.services.AccountService;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class AccountControllerTestIT {
+public class AccountControllerTest {
     @Autowired
     private AccountController accountController;
 
