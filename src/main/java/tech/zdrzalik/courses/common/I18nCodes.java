@@ -3,12 +3,14 @@ package tech.zdrzalik.courses.common;
 public class I18nCodes {
     public static final String EMAIL_EXIST = "email_exist";
     public static final String LOCALE_ATTRIBUTE_NAME = "locale_internal";
+    public static final String AUTHENTICATION_SUCCESS = "authentication_successful";
 
     //Skopiowane z SSBD hehe
     public static final String USER = "user";
     public static final String ADMIN = "admin";
 
     public static final String ACCOUNT_CREATION_FAILED = "account_creation_failed";
+    public static final String ENTITY_NOT_FOUND = "entity_not_found";
     public static final String ACCOUNT_CREATED_SUCCESSFULLY = "account_created_successfully";
     public static final String ACCOUNT_GET_LOGGED_IN_FAILED = "account_get_logged_in_failed";
     public static final String ACCOUNT_GET_WITH_LOGIN_FAILED = "account_get_with_login_failed";
@@ -36,6 +38,7 @@ public class I18nCodes {
     public static final String LANGUAGE_SET_SUCCESSFULLY = "language_set_successfully";
 
     public static final String ACCESS_LEVEL_NULL = "access_level_null";
+    public static final String ID_NULL = "id_null";
     public static final String DOCUMENTATION_ID_NULL = "documentation_id_null";
     public static final String ACCESS_LEVEL_INVALID_SIZE = "access_level_invalid_size";
     public static final String ACCESS_LEVEL_INVALID_LEVEL = "access_level_invalid_level";
@@ -57,6 +60,7 @@ public class I18nCodes {
     public static final String FIRST_NAME_INVALID_SIZE = "first_name_invalid_size";
 
     public static final String LAST_NAME_NULL = "last_name_null";
+    public static final String ENABLED_NULL = "enabled_null";
     public static final String LAST_NAME_INVALID_SIZE = "last_name_invalid_size";
 
     public static final String PHONE_NUMBER_INVALID_SIZE = "phone_number_invalid_size";
@@ -235,4 +239,8 @@ public class I18nCodes {
     public static final String PRESCRIPTION_REMOVAL_UNAUTHORIZED = "prescription_removal_unauthorized";
     public static final String PRESCRIPTION_REMOVED_SUCCESSFULLY = "prescription_removed_successfully";
 
+    public static final String UNAUTHORIZED = "unauthorized";
+    public static final String ACCOUNT_DISABLED = "account_disabled";
+    public static final String INVALID_CREDENTIALS = "invalid_credentials";
+    public static final String REQUEST_NULL = "request_null";
 }

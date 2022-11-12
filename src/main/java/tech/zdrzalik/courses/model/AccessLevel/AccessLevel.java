@@ -8,7 +8,8 @@ public enum AccessLevel {
         this.level = level;
     }
 
-    public String getLevel() {
+    @Override
+    public String toString() {
         return level;
     }
 }

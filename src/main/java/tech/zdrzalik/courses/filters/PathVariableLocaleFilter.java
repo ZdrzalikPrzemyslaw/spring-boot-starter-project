@@ -24,12 +24,14 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        int index = 1;
         String url = defaultString(request.getRequestURI().substring(request.getContextPath().length()));
+        System.out.println(url);
         String[] variables = url.split("/");
 
-        if (variables.length > 1 && isLocale(variables[1])) {
-            request.setAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME, variables[1]);
-            String newUrl = StringUtils.removeStart(url, '/' + variables[1]);
+        if (variables.length > index && isLocale(variables[index])) {
+            request.setAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME, variables[index]);
+            String newUrl = StringUtils.removeStart(url, '/' + variables[index]);
             RequestDispatcher dispatcher = request.getRequestDispatcher(newUrl);
             dispatcher.forward(request, response);
         } else {
