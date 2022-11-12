@@ -52,9 +52,7 @@
     }
 
     .table-col {
-        @apply max-w-[200px]
-        break-all
-        py-3 px-6;
+        @apply max-w-[200px] break-all py-3 px-6;
     }
 
 }
