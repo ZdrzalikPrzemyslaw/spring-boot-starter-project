@@ -133,9 +133,8 @@ public class AdminController {
 //            RedirectView redirectView = new RedirectView("/admin/create-account");
 //            redirectView.setStatusCode(HttpStatus.BAD_REQUEST);
 //            return redirectView;
-            modelAndView = new ModelAndView("create-account");
+            modelAndView = this.getCreateAccount();
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-            modelAndView.addObject("DTO", new RegisterAccountDTO());
             return modelAndView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo stworzyć konta
         }
