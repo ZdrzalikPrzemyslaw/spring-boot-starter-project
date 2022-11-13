@@ -69,7 +69,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
         for (AccessLevelsEntity accessLevel : accountInfo.getAccessLevels()) {
             if (accessLevel.getLevel().toString().equals("admin")) {
-                accessLevel.setEnabled(true);
+                accessLevel.setEnabled(isAdmin);
                 return;
             }
         }
@@ -77,7 +77,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         // TODO: 12/11/2022 Ustawić pola created by, ip etc.
         AccessLevelsEntity accessLevelsEntity = new AccessLevelsEntity()
                 .setLevel(AccessLevel.ADMIN)
-                .setEnabled(true)
+                .setEnabled(isAdmin)
                 .setAccountInfoId(accountInfo)
                 .setTableMetadata(new TableMetadataEntity());
         accountInfo.getAccessLevels().add(accessLevelsEntity);
