@@ -10,8 +10,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import org.thymeleaf.context.IExpressionContext;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
@@ -29,7 +26,6 @@ import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.services.AccountService;
 
-import javax.annotation.security.PermitAll;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -143,13 +139,18 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id) {
+    @GetMapping(value = {"user-info/{id}"}, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable(required = false) Long id) {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
         modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity));
         return modelAndView;
+    }
+
+    @GetMapping(value = { "user-info"}, produces = MediaType.TEXT_HTML_VALUE)
+    public RedirectView getUser() {
+        return new RedirectView("/admin/users-list");
     }
 
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)

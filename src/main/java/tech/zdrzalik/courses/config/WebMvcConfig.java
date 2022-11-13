@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import tech.zdrzalik.courses.interceptors.LocaleAttributeChangeInterceptor;
+import tech.zdrzalik.courses.utils.BreadcrumbsHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
@@ -31,6 +32,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
         cookieLocaleResolver.setDefaultLocale(new Locale("pl", "PL"));
         return cookieLocaleResolver;
+    }
+
+    @Bean(name = "breadcrumbsHelper")
+    public BreadcrumbsHelper getBreadcrumbsHelper() {
+        BreadcrumbsHelper breadcrumbsHelper = new BreadcrumbsHelper();
+        return breadcrumbsHelper;
     }
 
     @Bean(name = "localeContextHolderWrapper")

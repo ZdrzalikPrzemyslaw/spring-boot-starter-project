@@ -55,4 +55,8 @@
         @apply max-w-[200px] break-normal py-3 px-6;
     }
 
+    ol > li:last-child > svg {
+        visibility: hidden;
+    }
+
 }
