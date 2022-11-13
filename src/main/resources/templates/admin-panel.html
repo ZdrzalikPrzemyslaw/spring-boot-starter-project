@@ -10,8 +10,8 @@
 <div th:replace="fragments/common.html::header"></div>
 
 <div class="grid-center">
-    <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
-        <h1 class="header basis-full text-center break-normal mt-5" th:text="#{admin_panel}"></h1>
+    <div class="max-w-sm">
+        <h2 class="header text-4xl" th:text="#{admin_panel}"/>
         <div class="btn-group">
             <a th:href="@{{context_path}/{locale}/admin/create-account(
         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},

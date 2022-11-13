@@ -8,7 +8,7 @@
     }
 
     .header {
-        @apply mb-8 text-4xl font-extrabold tracking-tight leading-none text-gray-900 text-5xl dark:text-gray-200;
+        @apply text-3xl uppercase text-center w-full mt-5 mb-8 font-extrabold tracking-tight leading-none text-gray-900 dark:text-gray-200;
     }
 
     .background {
@@ -52,7 +52,7 @@
     }
 
     .table-col {
-        @apply max-w-[200px] break-all py-3 px-6;
+        @apply max-w-[200px] break-normal py-3 px-6;
     }
 
 }
