@@ -9,9 +9,10 @@
 
 <div th:replace="fragments/common.html::header"></div>
 
-<div class="grid-center">
-    <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
-        <form action="#" class="w-full max-w-3xl"
+<div class="mb-5 grid place-items-center mx-3">
+    <h2 class="text-3xl uppercase header"
+        th:text="#{create_user}"></h2>
+        <form action="#" class="w-full max-w-md"
               method="post" th:action="@{/admin/create-account}"
               th:object="${DTO}">
             <div class="div-with-two-columns">
@@ -53,7 +54,6 @@
             </div>
         </form>
     </div>
-</div>
 
 <div th:replace="fragments/common.html::footer">
 
