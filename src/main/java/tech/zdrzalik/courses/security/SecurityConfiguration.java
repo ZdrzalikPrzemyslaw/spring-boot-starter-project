@@ -59,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anonymous();
         http
                 .exceptionHandling()
-                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/admin"));
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         http.addFilterBefore(new AppAuthenticationFilter(userDetails, jwtUtils), UsernamePasswordAuthenticationFilter.class);
     }
 
