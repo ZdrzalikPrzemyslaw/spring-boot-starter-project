@@ -15,4 +15,6 @@ public interface AccountInfoRepository extends AbstractJpaRepository<AccountInfo
     Boolean existsAccountInfoEntitiesByEmailEquals(String email);
     List<AccountInfoEntity> findAccountInfoEntitiesByEmail(String email);
     Optional<AccountInfoEntity> findAccountInfoEntityByEmail(String email);
+
+
 }

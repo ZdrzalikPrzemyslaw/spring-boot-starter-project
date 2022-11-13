@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import tech.zdrzalik.courses.controllers.admin.AdminController;
+import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
 import tech.zdrzalik.courses.services.AccountService;
 
 import java.text.MessageFormat;
@@ -35,6 +36,8 @@ class AdminControllerTest {
     private AdminController adminController;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private AccountInfoRepository accountInfoRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired AccountService accountService, @Autowired MockMvc mockMvc) throws Exception {
@@ -105,9 +108,26 @@ class AdminControllerTest {
 
     @Test
     void failGetUserInfoNotFound() throws Exception {
-        mockMvc.perform(get("/admin/user-info/42000")
+        long id = 42000;
+        var entity = accountInfoRepository.findFirstByOrderByIdDesc();
+        if (entity.isPresent()) {
+            id = entity.get().getId() + 10L;
+        }
+        mockMvc.perform(get("/admin/user-info/" + id)
                         .header("authorization", authToken))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getUserInfoSucceed() throws Exception {
+        long id = 0;
+        var entity = accountInfoRepository.findFirstByOrderByIdDesc();
+        if (entity.isPresent()) {
+            id = entity.get().getId();
+        }
+        mockMvc.perform(get("/admin/user-info/" + id)
+                        .header("authorization", authToken))
+                .andExpect(status().isOk());
     }
 
     // TODO: 12/11/2022 Dodać test który pobiera user-info po id i mu sie udaje
