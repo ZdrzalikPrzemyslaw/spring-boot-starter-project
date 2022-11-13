@@ -8,7 +8,7 @@
     }
 
     .header {
-        @apply mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 text-5xl dark:text-gray-200;
+        @apply mb-8 text-4xl font-extrabold tracking-tight leading-none text-gray-900 text-5xl dark:text-gray-200;
     }
 
     .background {

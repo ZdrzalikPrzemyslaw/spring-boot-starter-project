@@ -11,94 +11,60 @@
 <div th:replace="fragments/common.html::header"></div>
 
 <div class="grid-center">
-    <div>
-        <!--        <table th:if="${not#lists.isEmpty(users)}">-->
-        <!--            <thead>-->
-        <!--            <tr>-->
-        <!--                <th>-->
-        <!--                    <p th:text="'ID'"></p>-->
-        <!--                </th>-->
-        <!--                <th>-->
-        <!--                    <p th:text="'Email'"></p>-->
-        <!--                </th>-->
-        <!--                <th>-->
-        <!--                    <p th:text="'Name'"></p>-->
-        <!--                </th>-->
-        <!--                <th>-->
-        <!--                    <p th:text="'Access Level'"></p>-->
-        <!--                </th>-->
-        <!--            </tr>-->
-        <!--            </thead>-->
-        <!--            <tbody>-->
-        <!--            <tr th:each="user : ${users}">-->
-        <!--                        <td class="table-col" th:text="${user.id}"></td>-->
-        <!--                <td class="table-col" th:text="${user.email}"></td>-->
-        <!--                <td class="table-col" th:text="${user.userInfoEntity.firstName} + ' ' + ${user.userInfoEntity.lastName}"></td>-->
-        <!--                <td class="table-col" th:text="${user.getAccessLevelsAsString()}"></td>-->
-
-        <!--                <td class="table-col">-->
-        <!--                            <a th:href="@{{context_path}/{locale}/admin/user-info/{id}(-->
-        <!--                                            locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},-->
-        <!--                                            context_path=${#httpServletRequest.getContextPath()},-->
-        <!--                                            id=${user.id})}">-->
-        <!--                                <button type="button" class="btn-primary" th:text="#{details}"/>-->
-        <!--                            </a>-->
-        <!--                </td>-->
-        <!--            </tr>-->
-        <!--            </tbody>-->
-        <!--        </table>-->
-        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-                   th:if="${not#lists.isEmpty(users)}">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th class="table-col" scope="col" th:text="'ID'"/>
-                    <th class="table-col" scope="col" th:text="'Email'"/>
-                    <th class="table-col" scope="col" th:text="'Name'"/>
-                    <th class="table-col" scope="col" th:text="'Access level'"/>
-                    <th class="table-col" scope="col" th:text="'Edit'"/>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    th:each="user : ${users}">
-                    <th class="table-col font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row"
-                        th:text="${user.id}"/>
-                    <td class="table-col" th:text="${user.email}"/>
-                    <td class="table-col"
-                        th:text="${user.userInfoEntity.firstName} + ' ' + ${user.userInfoEntity.lastName}"/>
-                    <td class="table-col" th:text="${user.getAccessLevelsAsString()}"/>
-                    <td class="table-col text-right">
-                        <a th:href="@{{context_path}/{locale}/admin/user-info/{id}(
+    <h2 class="text-3xl uppercase header" th:text="#{user_list}"></h2>
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+               th:if="${not#lists.isEmpty(users)}">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th class="table-col" scope="col" th:text="#{id}"/>
+                <th class="table-col" scope="col" th:text="#{email}"/>
+                <th class="table-col" scope="col" th:text="#{name}"/>
+                <th class="table-col" scope="col" th:text="#{access_levels}"/>
+                <th class="table-col" scope="col" th:text="#{edit}"/>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                th:each="user : ${users}">
+                <th class="table-col font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row"
+                    th:text="${user.id}"/>
+                <td class="table-col" th:text="${user.email}"/>
+                <td class="table-col"
+                    th:text="${user.userInfoEntity.firstName} + ' ' + ${user.userInfoEntity.lastName}"/>
+                <td class="table-col">
+                    <ul>
+                        <li th:each="level : ${user.getAccessLevels()}" th:text="#{${level.getLevel().toString()}}"/>
+                    </ul>
+                </td>
+                <td class="table-col text-right">
+                    <a th:href="@{{context_path}/{locale}/admin/user-info/{id}(
                                             locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                             context_path=${#httpServletRequest.getContextPath()},
                                             id=${user.id})}">
-                            <button class="btn-primary" th:text="#{details}" type="button"/>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
+                        <button class="btn-primary" th:text="#{details}" type="button"/>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <a th:href="@{{context_path}/{locale}/admin/users-list(
+    <a th:href="@{{context_path}/{locale}/admin/users-list(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                         context_path=${#httpServletRequest.getContextPath()},
                                         page=${users.previousPageable().getPageNumber()})}"
-               th:if="${users.hasPrevious()}">
-                <button class="btn-primary float-left min-w-[100px] max-w-[45%]" th:text="'previous'" type="button"/>
-            </a>
+       th:if="${users.hasPrevious()}">
+        <button class="btn-primary float-left min-w-[100px] max-w-[45%]" th:text="'previous'" type="button"/>
+    </a>
 
-            <a th:href="@{{context_path}/{locale}/admin/users-list(
+    <a th:href="@{{context_path}/{locale}/admin/users-list(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                         context_path=${#httpServletRequest.getContextPath()},
                                         page=${users.nextPageable().getPageNumber()})}"
-               th:if="${users.hasNext()}">
-                <button class="btn-primary float-right min-w-[100px] max-w-[45%]" th:text="'next'" type="button"/>
-            </a>
-        </div>
-    </div>
+       th:if="${users.hasNext()}">
+        <button class="btn-primary float-right min-w-[100px] max-w-[45%]" th:text="'next'" type="button"/>
+    </a>
 </div>
 
 <div th:replace="fragments/common.html::footer"></div>
