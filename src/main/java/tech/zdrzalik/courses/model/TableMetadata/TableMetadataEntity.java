@@ -1,5 +1,6 @@
 package tech.zdrzalik.courses.model.TableMetadata;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.persistence.*;
@@ -68,6 +69,8 @@ public class TableMetadataEntity {
         }
         if (version == null ) {
             version = 0L;
+        }
+        if (createdBy == null) {
         }
     }
 

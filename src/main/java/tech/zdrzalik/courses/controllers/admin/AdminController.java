@@ -76,7 +76,6 @@ public class AdminController {
     @PreAuthorize("permitAll()")
     @PostMapping(value = "/logout", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView logout(HttpServletResponse response) {
-
         response.addCookie(createBearerTokenCookie(null, 0));
         ModelAndView modelAndView = new ModelAndView("redirect:/admin");
         return modelAndView;
@@ -84,11 +83,12 @@ public class AdminController {
 
     @PreAuthorize("permitAll()")
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView authenticate(@ModelAttribute("DTO") @Valid @NotNull LoginRequestDTO dto, BindingResult result, HttpServletResponse response) {
+    public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull LoginRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
             modelAndView.addObject("DTO", new LoginRequestDTO());
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
         try {
@@ -98,9 +98,12 @@ public class AdminController {
             response.addCookie(createBearerTokenCookie(authenticate, JWT_TOKEN_VALIDITY));
             return new ModelAndView("redirect:/admin");
         } catch (Throwable t) {
+            RedirectView redirectView = new RedirectView("redirect:/admin");
+            redirectView.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
         }
-        return new ModelAndView("redirect:/admin");
+//        return new ModelAndView("redirect:/admin");
     }
 
     @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
