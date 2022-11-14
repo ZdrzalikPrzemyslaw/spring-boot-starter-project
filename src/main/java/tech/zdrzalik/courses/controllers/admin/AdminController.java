@@ -140,7 +140,7 @@ public class AdminController {
     }
 
     @GetMapping(value = {"user-info/{id}"}, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable(required = false) Long id) {
+    public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id) {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
