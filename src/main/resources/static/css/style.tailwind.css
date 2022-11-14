@@ -55,7 +55,7 @@
         @apply max-w-[200px] break-normal py-3 px-6;
     }
 
-    ol.breadcrumbs > li:last-child > svg {
+    ol.breadcrumbs > li:last-child > img {
         visibility: hidden;
     }
 
