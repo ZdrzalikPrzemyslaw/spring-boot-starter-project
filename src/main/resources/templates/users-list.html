@@ -13,9 +13,9 @@
 <div class="grid-center">
     <h2 class="header" th:text="#{user_list}"/>
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 min-w-[600px]"
+        <table class="table-full"
                th:if="${not#lists.isEmpty(users)}">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="table-head">
             <tr>
                 <th class="table-col" scope="col" th:text="#{id}"/>
                 <th class="table-col" scope="col" th:text="#{email}"/>
@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+            <tr class="table-row"
                 th:each="user : ${users}">
                 <td class="table-col font-medium font-bold" th:text="${user.id}"/>
                 <td class="table-col break-all" th:text="${user.email}"/>
