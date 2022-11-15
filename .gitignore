@@ -13,6 +13,8 @@
 .idea/**/shelf
 Backend.iml
 
+.java-version
+
 /src/main/resources/static/css/main.css
 
 /node_modules
