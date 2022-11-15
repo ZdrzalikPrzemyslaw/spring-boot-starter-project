@@ -1,5 +1,3 @@
-clone:
-  depth: full    # SonarCloud scanner needs the full history to assign issues properly
 pipelines:
   pull-requests:
     '**':
