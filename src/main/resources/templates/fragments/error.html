@@ -17,7 +17,7 @@
                 class="error-message"
                 th:text="#{error_generic_text}">
         </p>
-        <div class="btn-group">
+        <div class="btn-group mt-10">
             <div th:if="${#httpServletRequest.getHeader('Referer')}">
                 <a th:href="${#httpServletRequest.getHeader('Referer')}">
                     <button type="button" class="btn-primary min-w-fit w-full"

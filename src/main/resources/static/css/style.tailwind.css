@@ -8,7 +8,7 @@
     }
 
     .header {
-        @apply mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 text-5xl dark:text-gray-200;
+        @apply text-3xl uppercase text-center w-full mt-5 mb-8 font-extrabold tracking-tight leading-none text-gray-900 dark:text-gray-200;
     }
 
     .background {
@@ -52,7 +52,23 @@
     }
 
     .table-col {
-        @apply max-w-[200px] break-all py-3 px-6;
+        @apply max-w-[200px] break-normal py-3 px-6;
+    }
+
+    ol.breadcrumbs > li:last-child > img {
+        visibility: hidden;
+    }
+
+    .table-full {
+        @apply w-full text-sm text-left text-gray-500 dark:text-gray-400 min-w-[600px];
+    }
+
+    .table-head {
+        @apply text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400;
+    }
+
+    .table-row {
+        @apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600;
     }
 
 }

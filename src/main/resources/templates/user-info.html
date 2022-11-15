@@ -20,9 +20,8 @@
 
 <div th:replace="fragments/common.html::header"></div>
 
-<div class="mb-5 grid place-items-center mx-3">
-    <h2 class="text-3xl uppercase header"
-        th:text="#{user_info}"></h2>
+<div class="grid-center">
+    <h2 class="header" th:text="#{user_info}"/>
     <form action="#" class="w-full max-w-3xl"
           method="post" th:action="@{/admin/user-info/{id}(id = ${accountInfoEntity.getId()})}"
           th:object="${DTO}">

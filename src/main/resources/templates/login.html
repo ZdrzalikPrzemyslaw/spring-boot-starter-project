@@ -8,8 +8,9 @@
 <body class="background">
 
 <div class="grid-center">
-    <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
-        <form action="#" class="w-full max-w-3xl"
+    <div class="mb-5">
+        <h2 class="header" th:text="#{login}"/>
+        <form action="#" class="w-full max-w-sm"
               method="post" th:action="@{/admin/login}"
               th:object="${DTO}">
             <div class="div-with-two-columns">

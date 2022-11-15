@@ -15,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import tech.zdrzalik.courses.common.I18nCodes;
@@ -58,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anonymous();
         http
                 .exceptionHandling()
-                        .authenticationEntryPoint(new BasicAuthenticationEntryPoint());
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         http.addFilterBefore(new AppAuthenticationFilter(userDetails, jwtUtils), UsernamePasswordAuthenticationFilter.class);
     }
 
