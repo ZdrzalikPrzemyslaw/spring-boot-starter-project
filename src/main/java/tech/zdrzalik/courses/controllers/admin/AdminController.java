@@ -94,7 +94,7 @@ public class AdminController {
             response.addCookie(createBearerTokenCookie(authenticate, JWT_TOKEN_VALIDITY));
             return new ModelAndView("redirect:/admin");
         } catch (Throwable t) {
-            RedirectView redirectView = new RedirectView("redirect:/admin");
+            RedirectView redirectView = new RedirectView("/admin", true);
             redirectView.setStatusCode(HttpStatus.UNAUTHORIZED);
             return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
@@ -150,7 +150,7 @@ public class AdminController {
 
     @GetMapping(value = { "user-info"}, produces = MediaType.TEXT_HTML_VALUE)
     public RedirectView getUser() {
-        return new RedirectView("/admin/users-list");
+        return new RedirectView("/admin/users-list", true);
     }
 
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
