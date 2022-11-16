@@ -1,12 +1,18 @@
 package tech.zdrzalik.courses.DTO.Request;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.BindingResult;
 import tech.zdrzalik.courses.common.I18nCodes;
+import tech.zdrzalik.courses.controllers.admin.AdminController;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * This class defines a POJO used as a DTO to transfer basic user info.
+ * Used as a param in {@link AdminController#editUser(Long, EditUserInfoDTO, BindingResult)}
+ */
 public class EditUserInfoDTO {
     @Length(min = 0, max = 64, message = I18nCodes.EMAIL_INVALID_SIZE)
     @NotBlank(message = I18nCodes.EMAIL_NULL)

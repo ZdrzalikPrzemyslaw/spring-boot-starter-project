@@ -46,12 +46,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         cookieLocaleResolver.setDefaultLocale(new Locale(defaultLocale));
         return cookieLocaleResolver;
     }
-
-    @Component("localeContextHolderWrapper")
-    public static class localeContextHolderWrapper {
-        public LocaleContext getLocaleContext() {
-            return LocaleContextHolder.getLocaleContext();
-        }
-    }
-
 }

@@ -1,5 +1,11 @@
 package tech.zdrzalik.courses.DTO.Request;
 
+import tech.zdrzalik.courses.controllers.AccountController;
+
+/**
+ * This class defines a POJO used as a DTO to transfer information required to create a new account.
+ * Used as a param in {@link AccountController#RegisterAccount(RegisterAccountDTO)}
+ */
 public class RegisterAccountDTO {
     // TODO: 12/11/2022 Nałożyć wymagania na hasło, i ogólnie bean validation 
     private String email;
