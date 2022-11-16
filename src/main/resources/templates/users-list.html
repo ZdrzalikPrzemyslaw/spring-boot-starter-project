@@ -37,9 +37,8 @@
                     </ul>
                 </td>
                 <td class="table-col">
-                    <a th:href="@{{context_path}/{locale}/admin/user-info/{id}(
+                    <a th:href="@{/{locale}/admin/user-info/{id}(
                                             locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                                            context_path=${#httpServletRequest.getContextPath()},
                                             id=${user.id})}">
                         <button class="btn-primary" th:text="#{details}" type="button"/>
                     </a>
@@ -49,17 +48,15 @@
         </table>
     </div>
 
-    <a th:href="@{{context_path}/{locale}/admin/users-list(
+    <a th:href="@{/{locale}/admin/users-list(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                                        context_path=${#httpServletRequest.getContextPath()},
                                         page=${users.previousPageable().getPageNumber()})}"
        th:if="${users.hasPrevious()}">
         <button class="btn-primary float-left min-w-[100px] max-w-[45%]" th:text="'previous'" type="button"/>
     </a>
 
-    <a th:href="@{{context_path}/{locale}/admin/users-list(
+    <a th:href="@{/{locale}/admin/users-list(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                                        context_path=${#httpServletRequest.getContextPath()},
                                         page=${users.nextPageable().getPageNumber()})}"
        th:if="${users.hasNext()}">
         <button class="btn-primary float-right min-w-[100px] max-w-[45%]" th:text="'next'" type="button"/>

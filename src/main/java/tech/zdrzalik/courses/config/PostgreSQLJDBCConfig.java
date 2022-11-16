@@ -58,7 +58,6 @@ public class PostgreSQLJDBCConfig {
                 .build();
     }
 
-
     @Bean("postgresql.1.entityManagerFactory")
     @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
