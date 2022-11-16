@@ -18,6 +18,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
+/**
+ * This class configures the datasource used in the application based on the data provided in the application.properties file.
+ */
+
 // Prawdopodobnie jesli stworzymy druga taka klase mozemy miec drugie zrodlo danych w naszej apce.
 @Configuration
 @EnableTransactionManagement
@@ -53,6 +57,7 @@ public class PostgreSQLJDBCConfig {
                 .password(password)
                 .build();
     }
+
 
     @Bean("postgresql.1.entityManagerFactory")
     @Primary

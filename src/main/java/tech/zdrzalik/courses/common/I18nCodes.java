@@ -1,5 +1,10 @@
 package tech.zdrzalik.courses.common;
 
+/**
+ * This class contains all keys for internationalization for messages that can be sent by backend.
+ * A view layer which displays errors and other information to the user should have translation keys prepared for all these keys.
+ * This class should be split into multiple classes depending on the purpose of the message.
+ */
 public class I18nCodes {
     public static final String EMAIL_EXIST = "email_exist";
     public static final String LOCALE_ATTRIBUTE_NAME = "locale_internal";
