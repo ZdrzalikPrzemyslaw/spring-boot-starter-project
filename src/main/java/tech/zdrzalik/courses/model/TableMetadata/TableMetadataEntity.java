@@ -1,6 +1,5 @@
 package tech.zdrzalik.courses.model.TableMetadata;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 
 import javax.persistence.*;
@@ -44,6 +43,7 @@ public class TableMetadataEntity {
     private String createdByIp;
 
     public TableMetadataEntity() {
+        super();
     }
 
     @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -53,7 +53,6 @@ public class TableMetadataEntity {
     @Column(name = "created_date_time", nullable = true)
     private LocalDateTime createdDateTime;
 
-    // TODO: 05/05/2022 Trzeba sprawić żeby ta wersja tutaj atumatycznie dzialala, ewentualnie dac wersje na kazda tabele ale to smutne
     @Basic
     @Version
     @Column(name = "version", nullable = true)
@@ -69,8 +68,6 @@ public class TableMetadataEntity {
         }
         if (version == null ) {
             version = 0L;
-        }
-        if (createdBy == null) {
         }
     }
 

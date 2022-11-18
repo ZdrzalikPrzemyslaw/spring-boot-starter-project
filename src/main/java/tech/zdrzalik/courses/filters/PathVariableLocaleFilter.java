@@ -2,10 +2,8 @@ package tech.zdrzalik.courses.filters;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContext;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tech.zdrzalik.courses.common.I18nCodes;
@@ -47,7 +45,7 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
             LocaleUtils.toLocale(locale);
             return true;
         } catch (IllegalArgumentException e) {
-
+            LogFactory.getLog(this.getClass()).debug("Invalid locale tag in isLocale method of PathVariableLocaleFilter " , e);
         }
         return false;
     }

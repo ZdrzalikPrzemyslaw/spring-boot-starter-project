@@ -71,4 +71,14 @@ public class UserInfoEntity extends AbstractEntity {
         this.lastName = lastName;
         return this;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

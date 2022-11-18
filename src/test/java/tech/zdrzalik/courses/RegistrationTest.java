@@ -48,7 +48,7 @@ class RegistrationTest {
                 .andExpect(status().isOk());
 
         List<AccountInfoEntity> accounts = accountInfoRepository.findAll().stream().filter(account -> Objects.equals(account.getEmail(), email)).toList();
-        assertThat(accounts.size()).isEqualTo(1);
+        assertThat(accounts).hasSize(1);
         assertThat(accounts.get(0).getEmail()).isEqualTo(email);
         assertThat(accounts.get(0).getEmail()).isEqualTo(email);
         assertThat(accounts.get(0).getUserInfoEntity().getFirstName()).isEqualTo(firstName);

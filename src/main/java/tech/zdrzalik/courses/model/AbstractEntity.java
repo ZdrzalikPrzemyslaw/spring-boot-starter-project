@@ -3,6 +3,7 @@ package tech.zdrzalik.courses.model;
 import tech.zdrzalik.courses.model.TableMetadata.TableMetadataEntity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @MappedSuperclass()
 public abstract class AbstractEntity {
@@ -27,7 +28,7 @@ public abstract class AbstractEntity {
     /**
      * Tworzy nową instancję klasy AbstractEntity.
      */
-    public AbstractEntity() {
+    protected AbstractEntity() {
     }
 
     public TableMetadataEntity getTableMetadataEntity() {
@@ -40,20 +41,15 @@ public abstract class AbstractEntity {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractEntity that)) return false;
+        return (Objects.equals(getVersion(), that.getVersion()));
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object == null) return false;
-        if (object.getClass() != this.getClass()) {
-            return false;
-        }
-        AbstractEntity other = (AbstractEntity) object;
-        return (this.getId() != null || other.getId() == null) && (this.getId() == null || this.getId().equals(other.getId()));
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
     public Long getVersion() {

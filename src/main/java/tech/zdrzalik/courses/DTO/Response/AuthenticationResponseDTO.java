@@ -22,6 +22,7 @@ public class AuthenticationResponseDTO extends MessageResponseDTO {
         return this;
     }
 
+    @Override
     public AuthenticationResponseDTO setMessage(String message) {
         super.setMessage(message);
         return this;

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository()
 @Transactional(propagation = Propagation.MANDATORY)
 public interface AccountInfoRepository extends AbstractJpaRepository<AccountInfoEntity>, AccountInfoRepositoryWithEM {
-    Boolean existsAccountInfoEntitiesByEmailEquals(String email);
+    boolean existsAccountInfoEntitiesByEmailEquals(String email);
     List<AccountInfoEntity> findAccountInfoEntitiesByEmail(String email);
     Optional<AccountInfoEntity> findAccountInfoEntityByEmail(String email);
 

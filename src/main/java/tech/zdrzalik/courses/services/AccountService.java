@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -116,10 +115,9 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
     }
 
-    public void editAccount(Long id, String email, Boolean enabled, String firstName, String lastname){
+    public void editAccount(Long id, String email, boolean enabled, String firstName, String lastname) {
         AccountInfoEntity accountInfoEntity = this.findById(id);
-        if (!Objects.equals(email, accountInfoEntity.getEmail())
-                && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
+        if (!Objects.equals(email, accountInfoEntity.getEmail()) && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
             throw AccountInfoException.emailAlreadyExists();
         }
         accountInfoEntity.setEmail(email).setEnabled(enabled).getUserInfoEntity().setFirstName(firstName).setLastName(lastname);
@@ -131,21 +129,15 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     }
 
     public String authenticate(AuthenticationRequestDTO dto) {
-        String email = dto.getEmail();
-        String password = dto.getPassword();
-        Authentication authentication;
         try {
-            authentication = authenticationManager.
-                    authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
             throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
         } catch (BadCredentialsException e) {
             throw new AuthorizationErrorException(I18nCodes.INVALID_CREDENTIALS, e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        String token = jwtTokenUtil.generateToken(userDetails);
-        return token;
-
+        return jwtTokenUtil.generateToken(userDetails);
     }
 
     @Override

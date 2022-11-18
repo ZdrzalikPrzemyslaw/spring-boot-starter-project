@@ -39,7 +39,7 @@ public class AdminController {
 
     private final AccountService accountService;
     @Value("${jwt.validity}")
-    private int JWT_TOKEN_VALIDITY;
+    private int jwtTokenValidity;
 
 
     public AdminController(AccountService accountService) {
@@ -73,8 +73,7 @@ public class AdminController {
     @PostMapping(value = "/logout", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView logout(HttpServletResponse response) {
         response.addCookie(createBearerTokenCookie(null, 0));
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin");
-        return modelAndView;
+        return new ModelAndView("redirect:/admin");
     }
 
     @PreAuthorize("permitAll()")
@@ -91,15 +90,14 @@ public class AdminController {
             // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
             String authenticate = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
-            response.addCookie(createBearerTokenCookie(authenticate, JWT_TOKEN_VALIDITY));
+            response.addCookie(createBearerTokenCookie(authenticate, jwtTokenValidity));
             return new ModelAndView("redirect:/admin");
-        } catch (Throwable t) {
+        } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);
             redirectView.setStatusCode(HttpStatus.UNAUTHORIZED);
             return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
         }
-//        return new ModelAndView("redirect:/admin");
     }
 
     @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
@@ -127,10 +125,6 @@ public class AdminController {
         try {
             accountService.registerAccount(dto);
         } catch (AccountInfoException e) {
-            // TODO: 12/11/2022 Dowiedziec sie, dlaczego gdy tutaj robie redirect to nie dziala 
-//            RedirectView redirectView = new RedirectView("/admin/create-account");
-//            redirectView.setStatusCode(HttpStatus.BAD_REQUEST);
-//            return redirectView;
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo stworzyć konta

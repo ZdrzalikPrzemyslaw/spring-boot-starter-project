@@ -31,7 +31,7 @@ public class AuthenticationController {
     @PostMapping()
     @PermitAll
     @ResponseBody()
-    public ResponseEntity<?> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) AuthenticationRequestDTO dto) {
+    public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) AuthenticationRequestDTO dto) {
         String token = accountService.authenticate(dto);
         return ResponseEntity.ok().body(
                 new AuthenticationResponseDTO()

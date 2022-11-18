@@ -18,7 +18,7 @@ public class JWTUtils {
     private String secret;
 
     @Value("${jwt.validity}")
-    public long JWT_TOKEN_VALIDITY;
+    public long jwtTokenValidity;
 
     public String getSubjectFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
@@ -53,11 +53,11 @@ public class JWTUtils {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidity * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
-    public Boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         return (Jwts.parser().setSigningKey(secret).isSigned(token) && !isTokenExpired(token));
     }
 

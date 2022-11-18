@@ -34,7 +34,7 @@ public class AccountController {
     @PostMapping(value = "/register")
     @ResponseBody()
     @PermitAll
-    public ResponseEntity<?> RegisterAccount(@RequestBody RegisterAccountDTO dto) {
+    public ResponseEntity<MessageResponseDTO> registerAccount(@RequestBody RegisterAccountDTO dto) {
         accountService.registerAccount(dto);
         return ResponseEntity.ok().body(new MessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));
     }
