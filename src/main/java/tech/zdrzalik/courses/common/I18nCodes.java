@@ -1,5 +1,9 @@
 package tech.zdrzalik.courses.common;
 
+import org.springframework.http.HttpStatus;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * This class contains all keys for internationalization for messages that can be sent by backend.
  * A view layer which displays errors and other information to the user should have translation keys prepared for all these keys.
@@ -224,4 +228,9 @@ public class I18nCodes {
     private I18nCodes() {
         throw new UnsupportedOperationException(I18nCodes.class + " should not be instantiated");
     }
+
+    public static String getCodeByStatus(@NotNull HttpStatus status) {
+        return status.name().toLowerCase();
+    }
+
 }

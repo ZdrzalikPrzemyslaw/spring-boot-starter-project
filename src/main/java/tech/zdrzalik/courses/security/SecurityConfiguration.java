@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tech.zdrzalik.courses.utils.JWTUtils;
 
@@ -38,18 +39,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+            .cors()
                 .disable()
-                .csrf()
+            .csrf()
                 .disable()
-                .sessionManagement()
+            .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
-                .anonymous();
+            .anonymous();
         http
-                .exceptionHandling()
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-        http.addFilterBefore(new AppAuthenticationFilter(userDetails, jwtUtils), UsernamePasswordAuthenticationFilter.class);
+            .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new AccessDeniedHandlerImpl());
+        http
+            .addFilterBefore(new AppAuthenticationFilter(userDetails, jwtUtils), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

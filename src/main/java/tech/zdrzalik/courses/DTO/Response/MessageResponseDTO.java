@@ -1,20 +1,8 @@
 package tech.zdrzalik.courses.DTO.Response;
 
-public class MessageResponseDTO {
-    private String message;
+public interface MessageResponseDTO {
 
-    public MessageResponseDTO() {
+    public abstract String getMessage();
 
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public MessageResponseDTO setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
+    public abstract MessageResponseDTO setMessage(String message);
 }
-
