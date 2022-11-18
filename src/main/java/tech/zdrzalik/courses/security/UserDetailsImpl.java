@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
-
     private final Collection<? extends GrantedAuthority> authorities;
     private final String username;
     private final String password;
