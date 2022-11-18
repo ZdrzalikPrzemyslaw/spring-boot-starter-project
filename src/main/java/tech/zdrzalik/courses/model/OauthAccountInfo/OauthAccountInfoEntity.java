@@ -27,6 +27,7 @@ public class OauthAccountInfoEntity  extends AbstractEntity {
     private AccountInfoEntity accountInfoId;
 
     public OauthAccountInfoEntity() {
+        super();
     }
 
     public Long getId() {
@@ -59,5 +60,15 @@ public class OauthAccountInfoEntity  extends AbstractEntity {
 
     public void setAccountInfoId(AccountInfoEntity accountInfoId) {
         this.accountInfoId = accountInfoId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

@@ -9,9 +9,8 @@
 
 <a th:if="${#httpServletRequest.getServletPath()} != '/admin'"
    th:fragment="admin-link(button)"
-   th:href="@{{context_path}/{locale}/admin(
-                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
-                context_path=${#httpServletRequest.getContextPath()})}"
+   th:href="@{/{locale}/admin(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()})}"
 >
     <button type="button" th:replace="${button}" th:text="#{return}"/>
 </a>

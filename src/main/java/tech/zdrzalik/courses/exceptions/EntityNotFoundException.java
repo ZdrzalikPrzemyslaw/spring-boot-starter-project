@@ -26,7 +26,7 @@ public class EntityNotFoundException extends AppBaseException {
         return this;
     }
 
-    public static <T> EntityNotFoundException entityNotFound(Long id) {
-        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND);
+    public static EntityNotFoundException entityNotFound(Long id) {
+        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND).setId(id);
     }
 }

@@ -6,14 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
-import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
+import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
@@ -113,14 +111,13 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfoRepository.save(accountInfo);
     }
 
-    public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
+    public void registerAccount(RegisterAccountDTO dto) {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
     }
 
-    public void editAccount(Long id, String email, Boolean enabled, String firstName, String lastname){
+    public void editAccount(Long id, String email, boolean enabled, String firstName, String lastname) {
         AccountInfoEntity accountInfoEntity = this.findById(id);
-        if (!Objects.equals(email, accountInfoEntity.getEmail())
-                && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
+        if (!Objects.equals(email, accountInfoEntity.getEmail()) && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
             throw AccountInfoException.emailAlreadyExists();
         }
         accountInfoEntity.setEmail(email).setEnabled(enabled).getUserInfoEntity().setFirstName(firstName).setLastName(lastname);
@@ -131,22 +128,16 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
-    public String authenticate(LoginRequestDTO dto) {
-        String email = dto.getEmail();
-        String password = dto.getPassword();
-        Authentication authentication;
+    public String authenticate(AuthenticationRequestDTO dto) {
         try {
-            authentication = authenticationManager.
-                    authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
             throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
         } catch (BadCredentialsException e) {
             throw new AuthorizationErrorException(I18nCodes.INVALID_CREDENTIALS, e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        String token = jwtTokenUtil.generateToken(userDetails);
-        return token;
-
+        return jwtTokenUtil.generateToken(userDetails);
     }
 
     @Override

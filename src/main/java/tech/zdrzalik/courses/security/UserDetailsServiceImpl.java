@@ -7,15 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.common.I18nCodes;
-import tech.zdrzalik.courses.exceptions.EntityNotFoundException;
-import tech.zdrzalik.courses.model.AccessLevel.AccessLevelsEntity;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Component
 @Transactional(propagation = Propagation.REQUIRED)
@@ -37,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .getAccessLevels()
                 .stream()
                 .map(level -> new SimpleGrantedAuthority(level.getLevel().toString().toLowerCase()))
-                .collect(Collectors.toList());
+                .toList();
         return new UserDetailsImpl(
                 authorities,
                 userInfo.getEmail(),

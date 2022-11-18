@@ -5,13 +5,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import java.text.MessageFormat;
 import java.util.Optional;
 
 public abstract class AbstractRepository<T> {
 
     private final Class<T> entityClass;
 
-    public AbstractRepository(Class<T> entityClass) {
+    protected AbstractRepository(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -23,7 +24,7 @@ public abstract class AbstractRepository<T> {
             return Optional.of(retriever.retrieve());
         } catch (NoResultException ex) {
             Logger logger = LoggerFactory.getLogger(AbstractRepository.class);
-            logger.debug("FindOrEmpty threw " + ex + " from " + retriever);
+            logger.debug(MessageFormat.format("FindOrEmpty threw {0} from {1}", ex, retriever));
         }
         return Optional.empty();
     }

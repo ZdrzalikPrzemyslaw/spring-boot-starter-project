@@ -1,9 +1,10 @@
 package tech.zdrzalik.courses.DTO.Response;
 
 public class MessageResponseDTO {
-    String message;
+    private String message;
 
     public MessageResponseDTO() {
+
     }
 
     public String getMessage() {

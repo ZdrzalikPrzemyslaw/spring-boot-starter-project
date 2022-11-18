@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.DTO.Response.MessageResponseDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
-import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.services.AccountService;
 
 import javax.annotation.security.PermitAll;
 
+/**
+ * Controller on /account mapping. All api paths concerning account should be defined here.
+ */
 @Controller()
 @RequestMapping("/account")
 public class AccountController {
@@ -25,10 +26,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    /**
+     * Method which creates a new account for user details specified in {@link RegisterAccountDTO}.
+     * @param dto {@link RegisterAccountDTO} constructed from the api request.
+     * @return {@link ResponseEntity} with a {@link ResponseEntity#body} consisting of {@link MessageResponseDTO} with the {@link MessageResponseDTO#message} of {@link I18nCodes#ACCOUNT_CREATED_SUCCESSFULLY}
+     */
     @PostMapping(value = "/register")
     @ResponseBody()
     @PermitAll
-    public ResponseEntity<?> RegisterAccount(@RequestBody RegisterAccountDTO dto) throws AccountInfoException {
+    public ResponseEntity<MessageResponseDTO> registerAccount(@RequestBody RegisterAccountDTO dto) {
         accountService.registerAccount(dto);
         return ResponseEntity.ok().body(new MessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));
     }

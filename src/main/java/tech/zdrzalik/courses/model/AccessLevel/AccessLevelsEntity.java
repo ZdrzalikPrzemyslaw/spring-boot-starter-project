@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
+
 @Entity
 @Table(name = "access_levels", schema = "public", uniqueConstraints = {
 
@@ -39,6 +40,7 @@ public class AccessLevelsEntity extends AbstractEntity {
     private boolean enabled = true;
 
     public AccessLevelsEntity() {
+        super();
     }
 
     public AccountInfoEntity getAccountInfoId() {
@@ -65,8 +67,6 @@ public class AccessLevelsEntity extends AbstractEntity {
         return this;
     }
 
-
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -86,4 +86,13 @@ public class AccessLevelsEntity extends AbstractEntity {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

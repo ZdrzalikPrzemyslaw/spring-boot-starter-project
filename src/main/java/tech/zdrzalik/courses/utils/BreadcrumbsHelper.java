@@ -1,24 +1,36 @@
 package tech.zdrzalik.courses.utils;
 
-import tech.zdrzalik.courses.config.WebMvcConfig;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * Utility class used in thymeleaf templates to generate breadcrumbs.
+ */
+@Component("breadcrumbsHelper")
 public class BreadcrumbsHelper {
-
-    public List<Map.Entry<String, String>> getBreadcrumbs(HttpServletRequest httpServletRequest, WebMvcConfig.localeContextHolderWrapper holderWrapper) {
+    /**
+     *
+     * @param httpServletRequest Defaults to being {@link org.springframework.beans.factory.annotation.Autowired}. Used to get the {@link HttpServletRequest#getServletPath()}.
+     * @param holderWrapper Defaults to being  {@link org.springframework.beans.factory.annotation.Autowired}. Used to add current locale to the breadcrumbs URI.
+     * @return {@link List} of {@link Map.Entry} where the keys are the '/' separated parts of the URI, and the values are the URL to the given breadcrumbs, relative to the current ServletContext.
+     */
+    public List<Map.Entry<String, String>> getBreadcrumbs(HttpServletRequest httpServletRequest, LocaleContextHolderWrapper holderWrapper) {
         var list = Arrays.stream(httpServletRequest.getServletPath().split("/")).filter(x -> !"".equals(x)).toList();
         List<Map.Entry<String, String>> listMap = new ArrayList<>();
-        String url = httpServletRequest.getContextPath() + "/" + holderWrapper.getLocaleContext().getLocale().toString();
+        StringBuilder url = new StringBuilder()
+                .append("/")
+                .append((null != holderWrapper.getLocaleContext().getLocale())
+                        ? holderWrapper.getLocaleContext().getLocale().toString() : "");
         for (var item : list) {
-            url += "/" + item;
-            listMap.add(new AbstractMap.SimpleEntry<>(item, url));
+            url.append("/").append(item);
+            listMap.add(new AbstractMap.SimpleEntry<>(item, url.toString()));
         }
         return listMap;
     }

@@ -16,9 +16,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.Map;
 
-// Prawdopodobnie jesli stworzymy druga taka klase mozemy miec drugie zrodlo danych w naszej apce.
+/**
+ * This class configures the datasource used in the application based on the data provided in the application.properties file.
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -62,11 +64,7 @@ public class PostgreSQLJDBCConfig {
     ) {
         return builder
                 .dataSource(dataSource)
-                .properties(new HashMap<>() {
-                    {
-                        put("hibernate.dialect", dialect);
-                    }
-                })
+                .properties(Map.of("hibernate.dialect", dialect))
                 .packages("tech.zdrzalik.courses.model")
                 .persistenceUnit("pu")
                 .build();

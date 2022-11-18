@@ -19,7 +19,7 @@ import tech.zdrzalik.courses.services.AccountService;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class AccountControllerTest {
+class AccountControllerTest {
     @Autowired
     private AccountController accountController;
 
@@ -31,13 +31,14 @@ public class AccountControllerTest {
 
     @Test
     void successfulRegister() {
-        accountController.RegisterAccount(new RegisterAccountDTO("b@c.com", "Password123!", "fNameTest", "lNameTest"));
+        accountController.registerAccount(new RegisterAccountDTO("b@c.com", "Password123!", "fNameTest", "lNameTest"));
     }
 
     @Test
     void failRegisterExistingMail() {
+        RegisterAccountDTO registerAccountDTO = new RegisterAccountDTO("a@b.com", "Password123!", "fNameTest", "lNameTest");
         Assertions.assertThrows(AccountInfoException.class, () -> {
-            accountController.RegisterAccount(new RegisterAccountDTO("a@b.com", "Password123!", "fNameTest", "lNameTest"));
+            accountController.registerAccount(registerAccountDTO);
         });
     }
 

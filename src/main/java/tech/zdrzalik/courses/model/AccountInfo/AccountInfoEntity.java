@@ -10,18 +10,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "account_info", schema = "public", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"email"}),
 })
-@NamedQueries({
-        @NamedQuery(name = "AccountInfoEntity.findAll", query = "SELECT a FROM AccountInfoEntity a"),
-        @NamedQuery(name = "AccountInfoEntity.findById", query = "SELECT a FROM AccountInfoEntity a WHERE a.id = :id"),
-        @NamedQuery(name = "AccountInfoEntity.findByConfirmed", query = "SELECT a FROM AccountInfoEntity a WHERE a.confirmed = :confirmed"),
-        @NamedQuery(name = "AccountInfoEntity.findByEnabled", query = "SELECT a FROM AccountInfoEntity a WHERE a.enabled = :enabled"),
-        @NamedQuery(name = "AccountInfoEntity.findByEmail", query = "SELECT a FROM AccountInfoEntity a WHERE a.email = :email")})
 
 public class AccountInfoEntity extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_info_sequence")
@@ -40,7 +33,7 @@ public class AccountInfoEntity extends AbstractEntity {
     @Basic
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
-    // TODO: 12/11/2022 Zmienic confirmed domyslne na false po dodaniu maili
+    // TODO: 12/11/2022 Zmienić confirmed domyślne na false po dodaniu maili
     @Basic
     @Column(name = "confirmed", nullable = false)
     private boolean confirmed = true;
@@ -94,6 +87,7 @@ public class AccountInfoEntity extends AbstractEntity {
     }
 
     public AccountInfoEntity() {
+        super();
     }
 
     public AccountInfoEntity(String email, String password, UserInfoEntity userInfoEntity) {
@@ -259,5 +253,15 @@ public class AccountInfoEntity extends AbstractEntity {
 
     public List<OauthAccountInfoEntity> getOauthAccountInfoEntityList() {
         return oauthAccountInfoEntityList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

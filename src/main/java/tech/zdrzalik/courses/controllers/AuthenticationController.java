@@ -1,13 +1,10 @@
 package tech.zdrzalik.courses.controllers;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
-import tech.zdrzalik.courses.DTO.Response.LoginResponseDTO;
-import tech.zdrzalik.courses.DTO.Response.MessageResponseDTO;
+import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
+import tech.zdrzalik.courses.DTO.Response.AuthenticationResponseDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.services.AccountService;
 
@@ -25,14 +22,19 @@ public class AuthenticationController {
         this.accountService = accountService;
     }
 
+    /**
+     * This method accepts {@link org.springframework.http.HttpMethod#POST} requests
+     * @param dto {@link AuthenticationRequestDTO} constructed from the api request.
+     * @return {@link ResponseEntity} containing the authentication token and basic info about user as specified in {@link AuthenticationResponseDTO}.
+     */
     // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
     @PostMapping()
     @PermitAll
     @ResponseBody()
-    public ResponseEntity<?> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) LoginRequestDTO dto) throws Exception {
+    public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) AuthenticationRequestDTO dto) {
         String token = accountService.authenticate(dto);
         return ResponseEntity.ok().body(
-                new LoginResponseDTO()
+                new AuthenticationResponseDTO()
                         .setMessage(I18nCodes.AUTHENTICATION_SUCCESS)
                         .setToken(token));
     }
