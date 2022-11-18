@@ -10,18 +10,18 @@ import javax.validation.constraints.NotNull;
 
 /**
  * This class defines a POJO used as a DTO to transfer login information.
- * Used as a param in {@link AuthenticationController#authenticate(LoginRequestDTO)} and {@link AdminController#authenticate(LoginRequestDTO, BindingResult, HttpServletResponse)}
+ * Used as a param in {@link AuthenticationController#authenticate(AuthenticationRequestDTO)} and {@link AdminController#authenticate(AuthenticationRequestDTO, BindingResult, HttpServletResponse)}
  */
-public class LoginRequestDTO {
+public class AuthenticationRequestDTO {
     @NotNull(message = I18nCodes.EMAIL_NULL)
     private String email;
     @NotNull(message = I18nCodes.PASSWORD_NULL)
     private String password;
 
-    public LoginRequestDTO() {
+    public AuthenticationRequestDTO() {
     }
 
-    public LoginRequestDTO(String email, String password) {
+    public AuthenticationRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -30,7 +30,7 @@ public class LoginRequestDTO {
         return email;
     }
 
-    public LoginRequestDTO setEmail(String email) {
+    public AuthenticationRequestDTO setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -39,7 +39,7 @@ public class LoginRequestDTO {
         return password;
     }
 
-    public LoginRequestDTO setPassword(String password) {
+    public AuthenticationRequestDTO setPassword(String password) {
         this.password = password;
         return this;
     }

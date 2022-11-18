@@ -7,13 +7,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
-import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
+import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
@@ -113,7 +112,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfoRepository.save(accountInfo);
     }
 
-    public void registerAccount(RegisterAccountDTO dto) throws AccountInfoException {
+    public void registerAccount(RegisterAccountDTO dto) {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
     }
 
@@ -131,7 +130,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
-    public String authenticate(LoginRequestDTO dto) {
+    public String authenticate(AuthenticationRequestDTO dto) {
         String email = dto.getEmail();
         String password = dto.getPassword();
         Authentication authentication;

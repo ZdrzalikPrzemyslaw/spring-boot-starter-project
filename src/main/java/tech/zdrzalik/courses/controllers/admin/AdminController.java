@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
-import tech.zdrzalik.courses.DTO.Request.LoginRequestDTO;
+import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
@@ -53,7 +53,7 @@ public class AdminController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("DTO", new LoginRequestDTO());
+            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             return modelAndView;
         }
         return new ModelAndView("admin-panel");
@@ -79,11 +79,11 @@ public class AdminController {
 
     @PreAuthorize("permitAll()")
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull LoginRequestDTO dto, BindingResult result, HttpServletResponse response) {
+    public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-            modelAndView.addObject("DTO", new LoginRequestDTO());
+            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
