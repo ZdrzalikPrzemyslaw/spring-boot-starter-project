@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import tech.zdrzalik.courses.DTO.Response.ErrorResponseDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
+import tech.zdrzalik.courses.exceptions.AppBaseException;
 import tech.zdrzalik.courses.exceptions.EntityNotFoundException;
 
 import javax.servlet.RequestDispatcher;
@@ -41,6 +42,11 @@ public class ExceptionHandlers {
         return handle(e, request, response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public Object handleEntityNotFoundException(EntityNotFoundException e, HttpServletRequest request, HttpServletResponse response) {
+        return handle(e, request, response, HttpStatus.NOT_FOUND, I18nCodes.ENTITY_NOT_FOUND);
+    }
+
     // TODO: 18/11/2022 Kiedy robimy tutaj obsluge, to 401 i 403 sa takie same
     //      Obsluga taka jak w tech.zdrzalik.courses.security.SecurityConfiguration dziala ale przy 403 wylewa sie wyjatek
     @ExceptionHandler(AccessDeniedException.class)
@@ -48,9 +54,12 @@ public class ExceptionHandlers {
         throw e;
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public Object handleEntityNotFoundException(EntityNotFoundException e, HttpServletRequest request, HttpServletResponse response) {
-        return handle(e, request, response, HttpStatus.NOT_FOUND, I18nCodes.ENTITY_NOT_FOUND);
+    /**
+     * We exclude all exceptions deriving from {@link AppBaseException} from custom exception handling.
+     */
+    @ExceptionHandler(AppBaseException.class)
+    public Object handleAppBaseException(AppBaseException e, HttpServletRequest request, HttpServletResponse response) {
+        throw e;
     }
 
     private Object handle(Exception e, HttpServletRequest request, HttpServletResponse response, HttpStatus status) {
