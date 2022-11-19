@@ -132,9 +132,9 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
-            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
+            throw AuthorizationErrorException.accountDisabled(e);
         } catch (BadCredentialsException e) {
-            throw new AuthorizationErrorException(I18nCodes.INVALID_CREDENTIALS, e);
+            throw AuthorizationErrorException.invalidCredentials(e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         return jwtTokenUtil.generateToken(userDetails);

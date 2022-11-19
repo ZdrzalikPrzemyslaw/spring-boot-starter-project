@@ -8,11 +8,11 @@ import tech.zdrzalik.courses.common.I18nCodes;
 public class EntityNotFoundException extends AppBaseException {
 
     private Long id;
-    protected EntityNotFoundException(String message) {
+    private EntityNotFoundException(String message) {
         super(message);
     }
 
-    protected EntityNotFoundException(String message, Throwable cause) {
+    private EntityNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -21,7 +21,7 @@ public class EntityNotFoundException extends AppBaseException {
         return id;
     }
 
-    public EntityNotFoundException setId(Long id) {
+    private EntityNotFoundException setId(Long id) {
         this.id = id;
         return this;
     }
