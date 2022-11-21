@@ -1,46 +1,25 @@
 package tech.zdrzalik.courses;
 
-import net.minidev.json.parser.JSONParser;
 import org.apache.logging.log4j.util.Strings;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
 import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
-import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
-import tech.zdrzalik.courses.DTO.Response.BasicMessageResponseDTO;
 import tech.zdrzalik.courses.common.I18nCodes;
-import tech.zdrzalik.courses.controllers.AccountController;
-import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.exceptions.AuthorizationErrorException;
 import tech.zdrzalik.courses.exceptions.EntityNotFoundException;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
 import tech.zdrzalik.courses.services.AccountService;
 
-import javax.security.auth.login.AccountNotFoundException;
-import javax.validation.constraints.AssertTrue;
-import java.nio.file.AccessDeniedException;
 import java.rmi.UnexpectedException;
-import java.text.MessageFormat;
-import java.util.function.Supplier;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.)
@@ -130,14 +109,47 @@ class AccountServiceTest {
     @Test
     void editAccountFailNotFound() throws UnexpectedException {
         TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        var invalidId = accountInfoRepository.findFirstByOrderByIdDesc().orElseThrow(() -> new UnexpectedException("Entity should exist")).getId() + 10;
         Assertions.assertThrows(EntityNotFoundException.class, () -> {
             accountService.editAccount(
-                    accountInfoRepository.findFirstByOrderByIdDesc().orElseThrow(() -> new UnexpectedException("Entity should exist")).getId() + 10,
+                    invalidId,
                     USER_EMAIL,
                     true,
                     USER_FIRST_NAME,
                     "newLastName");
         }, I18nCodes.ENTITY_NOT_FOUND);
+    }
+
+    @Test
+    void findAccountByEmail() {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        var entity = accountService.findByEmail(USER_EMAIL);
+        Assertions.assertNotNull(entity);
+        Assertions.assertTrue(entity.isEnabled());
+        Assertions.assertEquals(USER_EMAIL, entity.getEmail());
+        Assertions.assertEquals(USER_FIRST_NAME, entity.getUserInfoEntity().getFirstName());
+        Assertions.assertEquals(USER_LAST_NAME, entity.getUserInfoEntity().getLastName());
+    }
+
+    @Test
+    void findAccountByEmailFailNotAuth() {
+        Assertions.assertThrows(AccessDeniedException.class, () -> {
+            accountService.findByEmail(USER_EMAIL);
+        });
+    }
+    @Test
+    void editAccountFailNotAuth() {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        var accountInfoEntity = accountService.findByEmail(USER_EMAIL);
+        TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
+        Assertions.assertThrows(AccessDeniedException.class, () -> {
+            accountService.editAccount(
+                    accountInfoEntity.getId(),
+                    accountInfoEntity.getEmail(),
+                    accountInfoEntity.isEnabled(),
+                    accountInfoEntity.getUserInfoEntity().getFirstName(),
+                    "newLastName");
+        });
     }
 
 }
