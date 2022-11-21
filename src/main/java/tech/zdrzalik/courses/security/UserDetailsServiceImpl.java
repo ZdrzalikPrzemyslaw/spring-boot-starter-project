@@ -24,10 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
-        AccountInfoEntity userInfo = repository.findAccountInfoEntityByEmail(username).orElseThrow((() -> {
-            // TODO: 11/11/2022 Dowiedziec sie co sie w tym przypadku dzieje
-            throw new UsernameNotFoundException(I18nCodes.ACCOUNT_NOT_FOUND);
-        }));
+        // TODO: 11/11/2022 Dowiedziec sie co sie w tym przypadku dzieje
+        AccountInfoEntity userInfo = repository.findAccountInfoEntityByEmail(username).orElseThrow((() -> new UsernameNotFoundException(I18nCodes.ACCOUNT_NOT_FOUND)));
         Collection<SimpleGrantedAuthority> authorities = userInfo
                 .getAccessLevels()
                 .stream()
