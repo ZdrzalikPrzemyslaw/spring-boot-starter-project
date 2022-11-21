@@ -21,8 +21,6 @@ public abstract class AbstractService<T extends AbstractEntity> {
 
     public T findById(Long id) {
         Optional<T> optional = getRepository().findById(id);
-         return optional.orElseThrow(() -> {
-             throw EntityNotFoundException.entityNotFound(id);
-        });
+         return optional.orElseThrow(() -> EntityNotFoundException.entityNotFound(id));
     }
 }

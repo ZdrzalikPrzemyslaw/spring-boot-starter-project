@@ -28,6 +28,7 @@ import tech.zdrzalik.courses.security.UserDetailsImpl;
 import tech.zdrzalik.courses.security.UserDetailsServiceImpl;
 import tech.zdrzalik.courses.utils.JWTUtils;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,8 +65,14 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     }
 
     @PreAuthorize("hasAuthority('admin')")
+    public AccountInfoEntity findByEmail(String email) {
+        return accountInfoRepository.findAccountInfoEntityByEmail(email)
+                .orElseThrow(AccountInfoException::accountNotFound);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
     public void setAccountAdminRole(Long id, boolean isAdmin) {
-        var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
+        var accountInfo = accountInfoRepository.findById(id).orElseThrow(AccountInfoException::accountNotFound);
         for (AccessLevelsEntity accessLevel : accountInfo.getAccessLevels()) {
             if (accessLevel.getLevel().toString().equals("admin")) {
                 accessLevel.setEnabled(isAdmin);
@@ -87,14 +94,14 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     public void setAccountAdminRole(String email, boolean isAdmin) {
         this.setAccountAdminRole(
                 accountInfoRepository.findAccountInfoEntityByEmail(email)
-                        .orElseThrow(() -> {throw AccountInfoException.accountNotFound();})
+                        .orElseThrow(AccountInfoException::accountNotFound)
                         .getId(),
                 isAdmin);
     }
 
     @PreAuthorize("hasAuthority('admin')")
     public void setAccountEnabled(Long id, boolean enabled) {
-        var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
+        var accountInfo = accountInfoRepository.findById(id).orElseThrow(AccountInfoException::accountNotFound);
         accountInfo.setEnabled(enabled);
         accountInfoRepository.save(accountInfo);
     }
@@ -103,12 +110,13 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     public void setAccountEnabled(String email, boolean enabled) {
         this.setAccountEnabled(
                 accountInfoRepository.findAccountInfoEntityByEmail(email)
-                        .orElseThrow(() -> {throw AccountInfoException.accountNotFound();})
+                        .orElseThrow(AccountInfoException::accountNotFound)
                         .getId(),
                 enabled);
     }
 
 
+    @PreAuthorize("permitAll()")
     public void registerAccount(String email, String password, String firstName, String lastname){
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);
@@ -129,10 +137,22 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfoRepository.save(accountInfo);
     }
 
+    @PreAuthorize("permitAll()")
     public void registerAccount(RegisterAccountDTO dto) {
         registerAccount(dto.getEmail(), dto.getPassword(), dto.getFirstName(), dto.getLastName());
     }
 
+    @PreAuthorize("hasAuthority('admin')")
+    public void editAccount(String accountEmail, String newEmail, boolean enabled, String firstName, String lastname) {
+        editAccount(accountInfoRepository.findAccountInfoEntityByEmail(accountEmail)
+                        .orElseThrow(AccountInfoException::accountNotFound).getId(),
+                newEmail,
+                enabled,
+                firstName,
+                lastname);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
     public void editAccount(Long id, String email, boolean enabled, String firstName, String lastname) {
         AccountInfoEntity accountInfoEntity = this.findById(id);
         if (!Objects.equals(email, accountInfoEntity.getEmail()) && (accountInfoRepository.existsAccountInfoEntitiesByEmailEquals(email))) {
@@ -142,7 +162,18 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfoRepository.save(accountInfoEntity);
     }
 
-    public void editAccount(Long id, EditUserInfoDTO dto) throws AccountInfoException {
+    @PreAuthorize("hasAuthority('admin')")
+    public void editAccount(String email, EditUserInfoDTO dto) {
+        editAccount(accountInfoRepository.findAccountInfoEntityByEmail(email)
+                .orElseThrow(AccountInfoException::accountNotFound).getId(),
+                dto.getEmail(),
+                dto.getEnabled(),
+                dto.getFirstName(),
+                dto.getLastName());
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    public void editAccount(Long id, EditUserInfoDTO dto) {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
