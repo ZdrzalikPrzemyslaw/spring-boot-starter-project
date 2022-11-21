@@ -80,6 +80,26 @@ class AccountServiceTest {
                 I18nCodes.ACCOUNT_DISABLED);
     }
 
+
+
+    @Test
+    void findAccountByEmail() {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        var entity = accountService.findByEmail(USER_EMAIL);
+        Assertions.assertNotNull(entity);
+        Assertions.assertTrue(entity.isEnabled());
+        Assertions.assertEquals(USER_EMAIL, entity.getEmail());
+        Assertions.assertEquals(USER_FIRST_NAME, entity.getUserInfoEntity().getFirstName());
+        Assertions.assertEquals(USER_LAST_NAME, entity.getUserInfoEntity().getLastName());
+    }
+
+    @Test
+    void findAccountByEmailFailNotAuth() {
+        Assertions.assertThrows(AccessDeniedException.class, () -> {
+            accountService.findByEmail(USER_EMAIL);
+        });
+    }
+
     @Test
     void editAccountSuccessful() {
         TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
@@ -107,6 +127,26 @@ class AccountServiceTest {
     }
 
     @Test
+    void editAccountFailNotAuth() {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        var accountInfoEntity = accountService.findByEmail(USER_EMAIL);
+        var id = accountInfoEntity.getId();
+        var email = accountInfoEntity.getEmail();
+        var enabled = accountInfoEntity.isEnabled();
+        var firstName = accountInfoEntity.getUserInfoEntity().getFirstName();
+        Assertions.assertNotNull(accountInfoEntity);
+        TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
+        Assertions.assertThrows(AccessDeniedException.class, () -> {
+            accountService.editAccount(
+                    id,
+                    email,
+                    enabled,
+                    firstName,
+                    "newLastName");
+        });
+    }
+
+    @Test
     void editAccountFailNotFound() throws UnexpectedException {
         TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
         var invalidId = accountInfoRepository.findFirstByOrderByIdDesc().orElseThrow(() -> new UnexpectedException("Entity should exist")).getId() + 10;
@@ -118,38 +158,6 @@ class AccountServiceTest {
                     USER_FIRST_NAME,
                     "newLastName");
         }, I18nCodes.ENTITY_NOT_FOUND);
-    }
-
-    @Test
-    void findAccountByEmail() {
-        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
-        var entity = accountService.findByEmail(USER_EMAIL);
-        Assertions.assertNotNull(entity);
-        Assertions.assertTrue(entity.isEnabled());
-        Assertions.assertEquals(USER_EMAIL, entity.getEmail());
-        Assertions.assertEquals(USER_FIRST_NAME, entity.getUserInfoEntity().getFirstName());
-        Assertions.assertEquals(USER_LAST_NAME, entity.getUserInfoEntity().getLastName());
-    }
-
-    @Test
-    void findAccountByEmailFailNotAuth() {
-        Assertions.assertThrows(AccessDeniedException.class, () -> {
-            accountService.findByEmail(USER_EMAIL);
-        });
-    }
-    @Test
-    void editAccountFailNotAuth() {
-        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
-        var accountInfoEntity = accountService.findByEmail(USER_EMAIL);
-        TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
-        Assertions.assertThrows(AccessDeniedException.class, () -> {
-            accountService.editAccount(
-                    accountInfoEntity.getId(),
-                    accountInfoEntity.getEmail(),
-                    accountInfoEntity.isEnabled(),
-                    accountInfoEntity.getUserInfoEntity().getFirstName(),
-                    "newLastName");
-        });
     }
 
 }
