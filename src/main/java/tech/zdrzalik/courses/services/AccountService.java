@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
-import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.exceptions.AuthorizationErrorException;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
@@ -91,6 +91,23 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
                 isAdmin);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountEnabled(Long id, boolean enabled) {
+        var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
+        accountInfo.setEnabled(enabled);
+        accountInfoRepository.save(accountInfo);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountEnabled(String email, boolean enabled) {
+        this.setAccountEnabled(
+                accountInfoRepository.findAccountInfoEntityByEmail(email)
+                        .orElseThrow(() -> {throw AccountInfoException.accountNotFound();})
+                        .getId(),
+                enabled);
+    }
+
+
     public void registerAccount(String email, String password, String firstName, String lastname){
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);
@@ -132,9 +149,11 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
-            throw AuthorizationErrorException.accountDisabled(e);
+            throw AuthorizationErrorException.accountNotConfirmed(e);
         } catch (BadCredentialsException e) {
             throw AuthorizationErrorException.invalidCredentials(e);
+        } catch (LockedException e) {
+            throw AuthorizationErrorException.accountDisabled(e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         return jwtTokenUtil.generateToken(userDetails);

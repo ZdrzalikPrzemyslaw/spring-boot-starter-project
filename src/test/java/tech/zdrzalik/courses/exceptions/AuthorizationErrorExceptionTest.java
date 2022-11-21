@@ -16,6 +16,13 @@ class AuthorizationErrorExceptionTest {
     }
 
     @Test
+    void throwAuthorizationErrorExceptionAccountNotConfirmed() {
+        Assertions.assertThrows(AuthorizationErrorException.class, (() -> {
+            throw AuthorizationErrorException.accountNotConfirmed();
+        }), I18nCodes.ACCOUNT_NOT_CONFIRMED);
+    }
+
+    @Test
     void throwAuthorizationErrorExceptionInvalidCredentials() {
         Assertions.assertThrows(AuthorizationErrorException.class, (() -> {
             throw AuthorizationErrorException.invalidCredentials();

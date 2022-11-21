@@ -15,12 +15,20 @@ public class AuthorizationErrorException extends AppBaseException {
         super(message, cause);
     }
 
+    public static AuthorizationErrorException accountNotConfirmed(Throwable cause) {
+        return new AuthorizationErrorException(I18nCodes.ACCOUNT_NOT_CONFIRMED, cause);
+    }
+
+    public static AuthorizationErrorException accountNotConfirmed() {
+        return accountNotConfirmed(null);
+    }
+
     public static AuthorizationErrorException accountDisabled(Throwable cause) {
         return new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, cause);
     }
 
     public static AuthorizationErrorException accountDisabled() {
-        return accountDisabled(null);
+        return accountNotConfirmed(null);
     }
 
     public static AuthorizationErrorException invalidCredentials(Throwable cause) {

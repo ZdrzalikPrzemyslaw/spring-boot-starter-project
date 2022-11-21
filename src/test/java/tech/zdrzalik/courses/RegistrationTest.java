@@ -1,14 +1,21 @@
 package tech.zdrzalik.courses;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import tech.zdrzalik.courses.controllers.AccountController;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoEntity;
 import tech.zdrzalik.courses.model.AccountInfo.AccountInfoRepository;
+import tech.zdrzalik.courses.services.AccountService;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +37,17 @@ class RegistrationTest {
     @Autowired
     private AccountInfoRepository accountInfoRepository;
 
+    @AfterAll
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
+        TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
+    }
+
+    @BeforeEach
+    void setUp() {
+        TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
+    }
+
     @Test
     void workingRegistration() throws Exception {
         String email = "test@test.pl";
@@ -42,10 +60,7 @@ class RegistrationTest {
         jsonObject.put("lastName", lastName);
         String data = jsonObject.toString();
 
-        mockMvc.perform(post("/account/register", 42L)
-                        .contentType("application/json")
-                        .content(data))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/account/register").contentType("application/json").content(data)).andExpect(status().isOk());
 
         List<AccountInfoEntity> accounts = accountInfoRepository.findAll().stream().filter(account -> Objects.equals(account.getEmail(), email)).toList();
         assertThat(accounts).hasSize(1);
