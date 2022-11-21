@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
-import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.exceptions.AuthorizationErrorException;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
@@ -150,11 +149,11 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
-            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_NOT_CONFIRMED, e);
+            throw AuthorizationErrorException.accountNotConfirmed(e);
         } catch (BadCredentialsException e) {
-            throw new AuthorizationErrorException(I18nCodes.INVALID_CREDENTIALS, e);
+            throw AuthorizationErrorException.invalidCredentials(e);
         } catch (LockedException e) {
-            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
+            throw AuthorizationErrorException.accountDisabled(e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         return jwtTokenUtil.generateToken(userDetails);

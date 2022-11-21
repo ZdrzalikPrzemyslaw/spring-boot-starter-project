@@ -6,7 +6,7 @@ import tech.zdrzalik.courses.common.I18nCodes;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class AccountInfoException extends AppBaseException {
-    protected AccountInfoException(String message) {
+    private AccountInfoException(String message) {
         super(message);
     }
 
