@@ -13,7 +13,7 @@ public class AppBaseException extends RuntimeException {
         super(message, cause);
     }
 
-    public AppBaseException() {
+    private AppBaseException() {
 
     }
 }
