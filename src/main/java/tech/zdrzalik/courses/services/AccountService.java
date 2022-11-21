@@ -92,6 +92,23 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
                 isAdmin);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountEnabled(Long id, boolean enabled) {
+        var accountInfo = accountInfoRepository.findById(id).orElseThrow(() -> {throw AccountInfoException.accountNotFound();});
+        accountInfo.setEnabled(enabled);
+        accountInfoRepository.save(accountInfo);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    public void setAccountEnabled(String email, boolean enabled) {
+        this.setAccountEnabled(
+                accountInfoRepository.findAccountInfoEntityByEmail(email)
+                        .orElseThrow(() -> {throw AccountInfoException.accountNotFound();})
+                        .getId(),
+                enabled);
+    }
+
+
     public void registerAccount(String email, String password, String firstName, String lastname){
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);

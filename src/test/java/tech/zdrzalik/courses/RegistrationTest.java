@@ -60,7 +60,7 @@ class RegistrationTest {
         jsonObject.put("lastName", lastName);
         String data = jsonObject.toString();
 
-        mockMvc.perform(post("/account/register", 42L).contentType("application/json").content(data)).andExpect(status().isOk());
+        mockMvc.perform(post("/account/register").contentType("application/json").content(data)).andExpect(status().isOk());
 
         List<AccountInfoEntity> accounts = accountInfoRepository.findAll().stream().filter(account -> Objects.equals(account.getEmail(), email)).toList();
         assertThat(accounts).hasSize(1);
