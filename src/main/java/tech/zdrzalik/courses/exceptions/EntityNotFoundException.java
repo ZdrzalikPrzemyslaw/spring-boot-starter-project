@@ -6,7 +6,6 @@ import tech.zdrzalik.courses.common.I18nCodes;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class EntityNotFoundException extends AppBaseException {
-
     private Long id;
     protected EntityNotFoundException(String message) {
         super(message);

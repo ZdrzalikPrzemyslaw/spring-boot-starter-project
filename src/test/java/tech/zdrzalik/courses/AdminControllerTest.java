@@ -3,6 +3,7 @@ package tech.zdrzalik.courses;
 import net.minidev.json.parser.JSONParser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,69 +42,56 @@ class AdminControllerTest {
 
     @BeforeAll
     static void beforeAll(@Autowired AccountService accountService, @Autowired MockMvc mockMvc) throws Exception {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
         accountService.registerAccount("admin@userowy.com", "Password123", "admin", "userowy");
-
-        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken("anonymousUser", "key", AuthorityUtils.createAuthorityList("admin", "user")));
-
         accountService.setAccountAdminRole("admin@userowy.com", true);
 
-        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken("anonymousUser", "key", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")));
+        mockMvc.perform(post("/auth").contentType(MediaType.APPLICATION_JSON).content("{\"email\": \"admin@userowy.com\",\"password\": \"Password123\"}")).andExpect(status().isOk()).andDo(result -> {
+            String res = result.getResponse().getContentAsString();
+            net.minidev.json.JSONObject object = (net.minidev.json.JSONObject) new JSONParser().parse(res);
+            authToken = MessageFormat.format("Bearer {0}", object.get("token").toString());
+        });
+    }
 
+    @AfterAll
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
+        TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
+    }
 
-        mockMvc.perform(post("/auth")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"admin@userowy.com\",\"password\": \"Password123\"}"))
-                .andExpect(status().isOk())
-                .andDo(result -> {
-                    String res = result.getResponse().getContentAsString();
-                    net.minidev.json.JSONObject object = (net.minidev.json.JSONObject) new JSONParser().parse(res);
-                    authToken = MessageFormat.format("Bearer {0}", object.get("token").toString());
-                });
+    @BeforeEach
+    void setUp() {
+        TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
     }
 
     @Test
     void login() throws Exception {
-        mockMvc.perform(post("/admin/login")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("email", "admin@userowy.com")
-                        .param("password", "Password123"))
-                .andExpect(status().is3xxRedirection());
+        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password123")).andExpect(status().is3xxRedirection());
     }
 
     @Test
     void failLoginInvalidPassword() throws Exception {
-        mockMvc.perform(post("/admin/login")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("email", "admin@userowy.com")
-                        .param("password", "Password1234"))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password1234")).andExpect(status().isUnauthorized());
     }
 
     @Test
     void failLoginNullPassword() throws Exception {
-        mockMvc.perform(post("/admin/login")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("email", "admin@userowy.com"))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com")).andExpect(status().isBadRequest());
     }
 
     @Test
     void failGetUsersListUnauthorized() throws Exception {
-        mockMvc.perform(get("/admin/users-list"))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/admin/users-list")).andExpect(status().isUnauthorized());
     }
 
     @Test
     void getUsersList() throws Exception {
-        mockMvc.perform(get("/admin/users-list")
-                        .header("authorization", authToken))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/admin/users-list").header("authorization", authToken)).andExpect(status().isOk());
     }
 
     @Test
     void failGetUserInfoUnauthorized() throws Exception {
-        mockMvc.perform(get("/admin/user-info/0"))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/admin/user-info/0")).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -113,21 +101,7 @@ class AdminControllerTest {
         if (entity.isPresent()) {
             id = entity.get().getId() + 10L;
         }
-        mockMvc.perform(get("/admin/user-info/" + id)
-                        .header("authorization", authToken))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    void getUserInfoSucceed() throws Exception {
-        long id = 0;
-        var entity = accountInfoRepository.findFirstByOrderByIdDesc();
-        if (entity.isPresent()) {
-            id = entity.get().getId();
-        }
-        mockMvc.perform(get("/admin/user-info/" + id)
-                        .header("authorization", authToken))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/admin/user-info/" + id).header("authorization", authToken)).andExpect(status().isNotFound());
     }
 
     // TODO: 12/11/2022 Dodać test który pobiera user-info po id i mu sie udaje
@@ -136,9 +110,13 @@ class AdminControllerTest {
 
     // TODO: 12/11/2022 W testach sprawdzać czy content odpowiedzi sie zgadza
 
-    @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
-        SecurityContextHolder.getContext().setAuthentication(null);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
+    @Test
+    void getUserInfoSucceed() throws Exception {
+        long id = 0;
+        var entity = accountInfoRepository.findFirstByOrderByIdDesc();
+        if (entity.isPresent()) {
+            id = entity.get().getId();
+        }
+        mockMvc.perform(get("/admin/user-info/" + id).header("authorization", authToken)).andExpect(status().isOk());
     }
 }

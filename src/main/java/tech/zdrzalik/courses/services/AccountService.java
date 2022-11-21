@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -132,9 +133,11 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
-            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
+            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_NOT_CONFIRMED, e);
         } catch (BadCredentialsException e) {
             throw new AuthorizationErrorException(I18nCodes.INVALID_CREDENTIALS, e);
+        } catch (LockedException e) {
+            throw new AuthorizationErrorException(I18nCodes.ACCOUNT_DISABLED, e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         return jwtTokenUtil.generateToken(userDetails);

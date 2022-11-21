@@ -6,7 +6,7 @@ import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
  * This class defines a POJO used as a DTO to transfer information after successful authentication.
  * Used as a return type in {@link tech.zdrzalik.courses.controllers.AuthenticationController#authenticate(AuthenticationRequestDTO)}
  */
-public class AuthenticationResponseDTO extends MessageResponseDTO {
+public class AuthenticationResponseDTO extends BasicMessageResponseDTO {
 
     public AuthenticationResponseDTO() {
         super();
