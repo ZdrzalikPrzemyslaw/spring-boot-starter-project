@@ -32,10 +32,7 @@ public class AuthenticationController {
     @PermitAll
     @ResponseBody()
     public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) AuthenticationRequestDTO dto) {
-        String token = accountService.authenticate(dto);
-        return ResponseEntity.ok().body(
-                new AuthenticationResponseDTO()
-                        .setMessage(I18nCodes.AUTHENTICATION_SUCCESS)
-                        .setToken(token));
+        var res = accountService.authenticate(dto);
+        return ResponseEntity.ok().body(res);
     }
 }

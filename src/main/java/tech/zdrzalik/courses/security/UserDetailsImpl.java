@@ -18,7 +18,9 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Boolean confirmed;
 
-    public UserDetailsImpl(Collection<? extends GrantedAuthority> authorities, String username, String password, String name, String surname, Boolean enabled, Boolean confirmed) {
+    private final Long id;
+
+    public UserDetailsImpl(Collection<? extends GrantedAuthority> authorities, String username, String password, String name, String surname, Boolean enabled, Boolean confirmed, Long id) {
         this.authorities = authorities;
         this.username = username;
         this.password = password;
@@ -26,6 +28,19 @@ public class UserDetailsImpl implements UserDetails {
         this.surname = surname;
         this.enabled = enabled;
         this.confirmed = confirmed;
+        this.id = id;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

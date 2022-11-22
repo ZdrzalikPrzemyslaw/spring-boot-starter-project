@@ -1,6 +1,7 @@
 package tech.zdrzalik.courses.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.zdrzalik.courses.DTO.Request.EditUserInfoDTO;
 import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
 import tech.zdrzalik.courses.DTO.Request.RegisterAccountDTO;
+import tech.zdrzalik.courses.DTO.Response.AuthenticationResponseDTO;
+import tech.zdrzalik.courses.common.I18nCodes;
 import tech.zdrzalik.courses.exceptions.AccountInfoException;
 import tech.zdrzalik.courses.exceptions.AuthorizationErrorException;
 import tech.zdrzalik.courses.model.AbstractJpaRepository;
@@ -27,7 +30,6 @@ import tech.zdrzalik.courses.security.UserDetailsImpl;
 import tech.zdrzalik.courses.security.UserDetailsServiceImpl;
 import tech.zdrzalik.courses.utils.JWTUtils;
 
-import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +40,9 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     private final PasswordEncoder passwordEncoder;
 
     private AuthenticationManager authenticationManager;
+
+    @Value("${jwt.validity:0}")
+    private Long validDuration;
 
     private JWTUtils jwtTokenUtil;
 
@@ -176,7 +181,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
-    public String authenticate(AuthenticationRequestDTO dto) {
+    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO dto) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (DisabledException e) {
@@ -187,7 +192,16 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
             throw AuthorizationErrorException.accountDisabled(e);
         }
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        return jwtTokenUtil.generateToken(userDetails);
+        String token = jwtTokenUtil.generateToken(userDetails);
+
+        return new AuthenticationResponseDTO()
+                .setEmail(userDetails.getUsername())
+                .setId(userDetails.getId())
+                .setFirstName(userDetails.getName())
+                .setLastName(userDetails.getSurname())
+                .setValidDuration(validDuration)
+                .setToken(token)
+                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
     }
 
     @Override
