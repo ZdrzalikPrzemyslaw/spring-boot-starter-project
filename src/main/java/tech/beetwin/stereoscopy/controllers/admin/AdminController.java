@@ -52,11 +52,11 @@ public class AdminController {
         // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            ModelAndView modelAndView = new ModelAndView("login");
+            ModelAndView modelAndView = new ModelAndView("admin/login");
             modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             return modelAndView;
         }
-        return new ModelAndView("admin-panel");
+        return new ModelAndView("admin/admin-panel");
     }
 
     private Cookie createBearerTokenCookie(String value, int duration) {
@@ -80,7 +80,7 @@ public class AdminController {
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            ModelAndView modelAndView = new ModelAndView("login");
+            ModelAndView modelAndView = new ModelAndView("admin/login");
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
             modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
@@ -94,7 +94,6 @@ public class AdminController {
             return new ModelAndView("redirect:/admin");
         } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);
-            redirectView.setStatusCode(HttpStatus.UNAUTHORIZED);
             return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
         }
@@ -102,7 +101,7 @@ public class AdminController {
 
     @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUsersList(@PageableDefault(sort = "id") Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("users-list");
+        ModelAndView modelAndView = new ModelAndView("admin/users-list");
         var page = accountService.findAll(pageable);
         modelAndView.addObject("users", page);
         return modelAndView;
@@ -110,7 +109,7 @@ public class AdminController {
 
     @GetMapping(value = "/create-account", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getCreateAccount() {
-        ModelAndView modelAndView = new ModelAndView("create-account");
+        ModelAndView modelAndView = new ModelAndView("admin/create-account");
         modelAndView.addObject("DTO", new RegisterAccountDTO());
         return modelAndView;
     }
@@ -136,7 +135,7 @@ public class AdminController {
     @GetMapping(value = {"user-info/{id}"}, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id) {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("user-info");
+        ModelAndView modelAndView = new ModelAndView("admin/user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
         modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity));
         return modelAndView;

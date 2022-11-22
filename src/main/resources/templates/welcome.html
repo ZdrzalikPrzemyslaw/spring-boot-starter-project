@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body class="background">
+
+
+<div th:replace="fragments/common-welcome.html::header"></div>
+
+<div class="grid-center">
+    <h2 class="header" th:text="#{welcome}"/>
+</div>
+
+<div th:replace="fragments/common-welcome.html::footer"></div>
+
+</body>
+</html>
