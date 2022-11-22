@@ -4,7 +4,7 @@ public class BasicMessageResponseDTO implements MessageResponseDTO {
     private String message;
 
     public BasicMessageResponseDTO() {
-
+        super();
     }
 
     public String getMessage() {

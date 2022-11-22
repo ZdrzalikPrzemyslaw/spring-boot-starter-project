@@ -8,10 +8,61 @@ import tech.zdrzalik.courses.DTO.Request.AuthenticationRequestDTO;
  */
 public class AuthenticationResponseDTO extends BasicMessageResponseDTO {
 
+    private String token;
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Long validDuration;
+
     public AuthenticationResponseDTO() {
         super();
     }
-    private String token;
+
+    public Long getId() {
+        return id;
+    }
+
+    public AuthenticationResponseDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public AuthenticationResponseDTO setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public AuthenticationResponseDTO setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public AuthenticationResponseDTO setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public Long getValidDuration() {
+        return validDuration;
+    }
+
+    public AuthenticationResponseDTO setValidDuration(Long validDuration) {
+        this.validDuration = validDuration;
+        return this;
+    }
 
     public String getToken() {
         return token;

@@ -88,7 +88,7 @@ public class AdminController {
         }
         try {
             // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
-            String authenticate = accountService.authenticate(dto);
+            String authenticate = accountService.authenticate(dto).getToken();
             // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authenticate, jwtTokenValidity));
             return new ModelAndView("redirect:/admin");
