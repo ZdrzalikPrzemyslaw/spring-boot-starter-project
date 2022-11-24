@@ -4,23 +4,23 @@
 
 @layer components {
     .btn-primary {
-        @apply whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800;
+        @apply relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-default bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 mt-5;
     }
 
     .header {
-        @apply text-3xl uppercase text-center w-full mt-5 mb-8 font-extrabold tracking-tight leading-none text-gray-900 dark:text-gray-200;
+        @apply text-center text-4xl font-extrabold text-default-light dark:text-default-dark;
     }
 
     .background {
-        @apply min-h-screen w-full bg-gray-50 dark:bg-gray-800;
+        @apply min-h-screen w-full bg-default-dark dark:bg-default;
     }
 
     .input {
-        @apply appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white dark:bg-gray-300 dark:focus:bg-gray-200 focus:border-gray-500 disabled:opacity-60;
+        @apply disabled:bg-gray-200 rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-default-light focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm;
     }
 
     .inputLabel {
-        @apply block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2;
+        @apply block uppercase tracking-wide text-default dark:text-default-dark text-xs font-bold mb-2;
     }
 
     body {
@@ -36,7 +36,7 @@
     }
 
     .one-column-of-two {
-        @apply w-full sm:w-1/2 px-3 mb-0;
+        @apply w-full sm:w-1/2 px-3;
     }
 
     .div-with-two-columns {
@@ -48,7 +48,7 @@
     }
 
     .error-message {
-        @apply mb-3 basis-full text-center text-gray-700 dark:text-gray-200 break-normal font-bold leading-none text-2xl;
+        @apply mb-3 basis-full text-center text-default dark:text-default-dark break-normal font-bold leading-none text-2xl;
     }
 
     .table-col {
@@ -60,15 +60,15 @@
     }
 
     .table-full {
-        @apply w-full text-sm text-left text-gray-500 dark:text-gray-400 min-w-[600px];
+        @apply w-full text-sm text-left text-default dark:text-default-dark min-w-[600px];
     }
 
     .table-head {
-        @apply text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400;
+        @apply text-xs dark:bg-gray-800 text-default bg-gray-300 uppercase dark:text-default-dark;
     }
 
     .table-row {
-        @apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600;
+        @apply bg-white border-b dark:bg-default dark:border-gray-200 hover:bg-default-dark dark:hover:bg-gray-600;
     }
 
 }
