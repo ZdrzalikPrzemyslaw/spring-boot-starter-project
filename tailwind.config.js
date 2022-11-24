@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/main/resources/templates/**/*.{html,js}"],
   theme: {
     extend: {
+      spacing: {
+        '148': '48rem',
+      },
       colors: {
         accent: '#F4B840FF',
         lighttt: '#F8F8F8',
