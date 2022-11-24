@@ -57,13 +57,14 @@ class AccountServiceTest {
         TestUtils.setAnonymousAuth(SecurityContextHolder.getContext());
     }
 
-    //TODO: Poprawićwywalajacy sie test
-//    @Test
-//    void authenticateTest() {
-//        var res = accountService.authenticate(new AuthenticationRequestDTO().setEmail(USER_EMAIL).setPassword(USER_PASSWORD));
-//        Assertions.assertNotNull(res);
-//        Assertions.assertTrue(Strings.isNotBlank(res));
-//    }
+    @Test
+    void authenticateTest() {
+        var res = accountService.authenticate(new AuthenticationRequestDTO().setEmail(USER_EMAIL).setPassword(USER_PASSWORD));
+        Assertions.assertNotNull(res);
+        Assertions.assertEquals(USER_EMAIL, res.getEmail());
+        Assertions.assertTrue(Strings.isNotBlank(res.getToken()));
+        Assertions.assertEquals(I18nCodes.AUTHENTICATION_SUCCESS, res.getMessage());
+    }
 
     @Test
     void authenticateFailInvalidPasswordTest() {
@@ -80,7 +81,6 @@ class AccountServiceTest {
                 () -> accountService.authenticate(req),
                 I18nCodes.ACCOUNT_DISABLED);
     }
-
 
 
     @Test
