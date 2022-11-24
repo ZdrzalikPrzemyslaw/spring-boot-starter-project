@@ -68,7 +68,7 @@
     }
 
     .table-row {
-        @apply bg-white border-b dark:bg-default dark:border-gray-200 hover:bg-default-dark dark:hover:bg-gray-600;
+        @apply bg-white border-b dark:bg-default dark:border-gray-600 hover:bg-default-dark dark:hover:bg-gray-600;
     }
 
 }
