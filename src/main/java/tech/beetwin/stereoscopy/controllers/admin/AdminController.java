@@ -59,13 +59,13 @@ public class AdminController {
         return new ModelAndView("admin/admin-panel");
     }
 
-    private Cookie createBearerTokenCookie(String value, int duration) {
+    private Cookie createBearerTokenCookie(String value, long duration) {
         Cookie cookie = new Cookie("bearer-token", value);
         cookie.setPath("/");
         // TODO: 11/11/2022  secure
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(duration);
+        cookie.setMaxAge(Math.toIntExact(duration / 1000));
         return cookie;
     }
 
@@ -88,9 +88,9 @@ public class AdminController {
         }
         try {
             // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
-            String authenticate = accountService.authenticate(dto).getToken();
+            var authDto = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
-            response.addCookie(createBearerTokenCookie(authenticate, jwtTokenValidity));
+            response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin");
         } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);
