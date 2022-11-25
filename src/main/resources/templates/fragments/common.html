@@ -13,22 +13,22 @@
             <nav class="w-full mx-2 md:px-0 sm:px-4">
                 <div class="w-full flex flex-wrap items-center justify-between">
                     <div class="inline-flex">
-                    <a class="flex items-center" href="https://flowbite.com/">
-                        <img th:src="@{/images/beeTwin.svg}" class="w-24 h-14 dark:hidden">
-                        <img th:src="@{/images/beeTwin_white.svg}" class="w-24 h-14 hidden dark:block">
-                    </a>
-                    <nav aria-label="Breadcrumb" class="flex items-center ml-3 hidden md:inline-flex">
-                        <img th:src="@{/images/home.svg}" class="w-4 h-4 mx-4">
-                        <ol class="breadcrumbs inline-flex items-center">
-                            <li class="inline-flex items-center"
-                                th:each="breadcrumbs : ${@breadcrumbsHelper.getBreadcrumbs(#httpServletRequest, @localeContextHolderWrapper)}">
-                                <a class="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                                   th:href="@{${breadcrumbs.getValue()}}" th:text="${breadcrumbs.getKey()}">
-                                </a>
-                                <img th:src="@{/images/arrow.svg}" class="w-5 h-5">
-                            </li>
-                        </ol>
-                    </nav>
+                        <a class="flex items-center" href="/">
+                            <img class="w-24 h-14 dark:hidden" th:src="@{/images/beeTwin.svg}">
+                            <img class="w-24 h-14 hidden dark:block" th:src="@{/images/beeTwin_white.svg}">
+                        </a>
+                        <nav aria-label="Breadcrumb" class="flex items-center ml-3 hidden md:inline-flex">
+                            <img class="w-4 h-4 mx-4" th:src="@{/images/home.svg}">
+                            <ol class="breadcrumbs inline-flex items-center">
+                                <li class="inline-flex items-center"
+                                    th:each="breadcrumbs : ${@breadcrumbsHelper.getBreadcrumbs(#httpServletRequest, @localeContextHolderWrapper)}">
+                                    <a class="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                                       th:href="@{${breadcrumbs.getValue()}}" th:text="${breadcrumbs.getKey()}">
+                                    </a>
+                                    <img class="w-5 h-5" th:src="@{/images/arrow.svg}">
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
                     <button aria-controls="navbar-default" aria-expanded="false"
                             class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
