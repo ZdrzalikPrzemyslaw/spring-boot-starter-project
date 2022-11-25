@@ -54,7 +54,7 @@ public class AdminController {
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return new RedirectView("/admin/login", true);
         }
-        return new ModelAndView("admin/admin-panel");
+        return new RedirectView("/admin/user-info", true);
     }
 
     private Cookie createBearerTokenCookie(String value, long duration) {
@@ -89,7 +89,7 @@ public class AdminController {
             var authDto = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
-            return new ModelAndView("redirect:/admin");
+            return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);
             return redirectView;
