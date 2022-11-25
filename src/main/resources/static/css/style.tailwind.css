@@ -71,4 +71,11 @@
         @apply bg-white border-b dark:bg-default dark:border-gray-600 hover:bg-default-dark dark:hover:bg-gray-600;
     }
 
+    .nazmiane > div:nth-child(even) > .first-in-order {
+        @apply order-2;
+    }
+
+    .nazmiane > div:nth-child(even) > .second-in-order {
+        @apply order-1;
+    }
 }
