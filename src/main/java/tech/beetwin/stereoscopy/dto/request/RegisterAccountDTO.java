@@ -1,10 +1,9 @@
-package tech.beetwin.stereoscopy.DTO.Request;
+package tech.beetwin.stereoscopy.dto.request;
 
 import org.hibernate.validator.constraints.Length;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.AccountController;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 /**

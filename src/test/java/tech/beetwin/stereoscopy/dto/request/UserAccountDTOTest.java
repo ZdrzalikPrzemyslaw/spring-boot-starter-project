@@ -1,9 +1,8 @@
-package tech.beetwin.stereoscopy.dto;
+package tech.beetwin.stereoscopy.dto.request;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tech.beetwin.stereoscopy.DTO.Request.UserAccountDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 
 import javax.validation.Validation;

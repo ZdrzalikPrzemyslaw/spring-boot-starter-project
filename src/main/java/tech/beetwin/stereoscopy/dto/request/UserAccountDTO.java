@@ -1,4 +1,4 @@
-package tech.beetwin.stereoscopy.DTO.Request;
+package tech.beetwin.stereoscopy.dto.request;
 
 import org.hibernate.validator.constraints.Length;
 import tech.beetwin.stereoscopy.common.I18nCodes;

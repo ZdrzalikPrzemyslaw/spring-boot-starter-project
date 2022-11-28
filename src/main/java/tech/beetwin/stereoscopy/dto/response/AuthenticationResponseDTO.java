@@ -1,6 +1,6 @@
-package tech.beetwin.stereoscopy.DTO.Response;
+package tech.beetwin.stereoscopy.dto.response;
 
-import tech.beetwin.stereoscopy.DTO.Request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.controllers.AuthenticationController;
 
 /**

@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import tech.beetwin.stereoscopy.exceptions.EntityNotFoundException;
-import tech.beetwin.stereoscopy.DTO.Response.ErrorResponseDTO;
+import tech.beetwin.stereoscopy.dto.response.ErrorResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.exceptions.AppBaseException;
 

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.beetwin.stereoscopy.DTO.Response.BasicMessageResponseDTO;
+import tech.beetwin.stereoscopy.dto.response.BasicMessageResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.services.AccountService;
-import tech.beetwin.stereoscopy.DTO.Request.RegisterAccountDTO;
+import tech.beetwin.stereoscopy.dto.request.RegisterAccountDTO;
 
 import javax.annotation.security.PermitAll;
 

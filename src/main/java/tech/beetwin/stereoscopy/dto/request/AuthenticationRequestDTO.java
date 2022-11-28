@@ -1,13 +1,11 @@
-package tech.beetwin.stereoscopy.DTO.Request;
+package tech.beetwin.stereoscopy.dto.request;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.BindingResult;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.AuthenticationController;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**

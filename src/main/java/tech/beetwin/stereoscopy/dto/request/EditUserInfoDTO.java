@@ -1,13 +1,10 @@
-package tech.beetwin.stereoscopy.DTO.Request;
+package tech.beetwin.stereoscopy.dto.request;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.BindingResult;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
