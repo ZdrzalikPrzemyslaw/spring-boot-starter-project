@@ -1,4 +1,4 @@
-package tech.beetwin.stereoscopy.DTO.Request;
+package tech.beetwin.stereoscopy.dto.request;
 
 import org.springframework.validation.BindingResult;
 import tech.beetwin.stereoscopy.common.I18nCodes;
