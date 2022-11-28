@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import tech.beetwin.stereoscopy.DTO.Request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.DTO.Request.EditUserInfoDTO;
 import tech.beetwin.stereoscopy.DTO.Request.RegisterAccountDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.exceptions.AccountInfoException;
-import tech.beetwin.stereoscopy.services.AccountService;
-import tech.beetwin.stereoscopy.DTO.Request.EditUserInfoDTO;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
+import tech.beetwin.stereoscopy.services.AccountService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -48,15 +48,13 @@ public class AdminController {
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getAdminPanel() {
+    public Object getAdminPanel() {
         // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            ModelAndView modelAndView = new ModelAndView("admin/login");
-            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
-            return modelAndView;
+            return new RedirectView("/admin/login", true);
         }
-        return new ModelAndView("admin/admin-panel");
+        return new RedirectView("/admin/user-info", true);
     }
 
     private Cookie createBearerTokenCookie(String value, long duration) {
@@ -91,7 +89,7 @@ public class AdminController {
             var authDto = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
-            return new ModelAndView("redirect:/admin");
+            return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);
             return redirectView;
@@ -99,13 +97,14 @@ public class AdminController {
         }
     }
 
-    @GetMapping(value = "users-list", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getUsersList(@PageableDefault(sort = "id") Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("admin/users-list");
-        var page = accountService.findAll(pageable);
-        modelAndView.addObject("users", page);
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getLogin() {
+        ModelAndView modelAndView = new ModelAndView("admin/login");
+        modelAndView.addObject("DTO", new AuthenticationRequestDTO());
         return modelAndView;
     }
+
 
     @GetMapping(value = "/create-account", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getCreateAccount() {
@@ -141,9 +140,12 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping(value = { "user-info"}, produces = MediaType.TEXT_HTML_VALUE)
-    public RedirectView getUser() {
-        return new RedirectView("/admin/users-list", true);
+    @GetMapping(value = {"user-info"}, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getUser(@PageableDefault(sort = "id") Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("admin/users-list");
+        var page = accountService.findAll(pageable);
+        modelAndView.addObject("users", page);
+        return modelAndView;
     }
 
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
