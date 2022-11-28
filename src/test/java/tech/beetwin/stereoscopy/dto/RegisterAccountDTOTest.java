@@ -35,37 +35,6 @@ class RegisterAccountDTOTest {
     }
 
     @Test
-    void emailNullTest() {
-        registerAccountDTO.setEmail(null);
-        Assertions.assertNull(registerAccountDTO.getEmail());
-        var validate = validator.validate(registerAccountDTO);
-        Assertions.assertFalse(validate.isEmpty());
-        final boolean[] correctMessage = {false};
-        validate.forEach(registerAccountDTOConstraintViolation -> {
-            if (registerAccountDTOConstraintViolation.getMessage().equals(I18nCodes.EMAIL_NULL)) {
-                correctMessage[0] = true;
-            }
-        });
-       Assertions.assertTrue(correctMessage[0]);
-    }
-
-    @Test
-    void notAnEmailTest() {
-        String email = "test";
-        registerAccountDTO.setEmail(email);
-        Assertions.assertEquals(registerAccountDTO.getEmail(), email);
-        var validate = validator.validate(registerAccountDTO);
-        Assertions.assertFalse(validate.isEmpty());
-        final boolean[] correctMessage = {false};
-        validate.forEach(registerAccountDTOConstraintViolation -> {
-            if (registerAccountDTOConstraintViolation.getMessage().equals(I18nCodes.NOT_AN_EMAIL)) {
-                correctMessage[0] = true;
-            }
-        });
-        Assertions.assertTrue(correctMessage[0]);
-    }
-
-    @Test
     void passwordNullTest() {
         registerAccountDTO.setPassword(null);
         Assertions.assertNull(registerAccountDTO.getPassword());
@@ -91,36 +60,6 @@ class RegisterAccountDTOTest {
         final boolean[] correctMessage = {false};
         validate.forEach(registerAccountDTOConstraintViolation -> {
             if (registerAccountDTOConstraintViolation.getMessage().equals(I18nCodes.PASSWORD_INVALID_SIZE)) {
-                correctMessage[0] = true;
-            }
-        });
-        Assertions.assertTrue(correctMessage[0]);
-    }
-
-    @Test
-    void firstNameNullTest() {
-        registerAccountDTO.setFirstName(null);
-        Assertions.assertNull(registerAccountDTO.getFirstName());
-        var validate = validator.validate(registerAccountDTO);
-        Assertions.assertFalse(validate.isEmpty());
-        final boolean[] correctMessage = {false};
-        validate.forEach(registerAccountDTOConstraintViolation -> {
-            if (registerAccountDTOConstraintViolation.getMessage().equals(I18nCodes.FIRST_NAME_NULL)) {
-                correctMessage[0] = true;
-            }
-        });
-        Assertions.assertTrue(correctMessage[0]);
-    }
-
-    @Test
-    void lastNameNullTest() {
-        registerAccountDTO.setLastName(null);
-        Assertions.assertNull(registerAccountDTO.getLastName());
-        var validate = validator.validate(registerAccountDTO);
-        Assertions.assertFalse(validate.isEmpty());
-        final boolean[] correctMessage = {false};
-        validate.forEach(registerAccountDTOConstraintViolation -> {
-            if (registerAccountDTOConstraintViolation.getMessage().equals(I18nCodes.LAST_NAME_NULL)) {
                 correctMessage[0] = true;
             }
         });
