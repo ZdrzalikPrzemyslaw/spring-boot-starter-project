@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import tech.beetwin.stereoscopy.DTO.Request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.exceptions.EntityNotFoundException;
 import tech.beetwin.stereoscopy.exceptions.AuthorizationErrorException;

@@ -80,12 +80,12 @@ class AdminControllerTest {
 
     @Test
     void failGetUsersListUnauthorized() throws Exception {
-        mockMvc.perform(get("/admin/users-list")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/admin/user-info")).andExpect(status().isUnauthorized());
     }
 
     @Test
     void getUsersList() throws Exception {
-        mockMvc.perform(get("/admin/users-list").header("authorization", authToken)).andExpect(status().isOk());
+        mockMvc.perform(get("/admin/user-info").header("authorization", authToken)).andExpect(status().isOk());
     }
 
     @Test

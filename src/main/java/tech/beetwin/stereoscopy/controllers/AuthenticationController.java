@@ -3,8 +3,8 @@ package tech.beetwin.stereoscopy.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import tech.beetwin.stereoscopy.DTO.Request.AuthenticationRequestDTO;
-import tech.beetwin.stereoscopy.DTO.Response.AuthenticationResponseDTO;
+import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.services.AccountService;
 
