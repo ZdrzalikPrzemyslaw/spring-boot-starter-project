@@ -18,6 +18,7 @@ import tech.beetwin.stereoscopy.exceptions.EntityNotFoundException;
 import tech.beetwin.stereoscopy.exceptions.AuthorizationErrorException;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.services.AccountService;
+import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import java.rmi.UnexpectedException;
 
@@ -47,8 +48,9 @@ class AccountServiceTest {
     }
 
     @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
         TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
     }
 
