@@ -1,6 +1,7 @@
 package tech.beetwin.stereoscopy.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
@@ -29,7 +30,7 @@ public class AuthenticationController {
      */
     // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
     @PostMapping()
-    @PermitAll
+    @PreAuthorize("permitAll()")
     @ResponseBody()
     public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) AuthenticationRequestDTO dto) {
         var res = accountService.authenticate(dto);
