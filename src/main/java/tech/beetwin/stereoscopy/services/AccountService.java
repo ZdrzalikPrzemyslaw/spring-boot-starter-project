@@ -2,12 +2,15 @@ package tech.beetwin.stereoscopy.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
+import tech.beetwin.stereoscopy.model.AccessLevel.AccessLevelRepository;
+import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
+import tech.beetwin.stereoscopy.model.UserInfo.UserInfoRepository;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 import tech.beetwin.stereoscopy.security.UserDetailsServiceImpl;
 import tech.beetwin.stereoscopy.utils.JWTUtils;
@@ -30,6 +36,7 @@ import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataEntity;
 import tech.beetwin.stereoscopy.model.UserInfo.UserInfoEntity;
 
+
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +44,7 @@ import java.util.Objects;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class AccountService extends AbstractService<AccountInfoEntity> {
     private final AccountInfoRepository accountInfoRepository;
+    private final TableMetadataService tableMetadataService;
     private final PasswordEncoder passwordEncoder;
 
     private AuthenticationManager authenticationManager;
@@ -47,6 +55,12 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     private JWTUtils jwtTokenUtil;
 
     private UserDetailsServiceImpl userDetailsService;
+
+    public AccountService(AccountInfoRepository accountInfoRepository, UserInfoRepository userInfoRepository, AccessLevelRepository accessLevelRepository, TableMetadataRepository tableMetadataRepository, TableMetadataService tableMetadataService, PasswordEncoder passwordEncoder) {
+        this.accountInfoRepository = accountInfoRepository;
+        this.tableMetadataService = tableMetadataService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
@@ -61,11 +75,6 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     @Autowired
     public void setUserDetailsService(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
-    }
-
-    public AccountService(AccountInfoRepository accountInfoRepository, PasswordEncoder passwordEncoder) {
-        this.accountInfoRepository = accountInfoRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -92,6 +101,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
                 .setTableMetadata(new TableMetadataEntity());
         accountInfo.getAccessLevels().add(accessLevelsEntity);
         accountInfoRepository.save(accountInfo);
+        tableMetadataService.updateMetadata(new TableMetadataService.UpdateEntityEvent(accessLevelsEntity).setUpdateCreated(true));
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -108,6 +118,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         var accountInfo = accountInfoRepository.findById(id).orElseThrow(AccountInfoException::accountNotFound);
         accountInfo.setEnabled(enabled);
         accountInfoRepository.save(accountInfo);
+        tableMetadataService.updateMetadata(new TableMetadataService.UpdateEntityEvent(accountInfo));
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -121,7 +132,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
 
     @PreAuthorize("permitAll()")
-    public void registerAccount(String email, String password, String firstName, String lastname){
+    public void registerAccount(String email, String password, String firstName, String lastname) {
         //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);
         if (!accounts.isEmpty()) {
@@ -138,7 +149,16 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         accountInfo.getAccessLevels().add(accessLevels);
         accessLevels.setAccountInfoId(accountInfo);
         userInfo.setAccountInfoId(accountInfo);
+
         accountInfoRepository.save(accountInfo);
+
+        boolean isAnon = SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken;
+        var event = new TableMetadataService.UpdateEntityEvent(accountInfo).setUpdateCreated(true).setEditor(isAnon ? accountInfo : null);
+        tableMetadataService.updateMetadata(event);
+        event = new TableMetadataService.UpdateEntityEvent(userInfo).setUpdateCreated(true).setEditor(isAnon ? accountInfo : null);
+        tableMetadataService.updateMetadata(event);
+        event = new TableMetadataService.UpdateEntityEvent(accessLevels).setUpdateCreated(true).setEditor(isAnon ? accountInfo : null);
+        tableMetadataService.updateMetadata(event);
     }
 
     @PreAuthorize("permitAll()")
@@ -164,12 +184,13 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         }
         accountInfoEntity.setEmail(email).setEnabled(enabled).getUserInfoEntity().setFirstName(firstName).setLastName(lastname);
         accountInfoRepository.save(accountInfoEntity);
+        tableMetadataService.updateMetadata(new TableMetadataService.UpdateEntityEvent(accountInfoEntity));
     }
 
     @PreAuthorize("hasAuthority('admin')")
     public void editAccount(String email, EditUserInfoDTO dto) {
         editAccount(accountInfoRepository.findAccountInfoEntityByEmail(email)
-                .orElseThrow(AccountInfoException::accountNotFound).getId(),
+                        .orElseThrow(AccountInfoException::accountNotFound).getId(),
                 dto.getEmail(),
                 dto.getEnabled(),
                 dto.getFirstName(),
@@ -191,6 +212,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         } catch (LockedException e) {
             throw AuthorizationErrorException.accountDisabled(e);
         }
+        // TODO: 29/11/2022  handle exception when jwt outdated & update last login info
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
 

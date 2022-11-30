@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.services.AccountService;
+import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import java.text.MessageFormat;
 
@@ -52,8 +53,9 @@ class AdminControllerTest {
     }
 
     @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
         TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
     }
 

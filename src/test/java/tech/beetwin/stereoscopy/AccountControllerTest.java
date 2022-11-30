@@ -20,6 +20,7 @@ import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.AccountController;
 import tech.beetwin.stereoscopy.exceptions.AccountInfoException;
 import tech.beetwin.stereoscopy.services.AccountService;
+import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,8 +42,9 @@ class AccountControllerTest {
     }
 
     @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
         TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
     }
 

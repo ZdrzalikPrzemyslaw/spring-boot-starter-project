@@ -14,6 +14,12 @@ public class TableMetadataEntity {
     @Column(name = "id", nullable = false)
     private long id;
 
+    public TableMetadataEntity setModifiedByNoNull(AccountInfoEntity modifiedBy) {
+        if (modifiedBy == null) return this;
+        this.modifiedBy = modifiedBy;
+        return this;
+    }
+
     public TableMetadataEntity setModifiedBy(AccountInfoEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
         return this;
@@ -23,13 +29,19 @@ public class TableMetadataEntity {
         return createdBy;
     }
 
+    public TableMetadataEntity setCreatedByNoNull(AccountInfoEntity createdBy) {
+        if (createdBy == null) return this;
+        this.createdBy = createdBy;
+        return this;
+    }
+
     public TableMetadataEntity setCreatedBy(AccountInfoEntity createdBy) {
         this.createdBy = createdBy;
         return this;
     }
 
     @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = false, nullable = true)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id", updatable = true, nullable = true)
     private AccountInfoEntity modifiedBy;
     @Basic
     @Column(name = "modification_date_time", nullable = true)
@@ -39,7 +51,7 @@ public class TableMetadataEntity {
     private String modifiedByIp;
 
     @Basic
-    @Column(name = "created_by_ip", nullable = true, updatable = false, length = 256)
+    @Column(name = "created_by_ip", nullable = true, updatable = true, length = 256)
     private String createdByIp;
 
     public TableMetadataEntity() {
@@ -47,7 +59,7 @@ public class TableMetadataEntity {
     }
 
     @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false, nullable = true)
+    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = true, nullable = true)
     private AccountInfoEntity createdBy;
     @Basic
     @Column(name = "created_date_time", nullable = true)
