@@ -2,11 +2,12 @@ package tech.beetwin.stereoscopy.dto.response;
 
 import java.sql.Timestamp;
 
-public class ErrorResponseDTO extends BasicMessageResponseDTO {
+public class ErrorResponseDTO {
     private Timestamp timestamp;
     private int status;
     private String error;
     private String path;
+    private String[] messages;
 
     public ErrorResponseDTO() {
         super();
@@ -48,9 +49,12 @@ public class ErrorResponseDTO extends BasicMessageResponseDTO {
         return this;
     }
 
-    @Override
-    public ErrorResponseDTO setMessage(String message) {
-         super.setMessage(message);
-         return this;
+    public String[] getMessages() {
+        return messages;
+    }
+
+    public ErrorResponseDTO setMessages(String[] messages) {
+        this.messages = messages;
+        return this;
     }
 }
