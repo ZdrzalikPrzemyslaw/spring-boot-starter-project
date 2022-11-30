@@ -6,16 +6,16 @@ import tech.beetwin.stereoscopy.controllers.AuthenticationController;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * This class defines a POJO used as a DTO to transfer login information.
  * Used as a param in {@link AuthenticationController#authenticate(AuthenticationRequestDTO)} and {@link AdminController#authenticate(AuthenticationRequestDTO, BindingResult, HttpServletResponse)}
  */
 public class AuthenticationRequestDTO {
-    @NotNull(message = I18nCodes.EMAIL_NULL)
+    @NotBlank(message = I18nCodes.EMAIL_NULL)
     private String email;
-    @NotNull(message = I18nCodes.PASSWORD_NULL)
+    @NotBlank(message = I18nCodes.PASSWORD_NULL)
     private String password;
 
     public AuthenticationRequestDTO() {

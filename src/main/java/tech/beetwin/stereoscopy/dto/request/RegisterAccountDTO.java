@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.AccountController;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * This class defines a POJO used as a DTO to transfer information required to create a new account.
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 public class RegisterAccountDTO extends UserAccountDTO {
 
-    @NotNull(message = I18nCodes.PASSWORD_NULL)
+    @NotBlank(message = I18nCodes.PASSWORD_NULL)
     @Length(min = 8, message = I18nCodes.PASSWORD_INVALID_SIZE)
     private String password;
 

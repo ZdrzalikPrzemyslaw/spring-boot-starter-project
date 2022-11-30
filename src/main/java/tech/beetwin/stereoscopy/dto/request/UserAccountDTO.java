@@ -4,18 +4,18 @@ import org.hibernate.validator.constraints.Length;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 public class UserAccountDTO {
 
-    @NotNull(message = I18nCodes.EMAIL_NULL)
+    @NotBlank(message = I18nCodes.EMAIL_NULL)
     @Email(message = I18nCodes.NOT_AN_EMAIL, regexp = ".*.@.*")
-    @Length(min = 0, max = 64, message = I18nCodes.EMAIL_INVALID_SIZE)
+    @Length(min = 3, max = 64, message = I18nCodes.EMAIL_INVALID_SIZE)
     private String email;
-    @NotNull(message = I18nCodes.FIRST_NAME_NULL)
+    @NotBlank(message = I18nCodes.FIRST_NAME_NULL)
     @Length(min = 0, max = 64, message = I18nCodes.FIRST_NAME_INVALID_SIZE)
     private String firstName;
-    @NotNull(message = I18nCodes.LAST_NAME_NULL)
+    @NotBlank(message = I18nCodes.LAST_NAME_NULL)
     @Length(min = 0, max = 64, message = I18nCodes.LAST_NAME_INVALID_SIZE)
     private String lastName;
 
