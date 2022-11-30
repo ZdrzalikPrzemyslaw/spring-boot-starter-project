@@ -54,10 +54,10 @@ class AdminControllerTest {
 
     @AfterAll
     static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
-        TestUtils.wipeAuth(SecurityContextHolder.getContext());
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
         tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
-    }
+        TestUtils.wipeAuth(SecurityContextHolder.getContext());}
 
     @BeforeEach
     void setUp() {
