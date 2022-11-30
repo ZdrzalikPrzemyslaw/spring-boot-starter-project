@@ -56,6 +56,12 @@ public class AccessLevelsEntity extends AbstractEntity {
         return level;
     }
 
+    @Override
+    public AccessLevelsEntity setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
     public AccessLevelsEntity setLevel(AccessLevel level) {
         this.level = level;
         return this;

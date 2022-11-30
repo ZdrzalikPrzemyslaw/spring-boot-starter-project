@@ -57,6 +57,12 @@ public class UserInfoEntity extends AbstractEntity {
     }
 
 
+    @Override
+    public UserInfoEntity setVersion(Long version) {
+         super.setVersion(version);
+         return this;
+    }
+
     public UserInfoEntity() {
         super();
     }
