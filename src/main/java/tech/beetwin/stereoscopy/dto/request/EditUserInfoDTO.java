@@ -5,7 +5,7 @@ import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * This class defines a POJO used as a DTO to transfer basic user info.
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 public class EditUserInfoDTO extends UserAccountDTO {
 
-    @NotNull(message = I18nCodes.ENABLED_NULL)
+    @NotBlank(message = I18nCodes.ENABLED_NULL)
     private Boolean enabled;
 
     public EditUserInfoDTO() {
