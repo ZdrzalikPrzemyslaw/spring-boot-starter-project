@@ -1,6 +1,7 @@
 package tech.beetwin.stereoscopy.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +34,7 @@ public class AccountController {
      */
     @PostMapping(value = "/register")
     @ResponseBody()
-    @PermitAll
+    @PreAuthorize("permitAll()")
     public ResponseEntity<BasicMessageResponseDTO> registerAccount(@RequestBody RegisterAccountDTO dto) {
         accountService.registerAccount(dto);
         return ResponseEntity.ok().body(new BasicMessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));
