@@ -41,12 +41,12 @@ public class TableMetadataService {
         entity
             .setModificationDateTime(LocalDateTime.now())
             .setModifiedByIp(getCurrentRequestIp())
-            .setModifiedBy(updateEntityEvent.getEditor() == null ? getCurrentUser().orElse(null) : updateEntityEvent.getEditor());
+            .setModifiedByNoNull(updateEntityEvent.getEditor() == null ? getCurrentUser().orElse(null) : updateEntityEvent.getEditor());
         if (updateEntityEvent.isUpdateCreated()) {
             entity
                 .setCreatedDateTime(LocalDateTime.now())
                 .setCreatedByIp(getCurrentRequestIp())
-                .setCreatedBy(updateEntityEvent.getEditor() == null ? getCurrentUser().orElse(null) : updateEntityEvent.getEditor());
+                .setCreatedByNoNull(updateEntityEvent.getEditor() == null ? getCurrentUser().orElse(null) : updateEntityEvent.getEditor());
         }
         tableMetadataRepository.save(entity);
     }
@@ -59,8 +59,8 @@ public class TableMetadataService {
             throw new IllegalStateException("Cant run in prod");
         }
         for (TableMetadataEntity tableMetadataEntity : tableMetadataRepository.findAll()) {
-            tableMetadataEntity.nullCreatedBy();
-            tableMetadataEntity.nullModifiedBy();
+            tableMetadataEntity.setCreatedBy(null);
+            tableMetadataEntity.setModifiedBy(null);
             tableMetadataRepository.save(tableMetadataEntity);
         }
     }

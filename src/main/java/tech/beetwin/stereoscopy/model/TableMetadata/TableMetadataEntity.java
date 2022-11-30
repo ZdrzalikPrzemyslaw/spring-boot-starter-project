@@ -14,8 +14,13 @@ public class TableMetadataEntity {
     @Column(name = "id", nullable = false)
     private long id;
 
-    public TableMetadataEntity setModifiedBy(AccountInfoEntity modifiedBy) {
+    public TableMetadataEntity setModifiedByNoNull(AccountInfoEntity modifiedBy) {
         if (modifiedBy == null) return this;
+        this.modifiedBy = modifiedBy;
+        return this;
+    }
+
+    public TableMetadataEntity setModifiedBy(AccountInfoEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
         return this;
     }
@@ -24,18 +29,15 @@ public class TableMetadataEntity {
         return createdBy;
     }
 
-    public TableMetadataEntity setCreatedBy(AccountInfoEntity createdBy) {
+    public TableMetadataEntity setCreatedByNoNull(AccountInfoEntity createdBy) {
         if (createdBy == null) return this;
         this.createdBy = createdBy;
         return this;
     }
 
-    public void nullCreatedBy() {
-        this.createdBy = null;
-    }
-
-    public void nullModifiedBy() {
-        this.modifiedBy = null;
+    public TableMetadataEntity setCreatedBy(AccountInfoEntity createdBy) {
+        this.createdBy = createdBy;
+        return this;
     }
 
     @ManyToOne(optional = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
