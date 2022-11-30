@@ -2,6 +2,7 @@ package tech.beetwin.stereoscopy.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 
 import javax.annotation.Nullable;
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
+@PreAuthorize("permitAll()")
 public class TableMetadataService {
 
     @Autowired
