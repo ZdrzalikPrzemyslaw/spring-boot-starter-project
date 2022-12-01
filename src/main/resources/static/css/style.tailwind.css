@@ -16,7 +16,7 @@
     }
 
     .input {
-        @apply disabled:bg-gray-200 rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-default-light focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm;
+        @apply disabled:bg-gray-200 dark:disabled:bg-gray-300 rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-default-light focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm;
     }
 
     .inputLabel {
@@ -71,11 +71,11 @@
         @apply bg-white border-b dark:bg-default dark:border-gray-600 hover:bg-default-dark dark:hover:bg-gray-600;
     }
 
-    .nazmiane > div:nth-child(even) > .first-in-order {
+    .alternately > div:nth-child(even) > .first-in-order {
         @apply order-2;
     }
 
-    .nazmiane > div:nth-child(even) > .second-in-order {
+    .alternately > div:nth-child(even) > .second-in-order {
         @apply order-1;
     }
 }

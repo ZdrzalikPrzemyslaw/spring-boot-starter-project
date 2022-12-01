@@ -71,6 +71,16 @@
     </div>
 </div>
 
+
+<div class="flex flex-row mx-2 md:px-0 sm:px-4" th:fragment="logged-out-header">
+    <nav class="w-full ">
+        <a class="flex items-center" href="/">
+            <img class="w-24 h-14 dark:hidden" th:src="@{/images/beeTwin.svg}">
+            <img class="w-24 h-14 hidden dark:block" th:src="@{/images/beeTwin_white.svg}">
+        </a>
+    </nav>
+</div>
+
 <div class="mt-auto w-full h-16 grid place-items-center" th:fragment="footer">
     <div class="w-11/12 border-t grid place-items-center">
         <p class="inline-block dark:text-default-dark text-default mt-5 mb-5" th:text="#{copyright}"></p>
