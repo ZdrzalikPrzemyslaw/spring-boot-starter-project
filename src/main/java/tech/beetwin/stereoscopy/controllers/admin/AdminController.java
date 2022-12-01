@@ -1,5 +1,6 @@
 package tech.beetwin.stereoscopy.controllers.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +26,8 @@ import tech.beetwin.stereoscopy.exceptions.AccountInfoException;
 import tech.beetwin.stereoscopy.services.AccountService;
 import tech.beetwin.stereoscopy.DTO.Request.EditUserInfoDTO;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
+import tech.beetwin.stereoscopy.utils.JWTUtils;
+import tech.beetwin.stereoscopy.utils.VersionJWTUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +43,9 @@ public class AdminController {
     private final AccountService accountService;
     @Value("${jwt.validity}")
     private int jwtTokenValidity;
+
+
+    private JWTUtils jwtUtils;
 
 
     public AdminController(AccountService accountService) {
@@ -138,7 +144,7 @@ public class AdminController {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
-        modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity));
+        modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity, new VersionJWTUtils().generateToken(accountInfoEntity)));
         return modelAndView;
     }
 

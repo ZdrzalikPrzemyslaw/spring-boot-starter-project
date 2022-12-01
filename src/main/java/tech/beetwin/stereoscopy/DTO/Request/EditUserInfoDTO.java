@@ -27,14 +27,17 @@ public class EditUserInfoDTO {
     @NotBlank(message = I18nCodes.LAST_NAME_NULL)
     private String lastName;
 
+    private String versionToken;
+
     public EditUserInfoDTO() {
     }
 
-    public EditUserInfoDTO(AccountInfoEntity accountInfoEntity) {
+    public EditUserInfoDTO(AccountInfoEntity accountInfoEntity, String token) {
         lastName = accountInfoEntity.getUserInfoEntity().getLastName();
         firstName = accountInfoEntity.getUserInfoEntity().getFirstName();
         enabled = accountInfoEntity.isEnabled();
         email = accountInfoEntity.getEmail();
+        versionToken = token;
     }
 
     public String getEmail() {
@@ -70,6 +73,19 @@ public class EditUserInfoDTO {
 
     public EditUserInfoDTO setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public String getVersionToken() {
+        return versionToken;
+    }
+
+    public Long getVersion(){
+        return 0l;
+    }
+
+    public EditUserInfoDTO setVersionToken(String versionToken) {
+        this.versionToken = versionToken;
         return this;
     }
 }
