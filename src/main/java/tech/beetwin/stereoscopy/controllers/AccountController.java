@@ -1,15 +1,16 @@
 package tech.beetwin.stereoscopy.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.beetwin.stereoscopy.DTO.Response.BasicMessageResponseDTO;
+import tech.beetwin.stereoscopy.dto.response.BasicMessageResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.services.AccountService;
-import tech.beetwin.stereoscopy.DTO.Request.RegisterAccountDTO;
+import tech.beetwin.stereoscopy.dto.request.RegisterAccountDTO;
 
 import javax.annotation.security.PermitAll;
 
@@ -33,7 +34,7 @@ public class AccountController {
      */
     @PostMapping(value = "/register")
     @ResponseBody()
-    @PermitAll
+    @PreAuthorize("permitAll()")
     public ResponseEntity<BasicMessageResponseDTO> registerAccount(@RequestBody RegisterAccountDTO dto) {
         accountService.registerAccount(dto);
         return ResponseEntity.ok().body(new BasicMessageResponseDTO().setMessage(I18nCodes.ACCOUNT_CREATED_SUCCESSFULLY));

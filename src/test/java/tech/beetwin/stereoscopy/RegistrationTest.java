@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import tech.beetwin.stereoscopy.controllers.AccountController;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
+import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,10 +37,11 @@ class RegistrationTest {
     private AccountInfoRepository accountInfoRepository;
 
     @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
-        TestUtils.wipeAuth(SecurityContextHolder.getContext());
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
-    }
+        TestUtils.wipeAuth(SecurityContextHolder.getContext()); }
 
     @BeforeEach
     void setUp() {

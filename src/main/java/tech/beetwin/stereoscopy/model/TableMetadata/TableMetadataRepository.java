@@ -8,4 +8,5 @@ import tech.beetwin.stereoscopy.model.AbstractJpaRepository;
 @Repository()
 @Transactional(propagation = Propagation.MANDATORY)
 public interface TableMetadataRepository extends AbstractJpaRepository<TableMetadataEntity>, TableMetadataRepositoryWithEM {
+
 }

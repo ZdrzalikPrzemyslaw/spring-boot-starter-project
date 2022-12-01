@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users list</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body class="background">
+
+
+<div th:replace="fragments/common.html::header"></div>
+
+<div class="max-w-full grid-center">
+    <div class="px-14 my-5">
+        <div class="min-w-full justify-self-stretch justify-items-stretch">
+            <h2 class="header" th:text="#{user_list}"/>
+            <div class="mt-5 mb-2 overflow-x-auto relative shadow-md sm:rounded-lg">
+                <table class="table-full"
+                       th:if="${not#lists.isEmpty(users)}">
+                    <thead class="table-head">
+                    <tr>
+                        <th class="table-col" scope="col" th:text="#{id}"/>
+                        <th class="table-col" scope="col" th:text="#{email}"/>
+                        <th class="table-col" scope="col" th:text="#{name}"/>
+                        <th class="table-col" scope="col" th:text="#{access_levels}"/>
+                        <th class="table-col" scope="col" th:text="#{edit}"/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-row"
+                        th:each="user : ${users}">
+                        <td class="table-col font-medium font-bold" th:text="${user.id}"/>
+                        <td class="table-col break-all" th:text="${user.email}"/>
+                        <td class="table-col"
+                            th:text="${user.userInfoEntity.firstName} + ' ' + ${user.userInfoEntity.lastName}"/>
+                        <td class="table-col">
+                            <ul>
+                                <li th:each="level : ${user.getAccessLevels()}"
+                                    th:text="#{${level.getLevel().toString()}}"/>
+                            </ul>
+                        </td>
+                        <td class="table-col">
+                            <a th:href="@{/{locale}/admin/user-info/{id}(
+                                            locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                            id=${user.id})}">
+                                <button class="btn-primary" th:text="#{details}" type="button"/>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <a th:href="@{/{locale}/admin/users-list(
+                                        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                        page=${users.previousPageable().getPageNumber()})}"
+               th:if="${users.hasPrevious()}">
+                <button class="btn-primary mb-4 float-left min-w-[100px] max-w-[45%]" th:text="'previous'" type="button"/>
+            </a>
+
+            <a th:href="@{/{locale}/admin/users-list(
+                                        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
+                                        page=${users.nextPageable().getPageNumber()})}"
+               th:if="${users.hasNext()}">
+                <button class="btn-primary mb-4 float-right min-w-[100px] max-w-[45%]" th:text="'next'" type="button"/>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/common.html::footer"></div>
+
+</body>
+</html>

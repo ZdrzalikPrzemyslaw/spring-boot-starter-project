@@ -45,7 +45,7 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
             LocaleUtils.toLocale(locale);
             return true;
         } catch (IllegalArgumentException e) {
-            LogFactory.getLog(this.getClass()).debug("Invalid locale tag in isLocale method of PathVariableLocaleFilter " , e);
+            LogFactory.getLog(this.getClass()).trace("Invalid locale tag in isLocale method of PathVariableLocaleFilter " , e);
         }
         return false;
     }

@@ -10,7 +10,7 @@ public class AccountInfoException extends AppBaseException {
         super(message);
     }
 
-    protected AccountInfoException(String message, Throwable cause) {
+    private AccountInfoException(String message, Throwable cause) {
         super(message, cause);
     }
 

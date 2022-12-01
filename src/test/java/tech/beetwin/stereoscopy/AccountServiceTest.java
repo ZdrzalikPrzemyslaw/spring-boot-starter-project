@@ -12,12 +12,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import tech.beetwin.stereoscopy.DTO.Request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.exceptions.EntityNotFoundException;
 import tech.beetwin.stereoscopy.exceptions.AuthorizationErrorException;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.services.AccountService;
+import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import java.rmi.UnexpectedException;
 
@@ -47,10 +48,11 @@ class AccountServiceTest {
     }
 
     @AfterAll
-    static void afterAll(@Autowired JdbcTemplate jdbcTemplate) {
-        TestUtils.wipeAuth(SecurityContextHolder.getContext());
+    static void afterAll(@Autowired JdbcTemplate jdbcTemplate, @Autowired TableMetadataService tableMetadataService) {
+        TestUtils.setAllRolesAuth(SecurityContextHolder.getContext());
+        tableMetadataService.wipeAllMetadataCreatedModified();
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "access_levels", "user_info", "account_info", "table_metadata");
-    }
+        TestUtils.wipeAuth(SecurityContextHolder.getContext());}
 
     @BeforeEach
     void setUp() {
@@ -61,7 +63,9 @@ class AccountServiceTest {
     void authenticateTest() {
         var res = accountService.authenticate(new AuthenticationRequestDTO().setEmail(USER_EMAIL).setPassword(USER_PASSWORD));
         Assertions.assertNotNull(res);
-        Assertions.assertTrue(Strings.isNotBlank(res));
+        Assertions.assertEquals(USER_EMAIL, res.getEmail());
+        Assertions.assertTrue(Strings.isNotBlank(res.getToken()));
+        Assertions.assertEquals(I18nCodes.AUTHENTICATION_SUCCESS, res.getMessage());
     }
 
     @Test
@@ -79,7 +83,6 @@ class AccountServiceTest {
                 () -> accountService.authenticate(req),
                 I18nCodes.ACCOUNT_DISABLED);
     }
-
 
 
     @Test

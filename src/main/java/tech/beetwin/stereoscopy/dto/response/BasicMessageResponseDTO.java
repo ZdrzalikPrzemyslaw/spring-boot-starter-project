@@ -1,4 +1,4 @@
-package tech.beetwin.stereoscopy.DTO.Response;
+package tech.beetwin.stereoscopy.dto.response;
 
 public class BasicMessageResponseDTO implements MessageResponseDTO {
     private String message;

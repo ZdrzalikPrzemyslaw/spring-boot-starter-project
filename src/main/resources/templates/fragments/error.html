@@ -9,31 +9,32 @@
 <body class="background">
 <div th:fragment="error-page(error_message)">
 
-<div class="grid place-items-center">
-    <div class="inline-flex-auto flex-row flex-wrap justify-center justify-items-center mx-3 max-w-sm">
-        <p
-                th:replace="${error_message}"
-                id="error_message"
-                class="error-message"
-                th:text="#{error_generic_text}">
-        </p>
-        <div class="btn-group mt-10">
-            <div th:if="${#httpServletRequest.getHeader('Referer')}">
-                <a th:href="${#httpServletRequest.getHeader('Referer')}">
-                    <button type="button" class="btn-primary min-w-fit w-full"
-                            th:text="#{previous_page}"></button>
-                </a>
-            </div>
+    <div class="max-w-full grid-center">
+        <div class="px-14 my-10">
+            <div class="min-w-full justify-self-stretch justify-items-stretch md:w-96 sm:60">
+                <p
+                        class="error-message"
+                        id="error_message"
+                        th:replace="${error_message}"
+                        th:text="#{error_generic_text}">
+                </p>
+                <div class="btn-group mt-10">
+                    <div th:if="${#httpServletRequest.getHeader('Referer')}">
+                        <a th:href="${#httpServletRequest.getHeader('Referer')}">
+                            <button class="btn-primary min-w-fit w-full" th:text="#{previous_page}"
+                                    type="button"></button>
+                        </a>
+                    </div>
 
-            <a th:replace="fragments/link.html::admin-link(~{::#back-to-admin-button})">
-                <button id="back-to-admin-button" type="button" class="btn-primary min-w-fit w-full"
-                        th:text="#{link_to_admin}"></button>
-            </a>
+                    <a th:replace="fragments/link.html::admin-link(~{::#back-to-admin-button})">
+                        <button class="btn-primary min-w-fit w-full" id="back-to-admin-button"
+                                th:text="#{link_to_admin}"
+                                type="button"></button>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-
 </div>
 </body>
 </html>

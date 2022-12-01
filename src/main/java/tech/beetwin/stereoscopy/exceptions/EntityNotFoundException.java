@@ -7,6 +7,7 @@ import tech.beetwin.stereoscopy.common.I18nCodes;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class EntityNotFoundException extends AppBaseException {
     private Long id;
+
     private EntityNotFoundException(String message) {
         super(message);
     }
@@ -15,6 +16,9 @@ public class EntityNotFoundException extends AppBaseException {
         super(message, cause);
     }
 
+    public static EntityNotFoundException entityNotFound(Long id) {
+        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND).setId(id);
+    }
 
     public Long getId() {
         return id;
@@ -23,9 +27,5 @@ public class EntityNotFoundException extends AppBaseException {
     private EntityNotFoundException setId(Long id) {
         this.id = id;
         return this;
-    }
-
-    public static EntityNotFoundException entityNotFound(Long id) {
-        return new EntityNotFoundException(I18nCodes.ENTITY_NOT_FOUND).setId(id);
     }
 }
