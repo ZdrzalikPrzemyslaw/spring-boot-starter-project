@@ -8,7 +8,7 @@
 <body class="background">
 
 
-<div th:replace="fragments/common-welcome.html::header"></div>
+<div th:replace="fragments/common.html::logged-out-header"></div>
 
 <div class="max-w-full grid-center">
     <div class="px-14 my-10">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <input class="btn-primary"
-                       id="submit-button" type="submit"/>
+                       id="submit-button" type="submit" th:text="#{login_button}"/>
             </form>
         </div>
     </div>
