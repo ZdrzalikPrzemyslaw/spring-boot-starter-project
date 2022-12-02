@@ -17,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
-import tech.beetwin.stereoscopy.model.AccessLevel.AccessLevelRepository;
-import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
-import tech.beetwin.stereoscopy.model.UserInfo.UserInfoRepository;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 import tech.beetwin.stereoscopy.security.UserDetailsServiceImpl;
 import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
@@ -48,7 +45,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     private AuthenticationManager authenticationManager;
 
-    @Value("${jwt.auth-token.validity:0}")
+    @Value("${jwt.validity.auth-token:0}")
     private Long validDuration;
 
     private AuthJWTUtils jwtTokenUtil;

@@ -14,10 +14,10 @@ import java.util.Objects;
 public class VersionJWTUtils extends AbstractJwtUtils {
 
     private final Logger logger = LoggerFactory.getLogger(VersionJWTUtils.class);
-    @Value("${jwt.secret.version}")
+    @Value("${jwt.version.secret}")
     private String secret;
 
-    @Value("${jwt.validity.version}")
+    @Value("${jwt.version.validity}")
     private long duration;
 
     public VersionJWTUtils() {

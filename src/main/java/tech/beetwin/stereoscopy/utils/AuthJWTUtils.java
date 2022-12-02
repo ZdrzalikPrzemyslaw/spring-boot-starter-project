@@ -1,6 +1,5 @@
 package tech.beetwin.stereoscopy.utils;
 
-import org.apache.juli.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +14,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class AuthJWTUtils extends AbstractJwtUtils {
-    @Value("${jwt.auth-token.validity}")
+    @Value("${jwt.validity.auth-token}")
     public long jwtTokenValidity;
 
     private final Logger logger = LoggerFactory.getLogger(AuthJWTUtils.class);
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret.auth-token}")
     private String secret;
 
     public String getSubjectFromToken(String token) {

@@ -39,7 +39,7 @@ import javax.validation.constraints.NotNull;
 public class AdminController {
 
     private final AccountService accountService;
-    @Value("${jwt.auth-token.validity}")
+    @Value("${jwt.validity.auth-token}")
     private int jwtTokenValidity;
 
 
