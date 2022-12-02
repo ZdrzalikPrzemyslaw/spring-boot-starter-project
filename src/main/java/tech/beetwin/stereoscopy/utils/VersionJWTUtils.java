@@ -8,14 +8,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Component
+@Component(value = "versionJWTUtils")
 public class VersionJWTUtils extends AbstractJwtUtils {
 
     @Value("${jwt.secret.version}")
     private String secret;
 
     @Value("${jwt.validity.version}")
-    public long duration;
+    private long duration;
+
+    public VersionJWTUtils() {
+    }
+
+    public VersionJWTUtils(String secret, long duration) {
+        this.secret = secret;
+        this.duration = duration;
+    }
+
+    public VersionJWTUtils setSecret(String secret) {
+        this.secret = secret;
+        return this;
+    }
+
+    public VersionJWTUtils setDuration(long duration) {
+        this.duration = duration;
+        return this;
+    }
 
     @Override
     public String getSecret() {
@@ -34,7 +52,19 @@ public class VersionJWTUtils extends AbstractJwtUtils {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         claims.put("version", version);
-        claims.put("name", hashedName);
+        claims.put("nameHash", hashedName);
         return generateToken(null, claims);
+    }
+
+    public Long getVersion(String token){
+        return super.getAllClaimsFromToken(token).get("version",Long.class);
+    }
+
+    public Integer getNameHash(String token){
+        return super.getAllClaimsFromToken(token).get("nameHash",Integer.class);
+    }
+
+    public Long getId(String token){
+        return super.getAllClaimsFromToken(token).get("id",Long.class);
     }
 }

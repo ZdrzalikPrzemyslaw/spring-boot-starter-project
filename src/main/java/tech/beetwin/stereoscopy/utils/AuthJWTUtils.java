@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 
+import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class JWTUtils {
+public class AuthJWTUtils extends AbstractJwtUtils {
 
     @Value("${jwt.secret}")
     private String secret;
@@ -22,22 +22,18 @@ public class JWTUtils {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
+    public List<?> getClaims(String token){
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("roles", List.class);
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
+    @Override
+    public String getSecret() {
+        return secret;
     }
 
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
+    @Override
+    public long getDuration() {
+        return jwtTokenValidity;
     }
 
     public String generateToken(UserDetailsImpl userDetails) {
@@ -55,8 +51,13 @@ public class JWTUtils {
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
-    public boolean validateToken(String token) {
-        return (Jwts.parser().setSigningKey(secret).isSigned(token) && !isTokenExpired(token));
+    public AuthJWTUtils setSecret(String secret) {
+        this.secret = secret;
+        return this;
     }
 
+    public AuthJWTUtils setJwtTokenValidity(long jwtTokenValidity) {
+        this.jwtTokenValidity = jwtTokenValidity;
+        return this;
+    }
 }

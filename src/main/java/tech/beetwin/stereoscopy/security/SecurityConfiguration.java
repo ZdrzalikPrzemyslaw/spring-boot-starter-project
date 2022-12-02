@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import tech.beetwin.stereoscopy.utils.JWTUtils;
+import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +24,7 @@ import tech.beetwin.stereoscopy.utils.JWTUtils;
         prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetails;
-    private JWTUtils jwtUtils;
+    private AuthJWTUtils jwtUtils;
 
     @Autowired
     public void setUserDetails(UserDetailsServiceImpl userDetails) {
@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void setJwtUtils(JWTUtils jwtUtils) {
+    public void setJwtUtils(AuthJWTUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
 

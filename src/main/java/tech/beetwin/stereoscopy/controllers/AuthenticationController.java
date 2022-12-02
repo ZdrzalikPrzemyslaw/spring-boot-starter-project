@@ -9,7 +9,6 @@ import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.services.AccountService;
 
-import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 

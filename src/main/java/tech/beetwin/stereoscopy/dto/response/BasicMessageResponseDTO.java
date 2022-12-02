@@ -1,16 +1,12 @@
 package tech.beetwin.stereoscopy.dto.response;
 
-public class BasicMessageResponseDTO implements MessageResponseDTO {
-    private String message;
+public class BasicMessageResponseDTO extends AbstractMessageResponseDTO<BasicMessageResponseDTO> {
 
     public BasicMessageResponseDTO() {
         super();
     }
 
-    public String getMessage() {
-        return message;
-    }
-
+    @Override
     public BasicMessageResponseDTO setMessage(String message) {
         this.message = message;
         return this;

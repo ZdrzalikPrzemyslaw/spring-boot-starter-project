@@ -6,7 +6,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
-import tech.beetwin.stereoscopy.utils.JWTUtils;
+import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,9 +18,9 @@ import java.io.IOException;
 public class AppAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsServiceImpl userDetailsService;
-    private JWTUtils jwtUtils;
+    private AuthJWTUtils jwtUtils;
 
-    public AppAuthenticationFilter(UserDetailsServiceImpl userDetailsService, JWTUtils jwtUtils) {
+    public AppAuthenticationFilter(UserDetailsServiceImpl userDetailsService, AuthJWTUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
         this.jwtUtils = jwtUtils;
     }
@@ -42,7 +42,11 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
             token = token.substring(7);
         }
 
-
+        if(!jwtUtils.validateToken(token))
+        {
+            filterChain.doFilter(request,response);
+            return;
+        }
         String subject = jwtUtils.getSubjectFromToken(token);
         //TODO wyjątki
 
@@ -52,11 +56,6 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
         }
 
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(subject);
-        if(!jwtUtils.validateToken(token))
-        {
-            filterChain.doFilter(request,response);
-            return;
-        }
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());

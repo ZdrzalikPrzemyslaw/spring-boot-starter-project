@@ -140,6 +140,11 @@
                     <input class="hidden btn-primary px-10" id="submit-button" type="submit"/>
                     <button class="btn-primary px-10" id="edit-button" th:text="#{edit}" type="button"/>
                 </div>
+                <input
+                        class="hidden"
+                        id="version"
+                        th:field="*{versionToken}"
+                       type="text">
             </form>
         </div>
     </div>

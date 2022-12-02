@@ -2,8 +2,6 @@ package tech.beetwin.stereoscopy.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +22,7 @@ import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
 import tech.beetwin.stereoscopy.model.UserInfo.UserInfoRepository;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 import tech.beetwin.stereoscopy.security.UserDetailsServiceImpl;
-import tech.beetwin.stereoscopy.utils.JWTUtils;
+import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
 import tech.beetwin.stereoscopy.dto.request.EditUserInfoDTO;
 import tech.beetwin.stereoscopy.dto.request.RegisterAccountDTO;
 import tech.beetwin.stereoscopy.exceptions.AccountInfoException;
@@ -53,11 +51,11 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     @Value("${jwt.validity:0}")
     private Long validDuration;
 
-    private JWTUtils jwtTokenUtil;
+    private AuthJWTUtils jwtTokenUtil;
 
     private UserDetailsServiceImpl userDetailsService;
 
-    public AccountService(AccountInfoRepository accountInfoRepository, UserInfoRepository userInfoRepository, AccessLevelRepository accessLevelRepository, TableMetadataRepository tableMetadataRepository, TableMetadataService tableMetadataService, PasswordEncoder passwordEncoder) {
+    public AccountService(AccountInfoRepository accountInfoRepository, TableMetadataService tableMetadataService, PasswordEncoder passwordEncoder) {
         this.accountInfoRepository = accountInfoRepository;
         this.tableMetadataService = tableMetadataService;
         this.passwordEncoder = passwordEncoder;
@@ -69,7 +67,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     }
 
     @Autowired
-    public void setJwtTokenUtil(JWTUtils jwtTokenUtil) {
+    public void setJwtTokenUtil(AuthJWTUtils jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
