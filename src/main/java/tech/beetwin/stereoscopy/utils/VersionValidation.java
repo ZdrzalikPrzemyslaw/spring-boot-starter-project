@@ -1,5 +1,7 @@
 package tech.beetwin.stereoscopy.utils;
 
+import tech.beetwin.stereoscopy.common.I18nCodes;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -11,8 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = VersionValidator.class)
 public @interface VersionValidation {
-    //TODO do I18N
-    String message() default "{IpAddress.invalid}";
+    String message() default I18nCodes.VERSION_MISMATCH;
 
     Class<?>[] groups() default { };
 
