@@ -25,7 +25,7 @@ public class EditUserInfoDTO extends UserAccountDTO {
     }
 
     public EditUserInfoDTO(AccountInfoEntity accountInfoEntity, String token) {
-        super(accountInfoEntity.getEmail(), accountInfoEntity.getUserInfoEntity().getFirstName(), accountInfoEntity.getUserInfoEntity().getFirstName());
+        super(accountInfoEntity.getEmail(), accountInfoEntity.getUserInfoEntity().getFirstName(), accountInfoEntity.getUserInfoEntity().getLastName());
         enabled = accountInfoEntity.isEnabled();
         versionToken = token;
 

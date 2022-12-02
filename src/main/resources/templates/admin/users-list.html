@@ -43,7 +43,7 @@
                             <a th:href="@{/{locale}/admin/user-info/{id}(
                                             locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                             id=${user.id})}">
-                                <button class="btn-primary" th:text="#{details}" type="button"/>
+                                <button class="mt-0 btn-primary" th:text="#{details}" type="button"/>
                             </a>
                         </td>
                     </tr>
@@ -51,14 +51,14 @@
                 </table>
             </div>
 
-            <a th:href="@{/{locale}/admin/users-list(
+            <a th:href="@{/{locale}/admin/user-info(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                         page=${users.previousPageable().getPageNumber()})}"
                th:if="${users.hasPrevious()}">
                 <button class="btn-primary mb-4 float-left min-w-[100px] max-w-[45%]" th:text="'previous'" type="button"/>
             </a>
 
-            <a th:href="@{/{locale}/admin/users-list(
+            <a th:href="@{/{locale}/admin/user-info(
                                         locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()},
                                         page=${users.nextPageable().getPageNumber()})}"
                th:if="${users.hasNext()}">
