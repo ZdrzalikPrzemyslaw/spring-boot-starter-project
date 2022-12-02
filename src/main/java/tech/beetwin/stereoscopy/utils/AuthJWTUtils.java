@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,12 +53,7 @@ public class AuthJWTUtils extends AbstractJwtUtils {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet()));
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidity))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+        return super.generateToken(userDetails.getUsername(), claims);
     }
 
     public AuthJWTUtils setJwtTokenValidity(long jwtTokenValidity) {

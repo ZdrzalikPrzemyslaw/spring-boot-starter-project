@@ -20,6 +20,7 @@ public abstract class AbstractJwtUtils implements IJWTUtils {
     public String generateToken(@Nullable String subject, Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
+                .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + getDuration()))
                 .signWith(SignatureAlgorithm.HS512, getSecret()).compact();
