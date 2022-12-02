@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Component(value = "versionJWTUtils")
+@Component(value = ApplicationContextUtils.VERSION_JWT_COMPONENT)
 public class VersionJWTUtils extends AbstractJwtUtils {
 
     private final Logger logger = LoggerFactory.getLogger(VersionJWTUtils.class);

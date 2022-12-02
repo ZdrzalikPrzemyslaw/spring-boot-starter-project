@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContextAware;
 public class ApplicationContextUtils implements ApplicationContextAware {
     private static ApplicationContext ctx;
 
-    private static final String VERSION_JWT_COMPONENT = "versionJWTUtils";
+    public static final String VERSION_JWT_COMPONENT = "versionJWTUtils";
 
     @Override
     public void setApplicationContext(ApplicationContext appContext)
