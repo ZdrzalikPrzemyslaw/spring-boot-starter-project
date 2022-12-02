@@ -4,8 +4,9 @@ import org.springframework.validation.BindingResult;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.admin.AdminController;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
+import tech.beetwin.stereoscopy.utils.ApplicationContextUtils;
+import tech.beetwin.stereoscopy.utils.VersionValidation;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,13 +18,25 @@ public class EditUserInfoDTO extends UserAccountDTO {
     @NotNull(message = I18nCodes.ENABLED_NULL)
     private Boolean enabled;
 
+    @VersionValidation
+    private String versionToken;
+
     public EditUserInfoDTO() {
     }
 
-    public EditUserInfoDTO(AccountInfoEntity accountInfoEntity) {
-        super(accountInfoEntity.getEmail(), accountInfoEntity.getUserInfoEntity().getFirstName(), accountInfoEntity.getUserInfoEntity().getFirstName());
+    public EditUserInfoDTO(AccountInfoEntity accountInfoEntity, String token) {
+        super(accountInfoEntity.getEmail(), accountInfoEntity.getUserInfoEntity().getFirstName(), accountInfoEntity.getUserInfoEntity().getLastName());
         enabled = accountInfoEntity.isEnabled();
+        versionToken = token;
 
+    }
+
+    public String getVersionToken() {
+        return versionToken;
+    }
+
+    public Long getVersion(){
+        return ApplicationContextUtils.getVersionJWTUtils().getVersion(versionToken);
     }
 
     public Boolean getEnabled() {
@@ -32,6 +45,11 @@ public class EditUserInfoDTO extends UserAccountDTO {
 
     public EditUserInfoDTO setEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    public EditUserInfoDTO setVersionToken(String versionToken) {
+        this.versionToken = versionToken;
         return this;
     }
 }

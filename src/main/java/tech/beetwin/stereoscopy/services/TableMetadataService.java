@@ -19,7 +19,6 @@ import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 
 import javax.annotation.Nullable;
-import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;

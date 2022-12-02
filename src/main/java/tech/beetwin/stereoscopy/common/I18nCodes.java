@@ -227,6 +227,8 @@ public class I18nCodes {
     public static final String REQUEST_NULL = "request_null";
     public static final String ACCOUNT_NOT_CONFIRMED = "account_not_confirmed";
 
+
+
     private I18nCodes() {
         throw new UnsupportedOperationException(I18nCodes.class + " should not be instantiated");
     }

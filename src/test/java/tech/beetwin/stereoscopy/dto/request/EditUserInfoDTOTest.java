@@ -3,22 +3,40 @@ package tech.beetwin.stereoscopy.dto.request;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import tech.beetwin.stereoscopy.common.I18nCodes;
+import tech.beetwin.stereoscopy.model.AccessLevel.AccessLevelsEntity;
+import tech.beetwin.stereoscopy.model.UserInfo.UserInfoEntity;
+import tech.beetwin.stereoscopy.utils.ApplicationContextUtils;
+import tech.beetwin.stereoscopy.utils.VersionJWTUtils;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 class EditUserInfoDTOTest {
+
+    @Autowired
+    VersionJWTUtils jwtUtils;
 
     private Validator validator;
     EditUserInfoDTO editUserInfoDTO = new EditUserInfoDTO();
 
+
     private void makeValidDTO() {
+        UserInfoEntity userInfoEntity = new UserInfoEntity().setId(0).setVersion(0L);
+        String token = jwtUtils.generateToken(userInfoEntity);
+
         editUserInfoDTO.setEmail("test@test.com");
         editUserInfoDTO.setFirstName("Test");
         editUserInfoDTO.setLastName("Testowy");
         editUserInfoDTO.setEnabled(true);
+        editUserInfoDTO.setVersionToken(token);
+
     }
 
     @BeforeEach

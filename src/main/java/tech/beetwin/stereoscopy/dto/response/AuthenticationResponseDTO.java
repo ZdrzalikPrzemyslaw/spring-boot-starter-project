@@ -7,9 +7,8 @@ import tech.beetwin.stereoscopy.controllers.AuthenticationController;
  * This class defines a POJO used as a DTO to transfer information after successful authentication.
  * Used as a return type in {@link AuthenticationController#authenticate(AuthenticationRequestDTO)}
  */
-public class AuthenticationResponseDTO extends BasicMessageResponseDTO {
+public class AuthenticationResponseDTO extends AbstractVersionedResponseDTO<AuthenticationResponseDTO> {
 
-    private String token;
     private Long id;
     private String firstName;
     private String lastName;
@@ -65,10 +64,7 @@ public class AuthenticationResponseDTO extends BasicMessageResponseDTO {
         return this;
     }
 
-    public String getToken() {
-        return token;
-    }
-
+@Override
     public AuthenticationResponseDTO setToken(String token) {
         this.token = token;
         return this;
@@ -76,7 +72,7 @@ public class AuthenticationResponseDTO extends BasicMessageResponseDTO {
 
     @Override
     public AuthenticationResponseDTO setMessage(String message) {
-        super.setMessage(message);
+        this.message = message;
         return this;
     }
 }

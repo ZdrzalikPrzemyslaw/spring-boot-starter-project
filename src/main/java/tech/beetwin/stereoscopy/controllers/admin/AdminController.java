@@ -25,6 +25,7 @@ import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.exceptions.AccountInfoException;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 import tech.beetwin.stereoscopy.services.AccountService;
+import tech.beetwin.stereoscopy.utils.VersionJWTUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -38,12 +39,16 @@ import javax.validation.constraints.NotNull;
 public class AdminController {
 
     private final AccountService accountService;
-    @Value("${jwt.validity}")
+    @Value("${jwt.validity.auth-token}")
     private int jwtTokenValidity;
 
 
-    public AdminController(AccountService accountService) {
+    private VersionJWTUtils jwtUtils;
+
+
+    public AdminController(AccountService accountService, VersionJWTUtils jwtUtils) {
         this.accountService = accountService;
+        this.jwtUtils = jwtUtils;
     }
 
     @PreAuthorize("permitAll()")
@@ -136,7 +141,7 @@ public class AdminController {
         AccountInfoEntity accountInfoEntity = accountService.findById(id);
         ModelAndView modelAndView = new ModelAndView("admin/user-info");
         modelAndView.addObject("accountInfoEntity", accountInfoEntity);
-        modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity));
+        modelAndView.addObject("DTO", new EditUserInfoDTO(accountInfoEntity, jwtUtils.generateToken(accountInfoEntity)));
         return modelAndView;
     }
 

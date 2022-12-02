@@ -12,8 +12,6 @@ import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.services.AccountService;
 import tech.beetwin.stereoscopy.dto.request.RegisterAccountDTO;
 
-import javax.annotation.security.PermitAll;
-
 /**
  * Controller on /account mapping. All api paths concerning account should be defined here.
  */
