@@ -10,17 +10,15 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     public static final String VERSION_JWT_COMPONENT = "versionJWTUtils";
 
     @Override
-    public void setApplicationContext(ApplicationContext appContext)
-            throws BeansException {
+    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
         ctx = appContext;
-
     }
 
     public static ApplicationContext getApplicationContext() {
         return ctx;
     }
 
-    public static VersionJWTUtils getVersionJWTUtils(){return (VersionJWTUtils) ctx.getBean(VERSION_JWT_COMPONENT);}
-
-
+    public static VersionJWTUtils getVersionJWTUtils() {
+        return (VersionJWTUtils) ctx.getBean(VERSION_JWT_COMPONENT);
+    }
 }

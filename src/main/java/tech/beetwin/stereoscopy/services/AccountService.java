@@ -48,7 +48,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     private AuthenticationManager authenticationManager;
 
-    @Value("${jwt.validity:0}")
+    @Value("${jwt.auth-token.validity:0}")
     private Long validDuration;
 
     private AuthJWTUtils jwtTokenUtil;

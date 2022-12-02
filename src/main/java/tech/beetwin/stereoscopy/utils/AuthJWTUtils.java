@@ -16,10 +16,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class AuthJWTUtils extends AbstractJwtUtils {
-
-    @Value("${jwt.validity}")
+    @Value("${jwt.auth-token.validity}")
     public long jwtTokenValidity;
+
     private final Logger logger = LoggerFactory.getLogger(AuthJWTUtils.class);
+
     @Value("${jwt.secret}")
     private String secret;
 
