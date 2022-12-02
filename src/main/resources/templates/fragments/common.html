@@ -14,8 +14,8 @@
                 <div class="w-full flex flex-wrap items-center justify-between">
                     <div class="inline-flex">
                         <a class="flex items-center" href="/">
-                            <img class="w-24 h-14 dark:hidden" th:src="@{/images/beeTwin.svg}">
-                            <img class="w-24 h-14 hidden dark:block" th:src="@{/images/beeTwin_white.svg}">
+                            <img class="dark:hidden" th:src="@{/images/beeTwin.svg}">
+                            <img class="hidden dark:block" th:src="@{/images/beeTwin_white.svg}">
                         </a>
                         <nav aria-label="Breadcrumb" class="flex items-center ml-3 hidden md:inline-flex">
                             <img class="w-4 h-4 mx-4" th:src="@{/images/home.svg}">
@@ -69,6 +69,16 @@
             </nav>
         </div>
     </div>
+</div>
+
+
+<div class="flex flex-row mx-2 md:px-0 sm:px-4" th:fragment="logged-out-header">
+    <nav class="w-full ">
+        <a class="flex items-center" href="/">
+            <img class="w-24 h-14 dark:hidden" th:src="@{/images/beeTwin.svg}">
+            <img class="w-24 h-14 hidden dark:block" th:src="@{/images/beeTwin_white.svg}">
+        </a>
+    </nav>
 </div>
 
 <div class="mt-auto w-full h-16 grid place-items-center" th:fragment="footer">
