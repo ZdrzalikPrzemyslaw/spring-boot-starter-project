@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import org.slf4j.Logger;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
@@ -25,31 +27,25 @@ public abstract class AbstractJwtUtils implements IJWTUtils {
 
     public Boolean isTokenExpired(String token) {
         try {
-            getExpirationDateFromToken(token);
-        }catch (ExpiredJwtException e){
+            getAllClaimsFromToken(token);
+        } catch (ExpiredJwtException e) {
             return true;
         }
         return false;
-    }
-
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
     }
 
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(getSecret()).parseClaimsJws(token).getBody();
     }
 
+    protected abstract Logger getLogger();
+
     @Override
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(getSecret()).parseClaimsJws(token);
-        }catch (MalformedJwtException | ExpiredJwtException | SignatureException e){
+        } catch (MalformedJwtException | ExpiredJwtException | SignatureException | UnsupportedJwtException e) {
+            getLogger().debug("Validate token failed with exception", e);
             return false;
         }
         return true;

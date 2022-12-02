@@ -1,5 +1,7 @@
 package tech.beetwin.stereoscopy.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import tech.beetwin.stereoscopy.model.AbstractEntity;
@@ -11,6 +13,7 @@ import java.util.Objects;
 @Component(value = "versionJWTUtils")
 public class VersionJWTUtils extends AbstractJwtUtils {
 
+    private final Logger logger = LoggerFactory.getLogger(VersionJWTUtils.class);
     @Value("${jwt.secret.version}")
     private String secret;
 
@@ -25,24 +28,24 @@ public class VersionJWTUtils extends AbstractJwtUtils {
         this.duration = duration;
     }
 
-    public VersionJWTUtils setSecret(String secret) {
-        this.secret = secret;
-        return this;
-    }
-
-    public VersionJWTUtils setDuration(long duration) {
-        this.duration = duration;
-        return this;
-    }
-
     @Override
     public String getSecret() {
         return secret;
     }
 
+    public VersionJWTUtils setSecret(String secret) {
+        this.secret = secret;
+        return this;
+    }
+
     @Override
     public long getDuration() {
         return duration;
+    }
+
+    public VersionJWTUtils setDuration(long duration) {
+        this.duration = duration;
+        return this;
     }
 
     public String generateToken(AbstractEntity entity) {
@@ -56,15 +59,20 @@ public class VersionJWTUtils extends AbstractJwtUtils {
         return generateToken(null, claims);
     }
 
-    public Long getVersion(String token){
-        return super.getAllClaimsFromToken(token).get("version",Long.class);
+    public Long getVersion(String token) {
+        return super.getAllClaimsFromToken(token).get("version", Long.class);
     }
 
-    public Integer getNameHash(String token){
-        return super.getAllClaimsFromToken(token).get("nameHash",Integer.class);
+    public Integer getNameHash(String token) {
+        return super.getAllClaimsFromToken(token).get("nameHash", Integer.class);
     }
 
-    public Long getId(String token){
-        return super.getAllClaimsFromToken(token).get("id",Long.class);
+    public Long getId(String token) {
+        return super.getAllClaimsFromToken(token).get("id", Long.class);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return this.logger;
     }
 }
