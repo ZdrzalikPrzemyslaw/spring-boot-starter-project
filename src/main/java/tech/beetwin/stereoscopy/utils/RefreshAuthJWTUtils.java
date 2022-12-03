@@ -43,7 +43,7 @@ public class RefreshAuthJWTUtils extends AbstractJwtUtils {
     }
 
     public String generateToken(UserDetailsImpl userDetails) {
-        return super.generateToken(userDetails.getUsername(), null);
+        return super.generateToken(userDetails.getUsername(), new HashMap<>());
     }
 
     public RefreshAuthJWTUtils setJwtTokenValidity(long jwtTokenValidity) {
