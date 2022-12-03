@@ -227,6 +227,8 @@ public class I18nCodes {
     public static final String REQUEST_NULL = "request_null";
     public static final String ACCOUNT_NOT_CONFIRMED = "account_not_confirmed";
 
+    public static final String REFRESH_TOKEN_NULL = "refresh_token_null";
+
 
 
     private I18nCodes() {

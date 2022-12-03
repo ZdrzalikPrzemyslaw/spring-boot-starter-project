@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.request.RefreshTokenRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
@@ -31,6 +32,7 @@ import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataEntity;
 import tech.beetwin.stereoscopy.model.UserInfo.UserInfoEntity;
+import tech.beetwin.stereoscopy.utils.RefreshAuthJWTUtils;
 
 
 import java.util.List;
@@ -45,6 +47,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     private AuthenticationManager authenticationManager;
 
+    private RefreshAuthJWTUtils refreshAuthJWTUtils;
     @Value("${jwt.validity.auth-token:0}")
     private Long validDuration;
 
@@ -56,6 +59,12 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         this.accountInfoRepository = accountInfoRepository;
         this.tableMetadataService = tableMetadataService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public AccountService setRefreshAuthJWTUtils(RefreshAuthJWTUtils refreshAuthJWTUtils) {
+        this.refreshAuthJWTUtils = refreshAuthJWTUtils;
+        return this;
     }
 
     @Autowired
@@ -211,6 +220,29 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         }
         // TODO: 29/11/2022  handle exception when jwt outdated & update last login info
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
+        String token = jwtTokenUtil.generateToken(userDetails);
+
+        return new AuthenticationResponseDTO()
+                .setEmail(userDetails.getUsername())
+                .setId(userDetails.getId())
+                .setFirstName(userDetails.getName())
+                .setLastName(userDetails.getSurname())
+                .setValidDuration(validDuration)
+                .setToken(token)
+                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+    }
+
+    @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
+    public AuthenticationResponseDTO refreshToken(RefreshTokenRequestDTO dto) {
+
+            if (!refreshAuthJWTUtils.validateToken(dto.getRefreshToken())) {
+        //                throw
+            }
+            if (!refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()).equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+        //                throw
+            }
+
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()));
         String token = jwtTokenUtil.generateToken(userDetails);
 
         return new AuthenticationResponseDTO()
