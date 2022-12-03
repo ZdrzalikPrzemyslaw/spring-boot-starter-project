@@ -18,6 +18,7 @@ import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.dto.request.RefreshTokenRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
+import tech.beetwin.stereoscopy.exceptions.TokenException;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 import tech.beetwin.stereoscopy.security.UserDetailsServiceImpl;
 import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
@@ -236,10 +237,10 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     public AuthenticationResponseDTO refreshToken(RefreshTokenRequestDTO dto) {
 
             if (!refreshAuthJWTUtils.validateToken(dto.getRefreshToken())) {
-        //                throw
+                throw TokenException.invalidRefreshToken();
             }
             if (!refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()).equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
-        //                throw
+                throw TokenException.notCurrentUserRefreshToken();
             }
 
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()));

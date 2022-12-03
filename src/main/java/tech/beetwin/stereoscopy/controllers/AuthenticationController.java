@@ -48,7 +48,7 @@ public class AuthenticationController {
      * @return {@link ResponseEntity} containing the authentication token and basic info about user as specified in {@link AuthenticationResponseDTO}.
      */
     // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
-    @PostMapping()
+    @PostMapping("/refresh")
     @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
     @ResponseBody()
     public ResponseEntity<AuthenticationResponseDTO> refreshAuthToken(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) RefreshTokenRequestDTO dto) {

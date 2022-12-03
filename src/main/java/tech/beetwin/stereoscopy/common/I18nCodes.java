@@ -215,6 +215,8 @@ public class I18nCodes {
     public static final String APPOINTMENT_RESERVED_SUCCESSFULLY = "appointment_reserved_successfully";
     public static final String APPOINTMENT_IS_IN_PAST = "appointment_is_in_past";
     public static final String INVALID_TOKEN = "invalid_token";
+    public static final String NOT_CURRENT_USER_TOKEN = "not_current_user_token";
+    public static final String NOT_CURRENT_USER_REFRESH_TOKEN = "not_current_user_refresh_token";
     public static final String APPOINTMENT_ALREADY_RATED = "appointment_already_rated";
     public static final String DOCTOR_ALREADY_RATED = "doctor_rating_failed";
     public static final String NO_SUCH_PRESCRIPTION = "no_such_prescription";

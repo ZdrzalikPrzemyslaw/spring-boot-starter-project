@@ -19,7 +19,6 @@ import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
 import tech.beetwin.stereoscopy.controllers.AuthenticationController;
 import tech.beetwin.stereoscopy.exceptions.AuthorizationErrorException;
-import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataRepository;
 import tech.beetwin.stereoscopy.services.AccountService;
 import tech.beetwin.stereoscopy.services.TableMetadataService;
 
