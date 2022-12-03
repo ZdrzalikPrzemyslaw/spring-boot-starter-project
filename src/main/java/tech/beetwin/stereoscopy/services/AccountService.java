@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
@@ -33,6 +36,8 @@ import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataEntity;
 import tech.beetwin.stereoscopy.model.UserInfo.UserInfoEntity;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,11 +90,11 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         for (AccessLevelsEntity accessLevel : accountInfo.getAccessLevels()) {
             if (accessLevel.getLevel().toString().equals("admin")) {
                 accessLevel.setEnabled(isAdmin);
+                tableMetadataService.updateMetadata(new TableMetadataService.UpdateEntityEvent(accessLevel).setUpdateCreated(false));
                 return;
             }
         }
 
-        // TODO: 12/11/2022 Ustawić pola created by, ip etc.
         AccessLevelsEntity accessLevelsEntity = new AccessLevelsEntity()
                 .setLevel(AccessLevel.ADMIN)
                 .setEnabled(isAdmin)
@@ -129,7 +134,6 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     @PreAuthorize("permitAll()")
     public void registerAccount(String email, String password, String firstName, String lastname) {
-        //TODO wysyłanie maili aktywacyjnych, walidacja danych
         List<AccountInfoEntity> accounts = accountInfoRepository.findAccountInfoEntitiesByEmail(email);
         if (!accounts.isEmpty()) {
             throw AccountInfoException.emailAlreadyExists();
@@ -198,20 +202,45 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
+    private String getCurrentRequestIp() {
+        RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
+        if (attribs != null) {
+            HttpServletRequest request = ((ServletRequestAttributes) attribs).getRequest();
+            return request.getRemoteAddr();
+        }
+        return null;
+    }
+
     @PreAuthorize("permitAll()")
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO dto) {
+        boolean thrown = true;
+        var entity = accountInfoRepository.findAccountInfoEntityByEmail(dto.getEmail()).orElseThrow(AccountInfoException::accountNotFound);
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+            thrown = false;
         } catch (DisabledException e) {
             throw AuthorizationErrorException.accountNotConfirmed(e);
         } catch (BadCredentialsException e) {
             throw AuthorizationErrorException.invalidCredentials(e);
         } catch (LockedException e) {
             throw AuthorizationErrorException.accountDisabled(e);
+        } finally {
+            if (thrown) {
+                entity
+                        .setLastFailLogin(LocalDateTime.now())
+                        .setLastFailLoginIp(getCurrentRequestIp())
+                        .setLoginFailuresSinceLastLogin(entity.getLoginFailuresSinceLastLogin() + 1);
+                accountInfoRepository.save(entity);
+            }
         }
-        // TODO: 29/11/2022  handle exception when jwt outdated & update last login info
+
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
+
+        entity
+                .setLastLogin(LocalDateTime.now())
+                .setLastLoginIp(getCurrentRequestIp());
+        accountInfoRepository.save(entity);
 
         return new AuthenticationResponseDTO()
                 .setEmail(userDetails.getUsername())

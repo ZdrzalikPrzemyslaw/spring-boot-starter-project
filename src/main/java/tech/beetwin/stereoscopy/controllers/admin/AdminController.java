@@ -55,10 +55,10 @@ public class AdminController {
         this.jwtUtils = jwtUtils;
     }
 
-//    @GetMapping(value = "{*path}")
-//    public RedirectView redirect() {
-//        return new RedirectView("/admin", true);
-//    }
+    @RequestMapping(value = "/**")
+    public RedirectView redirect() {
+        return new RedirectView("/admin", true);
+    }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
@@ -176,5 +176,4 @@ public class AdminController {
         modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
-
 }
