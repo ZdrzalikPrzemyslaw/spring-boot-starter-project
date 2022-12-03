@@ -91,9 +91,8 @@ public class AdminController {
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            ModelAndView modelAndView = new ModelAndView("admin/login");
+            ModelAndView modelAndView = getLogin();
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
@@ -102,9 +101,9 @@ public class AdminController {
             response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
-            RedirectView redirectView = new RedirectView("/admin", true);
-            return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
+            var modelAndView = getLogin();
+            return modelAndView;
         }
     }
 
@@ -170,6 +169,7 @@ public class AdminController {
         try {
             accountService.editAccount(id, dto);
         } catch (AccountInfoException e) {
+            // TODO: 03/12/2022 Pokazac co poszlo nie tak w froncie
 //            modelAndView.addObject();
         }
         modelAndView = this.getUser(id);
