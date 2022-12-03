@@ -51,7 +51,7 @@ public class AuthenticationController {
     @PostMapping()
     @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
     @ResponseBody()
-    public ResponseEntity<BasicMessageResponseDTO> refreshAuthToken(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) RefreshTokenRequestDTO dto) {
+    public ResponseEntity<AuthenticationResponseDTO> refreshAuthToken(@RequestBody @Valid @NotNull(message = I18nCodes.REQUEST_NULL) RefreshTokenRequestDTO dto) {
         var res = accountService.refreshToken(dto);
         return ResponseEntity.ok().body(res);
     }
