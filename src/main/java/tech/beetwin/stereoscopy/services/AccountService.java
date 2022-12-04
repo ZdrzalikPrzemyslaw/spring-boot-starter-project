@@ -214,23 +214,24 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     @PreAuthorize("permitAll()")
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO dto) {
         boolean thrown = true;
-        var entity = accountInfoRepository.findAccountInfoEntityByEmail(dto.getEmail()).orElseThrow(AccountInfoException::accountNotFound);
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+        AccountInfoEntity entity = null;
+         try {
+             entity = accountInfoRepository.findAccountInfoEntityByEmail(dto.getEmail()).orElseThrow(AccountInfoException::accountNotFound);
+             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
             thrown = false;
         } catch (DisabledException e) {
             throw AuthorizationErrorException.accountNotConfirmed(e);
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException | AccountInfoException e) {
             throw AuthorizationErrorException.invalidCredentials(e);
         } catch (LockedException e) {
             throw AuthorizationErrorException.accountDisabled(e);
         } finally {
-            if (thrown) {
-                entity
-                        .setLastFailLogin(LocalDateTime.now())
-                        .setLastFailLoginIp(getCurrentRequestIp())
-                        .setLoginFailuresSinceLastLogin(entity.getLoginFailuresSinceLastLogin() + 1);
-                accountInfoRepository.save(entity);
+            if (thrown && entity != null) {
+                    entity
+                            .setLastFailLogin(LocalDateTime.now())
+                            .setLastFailLoginIp(getCurrentRequestIp())
+                            .setLoginFailuresSinceLastLogin(entity.getLoginFailuresSinceLastLogin() + 1);
+                    accountInfoRepository.save(entity);
             }
         }
 
