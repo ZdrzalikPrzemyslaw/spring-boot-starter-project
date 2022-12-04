@@ -59,7 +59,7 @@
                 <div class="w-full grid-center">
                     <p class="form-success mb-5" th:if="${showSuccess != null}"
                        th:text="#{successfully_created_account}"/>
-                    <p class="form-error" th:if="${errorMessage}" th:text="${errorMessage}"/>
+                    <p class="form-error" th:if="${errorMessage}" th:text="#{${errorMessage}}"/>
                 </div>
                 <input class="btn-primary"
                        id="submit-button" type="submit"/>

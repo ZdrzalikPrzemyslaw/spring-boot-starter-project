@@ -140,7 +140,7 @@
                     <ul th:if="${#fields.hasErrors('versionToken')}">
                         <li class="form-error" th:each="err : ${#fields.errors('versionToken')}" th:text="#{${err}}"/>
                     </ul>
-                    <p class="form-error" th:if="${errorMessage}"  th:text="${errorMessage}"/>
+                    <p class="form-error" th:if="${errorMessage}" th:text="#{${errorMessage}}"/>
                     <input class="hidden btn-primary px-10" id="submit-button" type="submit"/>
                     <button class="btn-primary px-10" id="edit-button" th:text="#{edit}" type="button"/>
                 </div>
