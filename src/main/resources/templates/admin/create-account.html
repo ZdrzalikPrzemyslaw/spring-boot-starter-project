@@ -28,37 +28,38 @@
                 </div>
                 <div class="-space-y-px">
                     <div class="my-5">
-                    <label class="inputLabel"
-                           for="form-password" th:text="#{password}"/>
-                    <input class="input" id="form-password" th:field="*{password}" type="password"/>
-                    <ul th:if="${#fields.hasErrors('password')}">
-                        <li class="form-error" th:each="err : ${#fields.errors('password')}" th:text="#{${err}}"/>
-                    </ul>
+                        <label class="inputLabel"
+                               for="form-password" th:text="#{password}"/>
+                        <input class="input" id="form-password" th:field="*{password}" type="password"/>
+                        <ul th:if="${#fields.hasErrors('password')}">
+                            <li class="form-error" th:each="err : ${#fields.errors('password')}" th:text="#{${err}}"/>
+                        </ul>
                     </div>
                 </div>
                 <div class="-space-y-px">
                     <div class="my-5">
-                    <label class="inputLabel"
-                           for="form-firstName" th:text="#{first_name}"/>
-                    <input class="input" id="form-firstName" th:field="*{firstName}" type="text"/>
-                    <ul th:if="${#fields.hasErrors('firstName')}">
-                        <li class="form-error" th:each="err : ${#fields.errors('firstName')}" th:text="#{${err}}"/>
-                    </ul>
+                        <label class="inputLabel"
+                               for="form-firstName" th:text="#{first_name}"/>
+                        <input class="input" id="form-firstName" th:field="*{firstName}" type="text"/>
+                        <ul th:if="${#fields.hasErrors('firstName')}">
+                            <li class="form-error" th:each="err : ${#fields.errors('firstName')}" th:text="#{${err}}"/>
+                        </ul>
                     </div>
                 </div>
                 <div class="-space-y-px">
                     <div class="my-5">
-                    <label class="inputLabel"
-                           for="form-lastName" th:text="#{last_name}"/>
-                    <input class="input" id="form-lastName" th:field="*{lastName}" type="text"/>
-                    <ul th:if="${#fields.hasErrors('lastName')}">
-                        <li class="form-error" th:each="err : ${#fields.errors('lastName')}" th:text="#{${err}}"/>
-                    </ul>
+                        <label class="inputLabel"
+                               for="form-lastName" th:text="#{last_name}"/>
+                        <input class="input" id="form-lastName" th:field="*{lastName}" type="text"/>
+                        <ul th:if="${#fields.hasErrors('lastName')}">
+                            <li class="form-error" th:each="err : ${#fields.errors('lastName')}" th:text="#{${err}}"/>
+                        </ul>
                     </div>
                 </div>
                 <div class="w-full grid-center">
                     <p class="form-success mb-5" th:if="${showSuccess != null}"
                        th:text="#{successfully_created_account}"/>
+                    <p class="form-error" th:if="${errorMessage}" th:text="${errorMessage}"/>
                 </div>
                 <input class="btn-primary"
                        id="submit-button" type="submit"/>
