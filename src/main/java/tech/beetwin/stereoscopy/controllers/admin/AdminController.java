@@ -5,17 +5,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
@@ -28,6 +31,7 @@ import tech.beetwin.stereoscopy.services.AccountService;
 import tech.beetwin.stereoscopy.utils.VersionJWTUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -51,10 +55,14 @@ public class AdminController {
         this.jwtUtils = jwtUtils;
     }
 
+    @RequestMapping(value = "/**")
+    public RedirectView redirect() {
+        return new RedirectView("/admin", true);
+    }
+
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
     public Object getAdminPanel() {
-        // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return new RedirectView("/admin/login", true);
@@ -65,7 +73,7 @@ public class AdminController {
     private Cookie createBearerTokenCookie(String value, long duration) {
         Cookie cookie = new Cookie("bearer-token", value);
         cookie.setPath("/");
-        // TODO: 11/11/2022  secure
+        // TODO: 11/11/2022 secure?
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(Math.toIntExact(duration / 1000));
@@ -83,22 +91,19 @@ public class AdminController {
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            ModelAndView modelAndView = new ModelAndView("admin/login");
+            ModelAndView modelAndView = getLogin();
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
         try {
-            // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
             var authDto = accountService.authenticate(dto);
-            // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
-            RedirectView redirectView = new RedirectView("/admin", true);
-            return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
+            var modelAndView = getLogin();
+            return modelAndView;
         }
     }
 
@@ -164,11 +169,11 @@ public class AdminController {
         try {
             accountService.editAccount(id, dto);
         } catch (AccountInfoException e) {
+            // TODO: 03/12/2022 Pokazac co poszlo nie tak w froncie
 //            modelAndView.addObject();
         }
         modelAndView = this.getUser(id);
         modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
-
 }
