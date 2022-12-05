@@ -65,7 +65,8 @@ class AuthenticationControllerTest {
         Assertions.assertEquals(HttpStatus.OK, status);
         Assertions.assertNotNull(body);
         Assertions.assertNotNull(body.getMessage());
-        Assertions.assertNotNull(body.getToken());
+        Assertions.assertNotNull(body.getAuthToken());
+        Assertions.assertNotNull(body.getRefreshToken());
         Assertions.assertEquals(I18nCodes.AUTHENTICATION_SUCCESS, body.getMessage());
     }
 
@@ -101,5 +102,7 @@ class AuthenticationControllerTest {
             Assertions.assertEquals(I18nCodes.AUTHENTICATION_SUCCESS, object.get("message"));
         });
     }
+
+    // TODO: 05/12/2022 Dodac test odswieżania tokenu
 
 }

@@ -93,7 +93,7 @@ public class AdminController {
             // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
             var authDto = accountService.authenticate(dto);
             // TODO: 11/11/2022 Dodac expiration do cookie
-            response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
+            response.addCookie(createBearerTokenCookie(authDto.getAuthToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
             RedirectView redirectView = new RedirectView("/admin", true);

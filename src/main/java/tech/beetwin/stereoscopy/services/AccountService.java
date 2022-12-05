@@ -208,6 +208,22 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
+    private AuthenticationResponseDTO generateAuthenticationResponseDTO(String userEmail) {
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(userEmail);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        String refreshToken = refreshAuthJWTUtils.generateToken(userDetails);
+
+        return new AuthenticationResponseDTO()
+                .setEmail(userDetails.getUsername())
+                .setId(userDetails.getId())
+                .setFirstName(userDetails.getName())
+                .setLastName(userDetails.getSurname())
+                .setValidDuration(validDuration)
+                .setAuthToken(token)
+                .setRefreshToken(refreshToken)
+                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+    }
+
     @PreAuthorize("permitAll()")
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO dto) {
         try {
@@ -220,17 +236,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
             throw AuthorizationErrorException.accountDisabled(e);
         }
         // TODO: 29/11/2022  handle exception when jwt outdated & update last login info
-        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        String token = jwtTokenUtil.generateToken(userDetails);
-
-        return new AuthenticationResponseDTO()
-                .setEmail(userDetails.getUsername())
-                .setId(userDetails.getId())
-                .setFirstName(userDetails.getName())
-                .setLastName(userDetails.getSurname())
-                .setValidDuration(validDuration)
-                .setToken(token)
-                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+        return this.generateAuthenticationResponseDTO(dto.getEmail());
     }
 
     @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
@@ -243,17 +249,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
                 throw TokenException.notCurrentUserRefreshToken();
             }
 
-        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()));
-        String token = jwtTokenUtil.generateToken(userDetails);
-
-        return new AuthenticationResponseDTO()
-                .setEmail(userDetails.getUsername())
-                .setId(userDetails.getId())
-                .setFirstName(userDetails.getName())
-                .setLastName(userDetails.getSurname())
-                .setValidDuration(validDuration)
-                .setToken(token)
-                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+        return this.generateAuthenticationResponseDTO(refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()));
     }
 
     @Override

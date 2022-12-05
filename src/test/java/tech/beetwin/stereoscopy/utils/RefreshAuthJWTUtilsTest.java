@@ -25,7 +25,6 @@ class RefreshAuthJWTUtilsTest {
         var token = refreshAuthJWTUtils.generateToken(userDetails);
         Assertions.assertTrue(refreshAuthJWTUtils.validateToken(token));
         Assertions.assertEquals(subject, refreshAuthJWTUtils.getSubjectFromToken(token));
-//        Assertions.assertTrue(refreshAuthJWTUtils.getClaims(token).contains("user"));
 
     }
 
@@ -34,7 +33,6 @@ class RefreshAuthJWTUtilsTest {
         var token = refreshAuthJWTUtils.generateToken(userDetails);
         Assertions.assertTrue(refreshAuthJWTUtils.validateToken(token));
         Assertions.assertNotEquals("another@user.com", refreshAuthJWTUtils.getSubjectFromToken(token));
-//        Assertions.assertFalse(refreshAuthJWTUtils.getClaims(token).contains("admin"));
     }
 
     @Test

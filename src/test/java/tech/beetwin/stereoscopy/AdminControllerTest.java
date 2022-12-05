@@ -47,7 +47,7 @@ class AdminControllerTest {
         mockMvc.perform(post("/auth").contentType(MediaType.APPLICATION_JSON).content("{\"email\": \"admin@userowy.com\",\"password\": \"Password123\"}")).andExpect(status().isOk()).andDo(result -> {
             String res = result.getResponse().getContentAsString();
             net.minidev.json.JSONObject object = (net.minidev.json.JSONObject) new JSONParser().parse(res);
-            authToken = MessageFormat.format("Bearer {0}", object.get("token").toString());
+            authToken = MessageFormat.format("Bearer {0}", object.get("authToken").toString());
         });
     }
 
