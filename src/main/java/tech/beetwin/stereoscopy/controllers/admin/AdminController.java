@@ -51,10 +51,14 @@ public class AdminController {
         this.jwtUtils = jwtUtils;
     }
 
+    @RequestMapping(value = "/**")
+    public RedirectView redirect() {
+        return new RedirectView("/admin", true);
+    }
+
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", produces = MediaType.TEXT_HTML_VALUE)
     public Object getAdminPanel() {
-        // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return new RedirectView("/admin/login", true);
@@ -65,7 +69,7 @@ public class AdminController {
     private Cookie createBearerTokenCookie(String value, long duration) {
         Cookie cookie = new Cookie("bearer-token", value);
         cookie.setPath("/");
-        // TODO: 11/11/2022  secure
+        // TODO: 11/11/2022 secure?
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(Math.toIntExact(duration / 1000));
@@ -83,22 +87,18 @@ public class AdminController {
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            ModelAndView modelAndView = new ModelAndView("admin/login");
+            var modelAndView = getLogin();
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
-            modelAndView.addObject("DTO", new AuthenticationRequestDTO());
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
         try {
-            // TODO: 12/11/2022 Sprawić, by tylko admin mógł zobaczyć ten panel
             var authDto = accountService.authenticate(dto);
-            // TODO: 11/11/2022 Dodac expiration do cookie
             response.addCookie(createBearerTokenCookie(authDto.getAuthToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
-            RedirectView redirectView = new RedirectView("/admin", true);
-            return redirectView;
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
+            return getLogin();
         }
     }
 
@@ -127,12 +127,11 @@ public class AdminController {
         }
         try {
             accountService.registerAccount(dto);
+            modelAndView.addObject("showSuccess", true);
         } catch (AccountInfoException e) {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-            return modelAndView;
-            // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo stworzyć konta
+            modelAndView.addObject("errorMessage", e.getMessage());
         }
-        modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
 
@@ -155,20 +154,17 @@ public class AdminController {
 
     @PostMapping(value = "user-info/{id}", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView editUser(@NotNull(message = I18nCodes.ID_NULL) @Valid @Min(value = 0) @PathVariable Long id, @ModelAttribute("DTO") @Valid @NotNull EditUserInfoDTO dto, BindingResult result) {
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = this.getUser(id);
         if (result.hasErrors()) {
-            modelAndView = this.getUser(id);
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
             return modelAndView;
         }
         try {
             accountService.editAccount(id, dto);
+            modelAndView.addObject("showSuccess", true);
         } catch (AccountInfoException e) {
-//            modelAndView.addObject();
+            modelAndView.addObject("errorMessage", e.getMessage());
         }
-        modelAndView = this.getUser(id);
-        modelAndView.addObject("showSuccess", true);
         return modelAndView;
     }
-
 }

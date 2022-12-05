@@ -73,8 +73,6 @@ public class ExceptionHandlers {
         );
     }
 
-    // TODO: 18/11/2022 Kiedy robimy tutaj obsluge, to 401 i 403 sa takie same
-    //      Obsluga taka jak w tech.zdrzalik.courses.security.SecurityConfiguration dziala ale przy 403 wylewa sie wyjatek
     @ExceptionHandler(AccessDeniedException.class)
     public Object handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) {
         logException(e, request, response);

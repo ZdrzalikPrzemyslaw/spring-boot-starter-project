@@ -48,7 +48,6 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String subject = jwtUtils.getSubjectFromToken(token);
-        //TODO wyjątki
 
         if (subject == null || SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);

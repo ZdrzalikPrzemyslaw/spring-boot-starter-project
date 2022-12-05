@@ -33,7 +33,6 @@ public class AuthenticationController {
      * @param dto {@link AuthenticationRequestDTO} constructed from the api request.
      * @return {@link ResponseEntity} containing the authentication token and basic info about user as specified in {@link AuthenticationResponseDTO}.
      */
-    // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
     @PostMapping()
     @PreAuthorize("permitAll()")
     @ResponseBody()
@@ -47,7 +46,6 @@ public class AuthenticationController {
      * @param dto {@link AuthenticationRequestDTO} constructed from the api request.
      * @return {@link ResponseEntity} containing the authentication token and basic info about user as specified in {@link AuthenticationResponseDTO}.
      */
-    // TODO: 11/11/2022 https://stackoverflow.com/questions/33663801/how-do-i-customize-default-error-message-from-spring-valid-validation
     @PostMapping("/refresh")
     @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
     @ResponseBody()
