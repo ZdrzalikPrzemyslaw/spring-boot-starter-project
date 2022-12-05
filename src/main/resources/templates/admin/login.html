@@ -36,8 +36,11 @@
                         </ul>
                     </div>
                 </div>
-                <input class="btn-primary"
-                       id="submit-button" type="submit" th:value="#{login_button}"/>
+                <div class="w-full grid-center">
+                    <p class="form-error" th:if="${errorMessage}" th:text="#{${errorMessage}}"/>
+                    <input class="btn-primary"
+                           id="submit-button px-10" type="submit" th:value="#{login_button}"/>
+                </div>
             </form>
         </div>
     </div>

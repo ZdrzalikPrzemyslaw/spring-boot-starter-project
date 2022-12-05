@@ -87,7 +87,7 @@ public class AdminController {
     @PostMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public Object authenticate(@ModelAttribute("DTO") @Valid @NotNull AuthenticationRequestDTO dto, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            var modelAndView = getLogin();
+            ModelAndView modelAndView = getLogin();
             modelAndView.addObject("org.springframework.validation.BindingResult.DTO", result);
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
@@ -97,8 +97,8 @@ public class AdminController {
             response.addCookie(createBearerTokenCookie(authDto.getAuthToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
-            // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
             ModelAndView login = getLogin();
+            login.addObject("errorMessage", e.getMessage());
             login.setStatus(HttpStatus.UNAUTHORIZED);
             return login;
         }
