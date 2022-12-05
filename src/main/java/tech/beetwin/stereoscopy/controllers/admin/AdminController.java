@@ -98,7 +98,9 @@ public class AdminController {
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
             // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
-            return getLogin();
+            ModelAndView login = getLogin();
+            login.setStatus(HttpStatus.UNAUTHORIZED);
+            return login;
         }
     }
 

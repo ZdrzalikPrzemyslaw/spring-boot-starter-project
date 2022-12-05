@@ -69,10 +69,10 @@ class AdminControllerTest {
     }
 
     //TODO: Poprawić
-//    @Test
-//    void failLoginInvalidPassword() throws Exception {
-//        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password1234")).andExpect(status().isUnauthorized());
-//    }
+    @Test
+    void failLoginInvalidPassword() throws Exception {
+        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password1234")).andExpect(status().isUnauthorized());
+    }
 
     @Test
     void failLoginNullPassword() throws Exception {

@@ -266,7 +266,6 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
                 .setLastLoginIp(getCurrentRequestIp());
         accountInfoRepository.save(entity);
 
-        // TODO: 29/11/2022  handle exception when jwt outdated & update last login info
         return this.generateAuthenticationResponseDTO(dto.getEmail());
     }
 
