@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+
+<body class="background">
+<div th:fragment="error-page(error_message)">
+
+    <div class="max-w-full grid-center">
+        <div class="px-14 my-10">
+            <div class="min-w-full justify-self-stretch justify-items-stretch md:w-96 sm:60">
+                <p
+                        class="error-message"
+                        id="error_message"
+                        th:replace="${error_message}"
+                        th:text="#{error_generic_text}">
+                </p>
+                <div class="btn-group mt-10">
+                    <div th:if="${#httpServletRequest.getHeader('Referer')}">
+                        <a th:href="${#httpServletRequest.getHeader('Referer')}">
+                            <button class="btn-primary min-w-fit w-full" th:text="#{previous_page}"
+                                    type="button"></button>
+                        </a>
+                    </div>
+
+                    <a th:replace="fragments/link.html::admin-link(~{::#back-to-admin-button})">
+                        <button class="btn-primary min-w-fit w-full" id="back-to-admin-button"
+                                th:text="#{link_to_admin}"
+                                type="button"></button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

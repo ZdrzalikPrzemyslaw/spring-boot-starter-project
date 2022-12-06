@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+
+<nav class="w-full border-gray-200 px-2 sm:px-4 py-1 hover:bg-opacity-80 bg-opacity-50 bg-white dark:bg-opacity-80 dark:hover:bg-opacity-90 dark:bg-default" th:fragment="header">
+    <div class="w-full">
+        <div class="w-full min-w-full">
+            <nav class="w-full mx-2 md:px-0 sm:px-4">
+                <div class="w-full flex flex-wrap items-center justify-between">
+                    <div class="inline-flex">
+                        <a class="flex items-center" href="/">
+                            <img th:src="@{/images/beeTwin.svg}" class="w-24 h-14 dark:hidden">
+                            <img th:src="@{/images/beeTwin_white.svg}" class="w-24 h-14 hidden dark:block">
+                        </a>
+                    </div>
+                    <button aria-controls="navbar-default" aria-expanded="false"
+                            class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                            data-collapse-toggle="navbar-default" type="button">
+                        <span class="sr-only">Open main menu</span>
+                        <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd"
+                                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                                  fill-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </div>
+</nav>
+
+<div class="mt-auto w-full h-16 grid place-items-center" th:fragment="footer">
+    <div class="w-11/12 border-t grid place-items-center">
+        <p class="inline-block dark:text-white mt-5 mb-5" th:text="#{copyright}"></p>
+    </div>
+</div>
+
+
+</body>
+</html>

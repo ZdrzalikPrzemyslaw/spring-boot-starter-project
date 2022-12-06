@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error 500</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body class="background">
+
+<div th:replace="fragments/common.html::header"></div>
+
+
+<div th:replace="fragments/error.html::error-page(~{::#error_message})">
+    <p id="error_message"
+       class="error-message"
+       th:text="#{error_500_text}">
+    </p>
+</div>
+
+<div th:replace="fragments/common.html::footer"> </div>
+
+</body>
+</html>

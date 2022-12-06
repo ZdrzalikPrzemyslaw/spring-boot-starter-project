@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body class="background">
+
+
+<div th:replace="fragments/common.html::logged-out-header"></div>
+
+<div class="max-w-full grid-center">
+    <div class="px-14 my-10">
+        <div class="min-w-full justify-self-stretch justify-items-stretch md:w-96 sm:60">
+            <h2 class="header" th:text="#{login_to_your_account}"/>
+            <form action="#" class="mt-10 mb-4 space-y-5" method="post" th:action="@{/admin/login}"
+                  th:object="${DTO}">
+                <div class="-space-y-px">
+                    <div class="my-5">
+                        <label class="sr-only" for="form-email" th:text="#{email}"/>
+                        <input class="input" id="form-email" th:field="*{email}"
+                               type="email"
+                        />
+                        <ul th:if="${#fields.hasErrors('email')}">
+                            <li class="form-error" th:each="err : ${#fields.errors('email')}" th:text="#{${err}}"/>
+                        </ul>
+                    </div>
+                    <div class="my-5">
+                        <label class="sr-only" for="form-password" th:text="#{password}"/>
+                        <input class="input" id="form-password" th:field="*{password}"
+                               type="password"
+                        />
+                        <ul th:if="${#fields.hasErrors('password')}">
+                            <li class="form-error" th:each="err : ${#fields.errors('password')}" th:text="#{${err}}"/>
+                        </ul>
+                    </div>
+                </div>
+                <div class="w-full grid-center">
+                    <p class="form-error" th:if="${errorMessage}" th:text="#{${errorMessage}}"/>
+                    <input class="btn-primary"
+                           id="submit-button px-10" type="submit" th:value="#{login_button}"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/common-welcome.html::footer"></div>
+
+</body>
+</html>

@@ -4,14 +4,82 @@
 
 @layer components {
     .btn-primary {
-        @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mx-7 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800;
+        @apply relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-default bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 mt-5;
     }
+
     .header {
-        @apply mx-7 mt-8 mb-12 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white;
+        @apply text-center text-4xl font-extrabold text-default-light dark:text-default-dark;
     }
 
     .background {
-        @apply min-h-screen w-full bg-gray-50 dark:bg-gray-800;
+        @apply min-h-screen w-full bg-default-dark dark:bg-default;
     }
 
+    .input {
+        @apply disabled:bg-gray-200 dark:disabled:bg-gray-300 rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-default-light focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm;
+    }
+
+    .inputLabel {
+        @apply block uppercase tracking-wide text-default dark:text-default-dark text-xs font-bold mb-2;
+    }
+
+    body {
+        @apply min-h-screen flex flex-col;
+    }
+
+    .form-error {
+        @apply text-red-700 dark:text-orange-500 text-sm;
+    }
+
+    .form-success {
+        @apply text-base text-green-700 dark:text-green-400;
+    }
+
+    .one-column-of-two {
+        @apply w-full sm:w-1/2 px-3;
+    }
+
+    .div-with-two-columns {
+        @apply flex flex-wrap -mx-3 mb-4;
+    }
+
+    .grid-center {
+        @apply place-items-center grid;
+    }
+
+    .error-message {
+        @apply mb-3 basis-full text-center text-default dark:text-default-dark break-normal font-bold leading-none text-2xl;
+    }
+
+    .table-col {
+        @apply max-w-[200px] break-normal py-3 px-6;
+    }
+
+    ol.breadcrumbs > li:last-child > img {
+        visibility: hidden;
+    }
+
+    .table-full {
+        @apply w-full text-sm text-left text-default dark:text-default-dark min-w-[600px];
+    }
+
+    .table-head {
+        @apply text-xs dark:bg-gray-800 text-default bg-gray-300 uppercase dark:text-default-dark;
+    }
+
+    .table-row {
+        @apply bg-white border-b dark:bg-default dark:border-gray-600 hover:bg-default-dark dark:hover:bg-gray-600;
+    }
+
+    .alternating-children {
+        @apply text-default dark:text-default-dark;
+    }
+
+    .alternating-children > div:nth-child(even) > .first-in-order {
+        @apply order-2;
+    }
+
+    .alternating-children > div:nth-child(even) > .second-in-order {
+        @apply order-1;
+    }
 }

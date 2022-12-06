@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body class="background">
+
+<div th:replace="fragments/common.html::header"></div>
+
+<div class="grid-center">
+    <div class="px-14 my-5">
+        <div class="min-w-full justify-self-stretch justify-items-stretch md:w-96 sm:60">
+            <h2 class="header text-4xl" th:text="#{admin_panel}"/>
+            <div class="btn-group">
+                <a class="w-1/3"
+                   th:href="@{/{locale}/admin/create-account(
+        locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()})}">
+                    <button class="btn-primary min-w-fit w-full" th:text="#{create_new_user}" type="button"/>
+                </a>
+                <a class="w-1/3"
+                   th:href="@{/{locale}/admin/users-list(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()})}">
+                    <button class="btn-primary min-w-fit w-full" th:text="#{user_list}" type="button"/>
+                </a>
+                <a class="w-1/3"
+                   th:href="@{/{locale}/admin/users-list-zepsute(
+                locale=${@localeContextHolderWrapper.getLocaleContext().getLocale()})}">
+                    <button class="btn-primary min-w-fit w-full" th:text="zepsute" type="button"/>
+                </a>
+                <a class="w-1/3"
+                   href="javascript: document.logoutForm.submit()">
+                    <button class="btn-primary min-w-fit w-full" th:text="#{logout}" type="button"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" name="logoutForm" th:action="@{/admin/logout}" th:hidden="true">
+    <input th:hidden="true" type="submit">
+</form>
+
+<div th:replace="fragments/common.html::footer">
+
+</div>
+
+
+</body>
+</html>
