@@ -64,7 +64,8 @@ class AccountServiceTest {
         var res = accountService.authenticate(new AuthenticationRequestDTO().setEmail(USER_EMAIL).setPassword(USER_PASSWORD));
         Assertions.assertNotNull(res);
         Assertions.assertEquals(USER_EMAIL, res.getEmail());
-        Assertions.assertTrue(Strings.isNotBlank(res.getToken()));
+        Assertions.assertTrue(Strings.isNotBlank(res.getAuthToken()));
+        Assertions.assertTrue(Strings.isNotBlank(res.getRefreshToken()));
         Assertions.assertEquals(I18nCodes.AUTHENTICATION_SUCCESS, res.getMessage());
     }
 

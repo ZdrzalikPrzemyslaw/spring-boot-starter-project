@@ -4,11 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import tech.beetwin.stereoscopy.model.AccessLevel.AccessLevelsEntity;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 
 import java.util.Collections;
-import java.util.Objects;
 
 public class AuthJWTUtilsTest {
 

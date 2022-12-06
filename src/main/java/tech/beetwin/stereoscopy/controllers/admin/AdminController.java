@@ -94,12 +94,13 @@ public class AdminController {
         }
         try {
             var authDto = accountService.authenticate(dto);
-            response.addCookie(createBearerTokenCookie(authDto.getToken(), authDto.getValidDuration()));
+            response.addCookie(createBearerTokenCookie(authDto.getAuthToken(), authDto.getValidDuration()));
             return new ModelAndView("redirect:/admin/user-info");
         } catch (Exception e) {
-            // TODO: 11/11/2022 Handle wyjatki - pokazac jakas wiadomosc czy cos ze sie nie udalo zalogowac
-            var modelAndView = getLogin();
-            return modelAndView;
+            ModelAndView login = getLogin();
+            login.addObject("errorMessage", e.getMessage());
+            login.setStatus(HttpStatus.UNAUTHORIZED);
+            return login;
         }
     }
 

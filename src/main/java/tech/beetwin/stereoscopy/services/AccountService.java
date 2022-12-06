@@ -18,8 +18,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import tech.beetwin.stereoscopy.dto.request.AuthenticationRequestDTO;
+import tech.beetwin.stereoscopy.dto.request.RefreshTokenRequestDTO;
 import tech.beetwin.stereoscopy.dto.response.AuthenticationResponseDTO;
 import tech.beetwin.stereoscopy.common.I18nCodes;
+import tech.beetwin.stereoscopy.exceptions.TokenException;
 import tech.beetwin.stereoscopy.security.UserDetailsImpl;
 import tech.beetwin.stereoscopy.security.UserDetailsServiceImpl;
 import tech.beetwin.stereoscopy.utils.AuthJWTUtils;
@@ -34,6 +36,7 @@ import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoEntity;
 import tech.beetwin.stereoscopy.model.AccountInfo.AccountInfoRepository;
 import tech.beetwin.stereoscopy.model.TableMetadata.TableMetadataEntity;
 import tech.beetwin.stereoscopy.model.UserInfo.UserInfoEntity;
+import tech.beetwin.stereoscopy.utils.RefreshAuthJWTUtils;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +53,7 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
 
     private AuthenticationManager authenticationManager;
 
+    private RefreshAuthJWTUtils refreshAuthJWTUtils;
     @Value("${jwt.validity.auth-token:0}")
     private Long validDuration;
 
@@ -61,6 +65,12 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         this.accountInfoRepository = accountInfoRepository;
         this.tableMetadataService = tableMetadataService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public AccountService setRefreshAuthJWTUtils(RefreshAuthJWTUtils refreshAuthJWTUtils) {
+        this.refreshAuthJWTUtils = refreshAuthJWTUtils;
+        return this;
     }
 
     @Autowired
@@ -202,6 +212,22 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
         editAccount(id, dto.getEmail(), dto.getEnabled(), dto.getFirstName(), dto.getLastName());
     }
 
+    private AuthenticationResponseDTO generateAuthenticationResponseDTO(String userEmail) {
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(userEmail);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        String refreshToken = refreshAuthJWTUtils.generateToken(userDetails);
+
+        return new AuthenticationResponseDTO()
+                .setEmail(userDetails.getUsername())
+                .setId(userDetails.getId())
+                .setFirstName(userDetails.getName())
+                .setLastName(userDetails.getSurname())
+                .setValidDuration(validDuration)
+                .setAuthToken(token)
+                .setRefreshToken(refreshToken)
+                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+    }
+
     private String getCurrentRequestIp() {
         RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
         if (attribs != null) {
@@ -215,9 +241,9 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO dto) {
         boolean thrown = true;
         AccountInfoEntity entity = null;
-         try {
-             entity = accountInfoRepository.findAccountInfoEntityByEmail(dto.getEmail()).orElseThrow(AccountInfoException::accountNotFound);
-             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+        try {
+            entity = accountInfoRepository.findAccountInfoEntityByEmail(dto.getEmail()).orElseThrow(AccountInfoException::accountNotFound);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
             thrown = false;
         } catch (DisabledException e) {
             throw AuthorizationErrorException.accountNotConfirmed(e);
@@ -227,30 +253,33 @@ public class AccountService extends AbstractService<AccountInfoEntity> {
             throw AuthorizationErrorException.accountDisabled(e);
         } finally {
             if (thrown && entity != null) {
-                    entity
-                            .setLastFailLogin(LocalDateTime.now())
-                            .setLastFailLoginIp(getCurrentRequestIp())
-                            .setLoginFailuresSinceLastLogin(entity.getLoginFailuresSinceLastLogin() + 1);
-                    accountInfoRepository.save(entity);
+                entity
+                        .setLastFailLogin(LocalDateTime.now())
+                        .setLastFailLoginIp(getCurrentRequestIp())
+                        .setLoginFailuresSinceLastLogin(entity.getLoginFailuresSinceLastLogin() + 1);
+                accountInfoRepository.save(entity);
             }
         }
-
-        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        String token = jwtTokenUtil.generateToken(userDetails);
 
         entity
                 .setLastLogin(LocalDateTime.now())
                 .setLastLoginIp(getCurrentRequestIp());
         accountInfoRepository.save(entity);
 
-        return new AuthenticationResponseDTO()
-                .setEmail(userDetails.getUsername())
-                .setId(userDetails.getId())
-                .setFirstName(userDetails.getName())
-                .setLastName(userDetails.getSurname())
-                .setValidDuration(validDuration)
-                .setToken(token)
-                .setMessage(I18nCodes.AUTHENTICATION_SUCCESS);
+        return this.generateAuthenticationResponseDTO(dto.getEmail());
+    }
+
+    @PreAuthorize("!hasAuthority('ROLE_ANONYMOUS')")
+    public AuthenticationResponseDTO refreshToken(RefreshTokenRequestDTO dto) {
+
+        if (!refreshAuthJWTUtils.validateToken(dto.getRefreshToken())) {
+            throw TokenException.invalidRefreshToken();
+        }
+        if (!refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()).equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+            throw TokenException.notCurrentUserRefreshToken();
+        }
+
+        return this.generateAuthenticationResponseDTO(refreshAuthJWTUtils.getSubjectFromToken(dto.getRefreshToken()));
     }
 
     @Override

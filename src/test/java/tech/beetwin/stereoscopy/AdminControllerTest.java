@@ -20,7 +20,6 @@ import tech.beetwin.stereoscopy.services.TableMetadataService;
 
 import java.text.MessageFormat;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +47,7 @@ class AdminControllerTest {
         mockMvc.perform(post("/auth").contentType(MediaType.APPLICATION_JSON).content("{\"email\": \"admin@userowy.com\",\"password\": \"Password123\"}")).andExpect(status().isOk()).andDo(result -> {
             String res = result.getResponse().getContentAsString();
             net.minidev.json.JSONObject object = (net.minidev.json.JSONObject) new JSONParser().parse(res);
-            authToken = MessageFormat.format("Bearer {0}", object.get("token").toString());
+            authToken = MessageFormat.format("Bearer {0}", object.get("authToken").toString());
         });
     }
 
@@ -70,10 +69,10 @@ class AdminControllerTest {
     }
 
     //TODO: Poprawić
-//    @Test
-//    void failLoginInvalidPassword() throws Exception {
-//        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password1234")).andExpect(status().isUnauthorized());
-//    }
+    @Test
+    void failLoginInvalidPassword() throws Exception {
+        mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("email", "admin@userowy.com").param("password", "Password1234")).andExpect(status().isUnauthorized());
+    }
 
     @Test
     void failLoginNullPassword() throws Exception {
