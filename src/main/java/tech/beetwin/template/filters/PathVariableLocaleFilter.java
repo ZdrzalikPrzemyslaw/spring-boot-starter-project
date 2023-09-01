@@ -30,19 +30,22 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         int index = 0;
         String url = defaultString(request.getRequestURI().substring(request.getContextPath().length()));
-        String[] variables = Arrays.stream(url.split("/")).filter(x -> !Strings.isBlank(x)).toArray(String[]::new);
-        if (variables.length > index && (variables[index].equals("css") || variables[index].equals("images"))){
+        String[] splitUrl = Arrays.stream(url.split("/")).filter(x -> !Strings.isBlank(x)).toArray(String[]::new);
+        if (splitUrl.length > index && splitUrl[0].equals("api")) {
+            index = 1;
+        }
+        if (splitUrl.length > index && (splitUrl[index].equals("css") || splitUrl[index].equals("images"))){
             // static files in /resources/static directories. Need to be updated if more directories added, preferably make it work automatically with the directories loaded on app start.
             filterChain.doFilter(request, response);
         }
-        else if (variables.length > index && isLocale(variables[index])) {
-            request.setAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME, variables[index]);
-            String newUrl = StringUtils.removeStart(url, '/' + variables[index]);
+        else if (splitUrl.length > index && isLocale(splitUrl[index])) {
+            request.setAttribute(I18nCodes.LOCALE_ATTRIBUTE_NAME, splitUrl[index]);
+            String newUrl = StringUtils.removeStart(url, '/' + splitUrl[index]);
             RequestDispatcher dispatcher = request.getRequestDispatcher(newUrl);
             dispatcher.forward(request, response);
         } else if (nullSafeContains(request.getHeader("Accept"), "text/html")) {
             // Only for browsers
-            response.sendRedirect("/" + defaultLocale + url);
+            response.sendRedirect(request.getContextPath() + "/" + defaultLocale + url);
         } else {
             filterChain.doFilter(request,response);
         }

@@ -45,28 +45,42 @@ Welcome to the Spring Boot Template Project! This repository serves as a versati
 We've included multiple useful .sh scripts that will help you run the application. They are located in the [scripts](scripts) directory.
 
 First, start by getting the [database](https://github.com/ZdrzalikPrzemyslaw/PostgreSQL-docker) running. 
+
 You can then populate it using the [correct script - liquibase_dev.sh](scripts/liquibase_dev.sh).
 
+After that, you can run the app by simply executing the [correct script - local_clean_run.sh](scripts/local_clean_run)
+
+Another way to get the app running is using inteliJ. Simply recreate the run cofiguration seen in the image below:
 <p align="center">
     <img src="/.github/run_configuration.png" />
 </p>
-
-### Running tests
-
-Simply extecute the [correct script - run_test.sh](scripts/run_tests.sh).
 
 ### Local dockerized deployment
 
 Simply exectute the [correct script - rebuild-docker.sh](docker/rebuild-docker.sh)
 
+
+### Running tests
+
+Simply execute the [correct script - run_test.sh](scripts/run_tests.sh).
+
+### Hot reload CSS for local development
+
+Simply execute the [correct script - hot_reload_styles.sh](scripts/hot_reload_styles.sh)
+
+
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Java](www.java.com)
 - [Apache Maven](www.maven.apache.org)
-- [JavaEE 8](https://www.oracle.com/java/technologies/java-ee-8.html)
-- [React.js](https://reactjs.org/)
-- [PostgreSQL](https://www.postgresql.org/)
+- [Spring Boot 2](https://spring.io/projects/spring-boot)
+- [Liquibase](https://www.liquibase.org)
+- [Docker](https://www.docker.com)
+- [JUnit](https://junit.org/junit5/)
 - [Hibernate](https://hibernate.org/)
+- [Node.js](https://nodejs.org/en)
+- [Thymeleaf](https://www.thymeleaf.org)
+- [Tailwind](https://tailwindcss.com)
 
 ## ✍️ Authors <a name = "authors"></a>
 
