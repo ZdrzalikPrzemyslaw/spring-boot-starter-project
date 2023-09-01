@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-npm run build-tailwind-hotreload
+npm --prefix ../ run build-tailwind-hotreload

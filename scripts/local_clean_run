@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-mvn clean resources:resources liquibase:update -P dev_local
+mvn  -Dmaven.test.skip=true clean package spring-boot:run -P dev_local -f ../pom.xml
+

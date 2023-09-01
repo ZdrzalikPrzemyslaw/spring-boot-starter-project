@@ -39,8 +39,10 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
             String newUrl = StringUtils.removeStart(url, '/' + variables[index]);
             RequestDispatcher dispatcher = request.getRequestDispatcher(newUrl);
             dispatcher.forward(request, response);
-        } else {
+        } else if (request.getHeader("Accept").contains("text/html")) {
             response.sendRedirect("/" + defaultLocale + url);
+        } else {
+            filterChain.doFilter(request,response);
         }
     }
 
