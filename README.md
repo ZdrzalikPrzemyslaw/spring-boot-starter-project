@@ -1,23 +1,7 @@
 
-<<<<<<< HEAD
 <h1 align="center">Spring Boot Template Project</h1>
 <div align="center">
-=======
-TODO: NAPISAC:
-* Po co to repo
-* Jakie sa wymagane rzeczy na kompie zeby to odpalic
-* Jak odpalic local dev i docker dev
-* co jest zrobione
-* Czego brakuje (np. maili)
-* Skad wziac baze danych (jakby jeszcze repo nie wrzucilem ale no to wrzuc wrzuc jak bedziesz to robic) (moze baze niech witek wrzuci wsm bo julka wrzuci froncik)
-* Skad wziac froncik (no jakby tosamo)
-* Kto Contributowal
-* https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors
-* I co tam jeszcze mamy za pomysl
 
-
-This README would normally document whatever steps are necessary to get your application up and running.
->>>>>>> b00bf04bac1d5bcd33e54aa4e0cf313b18d0bcc2
 
 [![Status](https://img.shields.io/badge/status-finished-success.svg)]()
 
