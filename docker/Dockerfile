@@ -1,6 +1,6 @@
 FROM maven:3.8.6-amazoncorretto-17 as maven
 LABEL COMPANY="Lodz University of Technology"
-LABEL MAINTAINER="224406@edu.p.lodz.pl, 224441@edu.p.lodz.pl, 224466@edu.p.lodz.pl"
+LABEL MAINTAINER="224406@edu.p.lodz.pl, 224441@edu.p.lodz.pl, 224466@edu.p.lodz.pl zdrzalikprzemyslaw@gmail.com"
 LABEL APPLICATION="Courses App"
 
 WORKDIR /usr/src/app
