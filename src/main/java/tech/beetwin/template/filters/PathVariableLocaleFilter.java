@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
@@ -39,11 +40,16 @@ public class PathVariableLocaleFilter extends OncePerRequestFilter {
             String newUrl = StringUtils.removeStart(url, '/' + variables[index]);
             RequestDispatcher dispatcher = request.getRequestDispatcher(newUrl);
             dispatcher.forward(request, response);
-        } else if (request.getHeader("Accept").contains("text/html")) {
+        } else if (nullSafeContains(request.getHeader("Accept"), "text/html")) {
+            // Only for browsers
             response.sendRedirect("/" + defaultLocale + url);
         } else {
             filterChain.doFilter(request,response);
         }
+    }
+
+    private static boolean nullSafeContains(String str, String substr) {
+        return str != null && str.contains(substr);
     }
 
     private boolean isLocale(String locale) {
