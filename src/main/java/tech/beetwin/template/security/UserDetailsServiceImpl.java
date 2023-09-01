@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO: 01/09/2023 If this happens, the user should be either treated as not logged in, or maybe prompted somehow. His JWT should be invalidated. Doesn't work as of now, to be fixed 
+        // TODO: 01/09/2023 If this happens, the user should be either treated as not logged in, or maybe prompted somehow. His JWT should be invalidated. Doesn't work as of now, to be fixed
         AccountInfoEntity accountInfoEntity = repository.findAccountInfoEntityByEmail(username).orElseThrow((() -> new UsernameNotFoundException(I18nCodes.ACCOUNT_NOT_FOUND)));
         Collection<SimpleGrantedAuthority> authorities = accountInfoEntity
                 .getAccessLevels()

@@ -138,7 +138,7 @@
     </dependencies>
 
     <build>
-        <finalName>courses_app</finalName>
+        <finalName>template_app</finalName>
         <plugins>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
             <plugin>
@@ -248,9 +248,9 @@
             <properties>
                 <spring.profiles.active>dev_local</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
-                <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
-                <liquibase.username>courses_app_dev</liquibase.username>
-                <liquibase.password>courses_app_dev</liquibase.password>
+                <liquibase.url>jdbc:postgresql://localhost:5432/template_db_dev</liquibase.url>
+                <liquibase.username>template_app_dev</liquibase.username>
+                <liquibase.password>template_app_dev</liquibase.password>
             </properties>
         </profile>
         <profile>
@@ -261,9 +261,9 @@
             <properties>
                 <spring.profiles.active>dev_docker</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
-                <liquibase.url>jdbc:postgresql://database:5432/courses_db_dev</liquibase.url>
-                <liquibase.username>courses_app_dev</liquibase.username>
-                <liquibase.password>courses_app_dev</liquibase.password>
+                <liquibase.url>jdbc:postgresql://database:5432/template_db_dev</liquibase.url>
+                <liquibase.username>template_app_dev</liquibase.username>
+                <liquibase.password>template_app_dev</liquibase.password>
             </properties>
         </profile>
         <profile>
@@ -271,9 +271,10 @@
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
                 <liquibase.driver>org.postgresql.Driver</liquibase.driver>
-                <liquibase.url>jdbc:postgresql://localhost:5432/courses_db_dev</liquibase.url>
-                <liquibase.username>courses_app_dev</liquibase.username>
-                <liquibase.password>courses_app_dev_wrong</liquibase.password>
+                <!--Require updating to the correct values for your prod env-->
+                <liquibase.url>jdbc:postgresql://localhost:5432/template_db_dev</liquibase.url>
+                <liquibase.username>template_app_dev</liquibase.username>
+                <liquibase.password>template_app_dev_wrong</liquibase.password>
             </properties>
         </profile>
     </profiles>

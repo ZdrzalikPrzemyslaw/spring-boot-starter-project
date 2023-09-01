@@ -7,17 +7,9 @@
     "build-tailwind": "npx tailwindcss -i ./src/main/resources/static/css/style.tailwind.css -o ./src/main/resources/static/css/main.css",
     "build-tailwind-hotreload": "npx tailwindcss -i ./src/main/resources/static/css/style.tailwind.css -o ./src/main/resources/static/css/main.css --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://PrzemekPolska@bitbucket.org/app-courses-workspace/backend.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://bitbucket.org/app-courses-workspace/backend/issues"
-  },
-  "homepage": "https://bitbucket.org/app-courses-workspace/backend#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.18",

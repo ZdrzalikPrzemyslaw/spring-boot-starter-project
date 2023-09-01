@@ -1,11 +1,11 @@
 FROM maven:3.8.6-amazoncorretto-17 as maven
 LABEL COMPANY="Lodz University of Technology"
 LABEL MAINTAINER="224406@edu.p.lodz.pl, 224441@edu.p.lodz.pl, 224466@edu.p.lodz.pl zdrzalikprzemyslaw@gmail.com"
-LABEL APPLICATION="Courses App"
+LABEL APPLICATION="Template App"
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
-RUN mvn -Dmaven.test.skip=true clean package -P dev_docker
+RUN mvn clean package -P dev_docker -f /usr/src/app/pom.xml -X
 
 FROM tomcat:9.0.68-jdk17-corretto-al2
 ARG TOMCAT_FILE_PATH=/docker/tomcat
@@ -18,7 +18,7 @@ ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSi
 
 #Move over the War file from previous build step
 WORKDIR /usr/local/tomcat/webapps/
-COPY --from=maven /usr/src/app/target/courses_app.war /usr/local/tomcat/webapps/api.war
+COPY --from=maven /usr/src/app/target/template_app.war /usr/local/tomcat/webapps/api.war
 
 RUN cp -R /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager
 RUN cp -R /usr/local/tomcat/webapps.dist/docs /usr/local/tomcat/webapps/docs

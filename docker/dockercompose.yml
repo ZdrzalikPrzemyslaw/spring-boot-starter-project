@@ -8,7 +8,7 @@ services:
       - backend
     ports:
       - "8081:8080"
-    container_name: courses_auth_backend
+    container_name: template_backend
 
 networks:
   backend:

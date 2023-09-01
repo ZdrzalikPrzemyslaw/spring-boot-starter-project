@@ -6,13 +6,14 @@
 
 </div>
 
-## 📝 Table of Contents
+## 📝 Table of Contents <a name = "table-of-contents"></a>
 
-- [📝 Table of Contents](#-table-of-contents)
-- [🧐 About <a name = "about"></a>](#-about-)
-- [🔑 Prerequisites <a name = "prerequisites"></a>](#-prerequisites-)
-- [⛏️ Built Using <a name = "built_using"></a>](#️-built-using-)
-- [✍️ Authors <a name = "authors"></a>](#️-authors-)
+- [📝 Table of Contents](#table-of-contents)
+- [🧐 About](#about)
+- [🔑 Prerequisites](#prerequisites)
+- [🚀 How to Run](#how-to-run)
+- [⛏️ Built Using](#built-using)
+- [✍️ Author](#authors)
 
 ## 🧐 About <a name = "about"></a>
 
@@ -25,47 +26,37 @@ Welcome to the Spring Boot Template Project! This repository serves as a versati
 * Tests: The template project includes a testing framework to help you ensure the reliability and stability of your application through unit and integration tests. Our example tests include in-memory database support, as well as integration for spring-boot test framework.
 * Profiles for Local Development and Production: Configure your project for local development and production environments with profiles that streamline setup and deployment.
 * Docker Support: We've provided scripts, that will build and deploy your application to your local docker instance.
+* Database versioning: we included a starting point for database schema using liquibase
 
 ## 🔑 Prerequisites <a name = "prerequisites"></a>
 
-* Java 17
-* Apache Maven
-* Node.js
+* [Java 17](www.java.com)
+* [Apache Maven](www.maven.apache.org)
+* [Node.js](https://nodejs.org/en)
 
 ### Optional Prerequisites <a name = "prerequisites"></a>
 
-* Docker Desktop
+* [Docker](https://www.docker.com)
 
-In order to run the application you will need to configure the application.properties file in the resources folder with the file structure shown in the example below:
 
-```
-account.confirmation.jwt.secret=TODO
-unlock.by.mail.confirmation.jwt.secret=TODO
+## 🚀 How to Run <a name = "how-to-run"></a>
 
-(...)
+We've included multiple useful .sh scripts that will help you run the application. They are located in the [scripts](scripts) directory.
 
-mail.smtp.ssl.trust=TODO
-```
+First, start by getting the [database](https://github.com/ZdrzalikPrzemyslaw/PostgreSQL-docker) running. 
+You can then populate it using the [correct script - liquibase_dev.sh](scripts/liquibase_dev.sh).
 
-You will also need to edit the JDBCConfig.java file found in the config package by supplying it with the correct url's and passwords for the data sources. An example datasource is shown below:
+<p align="center">
+    <img src="/.github/run_configuration.png" />
+</p>
 
-```
-@DataSourceDefinition(
-        name = "java:app/jdbc/ssbd01mok",
-        className = "org.postgresql.ds.PGSimpleDataSource",
-        user = "ssbd01mok",
-        password = "TODO",
-        serverName = "TODO",
-        portNumber = 5432,
-        databaseName = "ssbd01",
-        transactional = true,
-        initialPoolSize = 1,
-        minPoolSize = 0,
-        maxPoolSize = 32,
-        isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
-```
+### Running tests
 
-Use the sql scripts found in resources/META-INF/sql to populate your database with sample data.
+Simply extecute the [correct script - run_test.sh](scripts/run_tests.sh).
+
+### Local dockerized deployment
+
+Simply exectute the [correct script - rebuild-docker.sh](docker/rebuild-docker.sh)
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
@@ -80,8 +71,5 @@ Use the sql scripts found in resources/META-INF/sql to populate your database wi
 
 * [Przemysław Zdrzalik](https://github.com/ZdrzalikPrzemyslaw)
 * [Julia Szymańska](https://github.com/JuliaSzymanska)
-* [Grzegorz Muszyński](https://github.com/szerszen199)
 * [Witold Pietrzak](https://github.com/WitoldPietrzak)
-* [Piotr Antczak](https://github.com/pantczak)
-* Bartłomiej Graczyk
-* Tomasz Woźniak
+
